@@ -26,7 +26,6 @@ const HomePage = () => {
             <BrandSection/>
             <FootBanner/>
             <LiputanMedia/>
-            <Footer/>
 
         </div>
     );

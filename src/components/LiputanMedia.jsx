@@ -17,7 +17,7 @@ const LuputanMedia = () => {
     return (
         <section
             style={{
-                backgroundImage: 'url("/images/backgrounds/media-bg.png")', // Ganti dengan path gambar background
+                backgroundImage: 'url("/images/bg-2.jpg")', // Ganti dengan path gambar background
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -26,7 +26,7 @@ const LuputanMedia = () => {
             }}
         >
             <Container>
-                <h2 className="text-center mb-5">Liputan Media</h2>
+                <h2 className="text-center mb-5" style={{ color: 'black' }}>Liputan Media</h2>
                 <Row className="g-4 justify-content-center">
                     {mediaCoverage.map((media, index) => (
                         <Col key={index} md={4}>

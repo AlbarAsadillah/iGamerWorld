@@ -7,32 +7,32 @@ const SubKategori = () => {
     const navigate = useNavigate();
 
     const categories = [
-        { icon: <Cpu size={32} color="#FFD700" />, name: 'Motherboard', count: '1 Produk', link: '/kategori/motherboard' },
-        { icon: <Cpu size={32} color="#FFD700" />, name: 'Processor', count: '1 Produk', link: '/kategori/processor' },
-        { icon: <HardDrive size={32} color="#FFD700" />, name: 'RAM', count: '1 Produk', link: '/kategori/ram' },
-        { icon: <Monitor size={32} color="#FFD700" />, name: 'GPU', count: '1 Produk', link: '/kategori/gpu' },
-        { icon: <Headphones size={32} color="#FFD700" />, name: 'Headset', count: '1 Produk', link: '/kategori/headset' },
-        { icon: <MousePointer size={32} color="#FFD700" />, name: 'Mouse', count: '1 Produk', link: '/kategori/mouse' },
-        { icon: <Keyboard size={32} color="#FFD700" />, name: 'Keyboard', count: '1 Produk', link: '/kategori/keyboard' },
-        { icon: <Monitor size={32} color="#FFD700" />, name: 'PC Gaming', count: '1 Produk', link: '/kategori/pc-gaming' },
-        { icon: <Settings size={32} color="#FFD700" />, name: 'PC Editing', count: '1 Produk', link: '/kategori/pc-editing' },
-        { icon: <Monitor size={32} color="#FFD700" />, name: 'PC Kerja', count: '1 Produk', link: '/kategori/pc-kerja' },
-        { icon: <Monitor size={32} color="#FFD700" />, name: 'Monitor', count: '1 Produk', link: '/kategori/monitor' },
-        { icon: <HardDrive size={32} color="#FFD700" />, name: 'Storage', count: '1 Produk', link: '/kategori/storage' },
-        { icon: <Power size={32} color="#FFD700" />, name: 'PSU', count: '1 Produk', link: '/kategori/psu' },
-        { icon: <Box size={32} color="#FFD700" />, name: 'Casing', count: '1 Produk', link: '/kategori/casing' },
-        { icon: <Fan size={32} color="#FFD700" />, name: 'Fan', count: '1 Produk', link: '/kategori/fan' },
-        { icon: <Settings size={32} color="#FFD700" />, name: 'Cooler', count: '1 Produk', link: '/kategori/cooler' },
+        { icon: <img src="/images/icons/motherboard.png" alt="Motherboard" style={{ width: '50px', height: '50px' }} />, name: 'Motherboard', count: '1 Produk', subkategori: 'motherboard' },
+        { icon: <img src="/images/icons/cpu.png" alt="CPU" style={{ width: '50px', height: '50px' }} />, name: 'Processor', count: '1 Produk', subkategori: 'processor' },
+        { icon: <img src="/images/icons/ram.png" alt="RAM" style={{ width: '50px', height: '50px' }} />, name: 'RAM', count: '1 Produk', subkategori: 'ram' },
+        { icon: <img src="/images/icons/gpu.png" alt="GPU" style={{ width: '50px', height: '50px' }} />, name: 'GPU', count: '1 Produk', subkategori: 'gpu' },
+        { icon: <img src="/images/icons/headset.png" alt="Headset" style={{ width: '50px', height: '50px' }} />, name: 'Headset', count: '1 Produk', subkategori: 'headset' },
+        { icon: <img src="/images/icons/mouse.png" alt="Mouse" style={{ width: '50px', height: '50px' }} />, name: 'Mouse', count: '1 Produk', subkategori: 'mouse' },
+        { icon: <img src="/images/icons/keyboard.png" alt="Keyboard" style={{ width: '50px', height: '50px' }} />, name: 'Keyboard', count: '1 Produk', subkategori: 'keyboard' },
+        { icon: <img src="/images/icons/pc-gaming.png" alt="Pc-gaming" style={{ width: '50px', height: '50px' }} />, name: 'PC Gaming', count: '1 Produk', subkategori: 'pc-gaming' },
+        { icon: <img src="/images/icons/pc-editing.png" alt="Pc-Editing" style={{ width: '50px', height: '50px' }} />, name: 'PC Editing', count: '1 Produk', subkategori: 'pc-editing' },
+        { icon: <img src="/images/icons/pc-kerja.png" alt="Pc-Kerja" style={{ width: '50px', height: '50px' }} />, name: 'PC Kerja', count: '1 Produk', subkategori: 'pc-kerja' },
+        { icon: <img src="/images/icons/monitor.png" alt="Monitor" style={{ width: '50px', height: '50px' }} />, name: 'Monitor', count: '1 Produk', subkategori: 'monitor' },
+        { icon: <img src="/images/icons/storage.png" alt="Storage" style={{ width: '50px', height: '50px' }} />, name: 'Storage', count: '1 Produk', subkategori: 'storage' },
+        { icon: <img src="/images/icons/psu.png" alt="PSU" style={{ width: '50px', height: '50px' }} />, name: 'PSU', count: '1 Produk', subkategori: 'psu' },
+        { icon: <img src="/images/icons/casing.png" alt="Casing" style={{ width: '50px', height: '50px' }} />, name: 'Casing', count: '1 Produk', subkategori: 'casing' },
+        { icon: <img src="/images/icons/fan.png" alt="Fan" style={{ width: '50px', height: '50px' }} />, name: 'Fan', count: '1 Produk', subkategori: 'fan' },
+        { icon: <img src="/images/icons/cooler.png" alt="Cooler" style={{ width: '50px', height: '50px' }} />, name: 'Cooler', count: '1 Produk', subkategori: 'cooler' },
     ];
 
-    const handleCategoryClick = (link) => {
-        navigate(link);
+    const handleCategoryClick = (subkategori) => {
+        navigate(`/catalog?subkategori=${subkategori}`); // Navigasi ke halaman Catalog dengan parameter subkategori
     };
 
     return (
         <section
             style={{
-                backgroundColor: '#0D0D0D',
+                backgroundColor: '#212121',
                 backgroundImage: 'url("/images/bg-subkategori.png")',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -48,7 +48,7 @@ const SubKategori = () => {
                     {categories.map((category, index) => (
                         <Col key={index} xs={6} sm={4} md={3} lg={2}>
                             <button
-                                onClick={() => handleCategoryClick(category.link)}
+                                onClick={() => handleCategoryClick(category.subkategori)} // Kirim subkategori saat diklik
                                 className="btn p-0 w-100"
                                 style={{
                                     background: 'none',
@@ -57,9 +57,10 @@ const SubKategori = () => {
                                 }}
                             >
                                 <Card
-                                    className="text-center bg-dark text-white border-0 shadow-sm card-hover"
+                                    className="text-center text-white border-0 shadow-sm card-hover"
                                     style={{
                                         transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                                        backgroundColor: '#212121',
                                     }}
                                 >
                                     <Card.Body>

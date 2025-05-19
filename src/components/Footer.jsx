@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom'; // Import Link dari react-router-dom
 
 const Footer = () => {
     return (
@@ -17,29 +18,65 @@ const Footer = () => {
                     <Col md={2}>
                         <h5 style={{ fontWeight: 'semibold', textAlign: 'left' }}>Tentang Kami</h5>
                         <ul style={{ listStyle: 'none', padding: 0, textAlign: 'left' }}>
-                            <li>Tentang Kami</li>
-                            <li>Kebijakan Privasi</li>
-                            <li>Syarat & Ketentuan</li>
+                            <li>
+                                <Link to="/about" style={{ textDecoration: 'none', color: '#000' }}>
+                                    Tentang Kami
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/privacy-policy" style={{ textDecoration: 'none', color: '#000' }}>
+                                    Kebijakan Privasi
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/terms-and-conditions" style={{ textDecoration: 'none', color: '#000' }}>
+                                    Syarat & Ketentuan
+                                </Link>
+                            </li>
                         </ul>
                     </Col>
 
                     {/* Bantuan */}
                     <Col md={2}>
-                        <h5 style={{ fontWeight: 'semibold' , textAlign: 'left'}}>Bantuan</h5>
-                        <ul style={{ listStyle: 'none', padding: 0 , textAlign: 'left'}}>
-                            <li>Cara Berbelanja</li>
-                            <li>Cara Pembayaran</li>
-                            <li>Status Pesanan</li>
-                            <li>Pengembalian Produk</li>
-                            <li>Hubungi Kami</li>
-                            <li>Feedback</li>
+                        <h5 style={{ fontWeight: 'semibold', textAlign: 'left' }}>Bantuan</h5>
+                        <ul style={{ listStyle: 'none', padding: 0, textAlign: 'left' }}>
+                            <li>
+                                <Link to="/how-to-shop" style={{ textDecoration: 'none', color: '#000' }}>
+                                    Cara Berbelanja
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/payment-methods" style={{ textDecoration: 'none', color: '#000' }}>
+                                    Cara Pembayaran
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/order-status" style={{ textDecoration: 'none', color: '#000' }}>
+                                    Status Pesanan
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/product-returns" style={{ textDecoration: 'none', color: '#000' }}>
+                                    Pengembalian Produk
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/contact-us" style={{ textDecoration: 'none', color: '#000' }}>
+                                    Hubungi Kami
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/feedback" style={{ textDecoration: 'none', color: '#000' }}>
+                                    Feedback
+                                </Link>
+                            </li>
                         </ul>
                     </Col>
 
                     {/* Customer Care */}
                     <Col md={2}>
-                        <h5 style={{ fontWeight: 'semibold' , textAlign: 'left'}}>Customer Care</h5>
-                        <p style={{textAlign: 'left'}}>
+                        <h5 style={{ fontWeight: 'semibold', textAlign: 'left' }}>Customer Care</h5>
+                        <p style={{ textAlign: 'left' }}>
                             Grand City, Ruko Sentra Niaga Block RSN 3 No.18, Jaka Setia
                             <br />
                             Senin-Sabtu, 10.00 - 18.00 WIB
@@ -50,8 +87,8 @@ const Footer = () => {
 
                     {/* Toko Kami */}
                     <Col md={3}>
-                        <h5 style={{ fontWeight: 'semibold' , textAlign: 'left'}}>Toko Kami</h5>
-                        <p style={{textAlign: 'left'}}>
+                        <h5 style={{ fontWeight: 'semibold', textAlign: 'left' }}>Toko Kami</h5>
+                        <p style={{ textAlign: 'left' }}>
                             Jl. Klampis Aji I No. 19, Klampis Ngasem, Kec. Sukolilo, Surabaya, Jawa Timur 60117
                             <br />
                             Setiap Hari, 10.00 - 18.00 WIB
@@ -62,8 +99,8 @@ const Footer = () => {
 
                     {/* Metode Pembayaran */}
                     <Col md={3}>
-                        <h5 style={{ fontWeight: 'semibold' , textAlign: 'left'}}>Metode Pembayaran</h5>
-                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' , textAlign: 'left'}}>
+                        <h5 style={{ fontWeight: 'semibold', textAlign: 'left' }}>Metode Pembayaran</h5>
+                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', textAlign: 'left' }}>
                             <img src="/images/BCA.png" alt="BCA" style={{ height: '40px' }} />
                             <img src="/images/BRI.png" alt="BRI" style={{ height: '40px' }} />
                             <img src="/images/Jenius.png" alt="Mandiri" style={{ height: '40px' }} />

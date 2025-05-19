@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import ProductCard, { dummyProducts } from './ProductCard';
 import { Nav, Button } from 'react-bootstrap';
+import ProductCard from './ProductCard'; // Pastikan path sesuai dengan lokasi ProductCard
+import { dummyProducts } from '../data/dummyProducts'; // Pastikan path sesuai dengan lokasi data dummyProducts
 
 const ProdukList = () => {
     const [activeTab, setActiveTab] = useState('all'); // State untuk tab aktif
@@ -91,7 +92,7 @@ const ProdukList = () => {
                         image={product.image}
                         name={product.name}
                         price={`Rp${product.price.toLocaleString('id-ID')}`}
-                        textColor="#FFFFFF"
+                        textColor="#FFFFFF" // Mengatur warna teks menjadi putih
                     />
                 ))}
             </div>

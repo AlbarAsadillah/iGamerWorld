@@ -17,6 +17,8 @@ const categories = [
 ];
 
 const CategorySection = () => {
+  const [hoveredIndex, setHoveredIndex] = React.useState(null);
+
   return (
     <section style={styles.section}>
       <div style={styles.overlay}>
@@ -26,8 +28,20 @@ const CategorySection = () => {
         </div>
         <div style={styles.grid}>
           {categories.map((category, index) => (
-            <Link key={index} to={category.link} style={styles.linkWrapper}>
-              <div className="category-card" style={styles.card}>
+            <Link
+              key={index}
+              to={category.link}
+              style={styles.linkWrapper}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              <div
+                className="category-card"
+                style={{
+                  ...styles.card,
+                  ...(hoveredIndex === index ? styles.cardHover : {}),
+                }}
+              >
                 <img src={category.image} alt={category.title} style={styles.image} />
                 <h4 style={styles.label}>{category.title}</h4>
               </div>
@@ -46,7 +60,7 @@ const styles = {
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     color: '#fff',
-    padding: '72px'
+    padding: '72px',
   },
   headingContainer: {
     marginBottom: '2rem',
@@ -81,8 +95,14 @@ const styles = {
     width: '430px',
     position: 'relative',
     boxShadow: '0 0 12px rgba(255, 255, 255, 0.05)',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease', // Added border transition
     cursor: 'pointer',
+    border: '2px solid transparent', // Default border
+  },
+  cardHover: {
+    transform: 'scale(1.05)', // Slightly enlarge the card
+    boxShadow: '0 0 20px rgba(255, 255, 255, 0.2)', // Add a stronger shadow
+    border: '2px solid #FFFFFF', // White border on hover
   },
   image: {
     width: '100%',

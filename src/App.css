@@ -2,6 +2,9 @@
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
@@ -58,6 +61,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
+
 }
 
 .brand-hover:hover {

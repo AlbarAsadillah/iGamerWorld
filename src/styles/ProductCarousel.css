@@ -1,0 +1,18 @@
+.product-carousel {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ffd700; /* Warna panah navigasi */
+}
+
+.swiper-pagination-bullet {
+  background-color: #ccc; /* Warna indikator */
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #ffd700; /* Warna indikator aktif */
+}

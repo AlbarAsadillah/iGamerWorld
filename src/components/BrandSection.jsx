@@ -32,7 +32,7 @@ const BrandSection = () => {
                 <Row>
                     {/* Official Brands */}
                     <Col md={9}>
-                        <Card className="bg-dark text-white border-0 p-4">
+                        <Card style={{ backgroundColor: '#212121' }} className="text-white border-0 p-4">
                             <Card.Body>
                                 <h5 className="text-warning mb-4">Official Brands</h5>
                                 <Row className="g-3">
@@ -62,7 +62,7 @@ const BrandSection = () => {
 
                     {/* E-commerce */}
                     <Col md={3}>
-                        <Card className="bg-dark text-white border-0 p-4">
+                         <Card style={{ backgroundColor: '#212121' }} className="text-white border-0 p-4">
                             <Card.Body>
                                 <h5 className="text-warning mb-4">E-commerce</h5>
                                 <Row className="g-3">

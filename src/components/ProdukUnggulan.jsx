@@ -5,12 +5,12 @@ const products = [
   {
     name: 'Logitech G102',
     price: 230000,
-    image: '/images/products/logitech-g102.png',
+    image: '/images/products/logitech-g102-1.png',
   },
   {
-    name: 'Ajazz APEX PAW 3950',
+    name: 'Ajazz AK35i',
     price: 780000,
-    image: '/images/products/ajazz-apex.png',
+    image: '/images/products/ajazz-ak35i.png',
   },
   {
     name: 'Fantech MH–82',
