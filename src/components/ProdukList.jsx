@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Nav, Button } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap'; // Removed Button import from react-bootstrap
 import ProductCard from './ProductCard'; // Pastikan path sesuai dengan lokasi ProductCard
 import { dummyProducts } from '../data/dummyProducts'; // Pastikan path sesuai dengan lokasi data dummyProducts
+import Button1 from './Button';  // Komponen Tombol yang sudah Anda buat
 
 const ProdukList = () => {
     const [activeTab, setActiveTab] = useState('all'); // State untuk tab aktif
@@ -10,7 +11,7 @@ const ProdukList = () => {
     // Filter produk berdasarkan tab aktif
     const filteredProducts = dummyProducts.filter((product) => {
         if (activeTab === 'ready-stock') return product.status === 'ready-stock';
-        if (activeTab === 'pre-order') return product.status === 'pre-order';
+        if (activeTab === 'out-of-stock') return product.status === 'out-of-stock';
         return true; // Default: 'all'
     });
 
@@ -37,7 +38,7 @@ const ProdukList = () => {
                             setVisibleCount(8); // Reset jumlah produk saat tab berubah
                         }}
                         style={{
-                            color: activeTab === 'all' ? 'black' : 'white',
+                            color: activeTab === 'all' ? 'white' : 'white',
                             fontWeight: activeTab === 'all' ? 'bold' : 'normal',
                         }}
                     >
@@ -52,7 +53,7 @@ const ProdukList = () => {
                             setVisibleCount(8); // Reset jumlah produk saat tab berubah
                         }}
                         style={{
-                            color: activeTab === 'ready-stock' ? 'black' : 'white',
+                            color: activeTab === 'ready-stock' ? 'white' : 'white',
                             fontWeight: activeTab === 'ready-stock' ? 'bold' : 'normal',
                         }}
                     >
@@ -61,17 +62,17 @@ const ProdukList = () => {
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link
-                        active={activeTab === 'pre-order'}
+                        active={activeTab === 'out-of-stock'}
                         onClick={() => {
-                            setActiveTab('pre-order');
+                            setActiveTab('out-of-stock');
                             setVisibleCount(8); // Reset jumlah produk saat tab berubah
                         }}
                         style={{
-                            color: activeTab === 'pre-order' ? 'black' : 'white',
-                            fontWeight: activeTab === 'pre-order' ? 'bold' : 'normal',
+                            color: activeTab === 'out-of-stock' ? 'white' : 'white',
+                            fontWeight: activeTab === 'out-of-stock' ? 'bold' : 'normal',
                         }}
                     >
-                        Pre-Order
+                        Out of Stock
                     </Nav.Link>
                 </Nav.Item>
             </Nav>
@@ -83,6 +84,7 @@ const ProdukList = () => {
                     display: 'grid',
                     gridTemplateColumns: 'repeat(4, 1fr)', // 4 kolom
                     gap: '16px',
+                    marginBottom: '30px', // Tambahan jarak bawah supaya tombol tidak mepet
                 }}
             >
                 {visibleProducts.map((product) => (
@@ -99,13 +101,16 @@ const ProdukList = () => {
 
             {/* Tombol Lihat Lainnya */}
             {visibleCount < filteredProducts.length && (
-                <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                    <Button
-                        variant='warning'
+                <div style={{ textAlign: 'center' }}>
+                    <Button1
+                    style={{
+                        width: '200px',
+                    }}
+                    label="Lihat lainnya"
                         onClick={() => setVisibleCount((prevCount) => prevCount + 8)} // Tambah 8 produk lagi
                     >
                         Lihat Lainnya
-                    </Button>
+                    </Button1>
                 </div>
             )}
         </div>

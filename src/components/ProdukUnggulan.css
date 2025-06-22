@@ -1,0 +1,93 @@
+.shake-animation {
+  animation: shake 3s ease-in-out infinite;
+}
+
+.shake-animation:hover {
+  animation: shakeIntense 0.5s ease-in-out infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+  10% { transform: translateX(-2px) translateY(-1px) rotate(-0.5deg); }
+  20% { transform: translateX(2px) translateY(1px) rotate(0.5deg); }
+  30% { transform: translateX(-1px) translateY(-2px) rotate(-0.3deg); }
+  40% { transform: translateX(1px) translateY(2px) rotate(0.3deg); }
+  50% { transform: translateX(-2px) translateY(1px) rotate(-0.2deg); }
+  60% { transform: translateX(2px) translateY(-1px) rotate(0.2deg); }
+  70% { transform: translateX(-1px) translateY(-1px) rotate(-0.1deg); }
+  80% { transform: translateX(1px) translateY(1px) rotate(0.1deg); }
+  90% { transform: translateX(-1px) translateY(0px) rotate(0deg); }
+}
+
+@keyframes shakeIntense {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1.1); }
+  10% { transform: translateX(-4px) translateY(-2px) rotate(-1deg) scale(1.12); }
+  20% { transform: translateX(4px) translateY(2px) rotate(1deg) scale(1.08); }
+  30% { transform: translateX(-3px) translateY(-3px) rotate(-0.8deg) scale(1.15); }
+  40% { transform: translateX(3px) translateY(3px) rotate(0.8deg) scale(1.05); }
+  50% { transform: translateX(-4px) translateY(2px) rotate(-0.5deg) scale(1.13); }
+  60% { transform: translateX(4px) translateY(-2px) rotate(0.5deg) scale(1.07); }
+  70% { transform: translateX(-2px) translateY(-2px) rotate(-0.3deg) scale(1.11); }
+  80% { transform: translateX(2px) translateY(2px) rotate(0.3deg) scale(1.09); }
+  90% { transform: translateX(-1px) translateY(0px) rotate(0deg) scale(1.1); }
+}
+
+.featureItem {
+  position: relative;
+}
+
+.featureItem::before {
+  content: '▶';
+  position: absolute;
+  left: 0;
+  color: #FFD700;
+}
+
+@media (max-width: 768px) {
+  .produk-unggulan .descriptionContainer {
+    padding: 20px !important;
+    margin-bottom: 2rem;
+  }
+
+  .produk-unggulan .heading {
+    font-size: 2rem !important;
+  }
+
+  .produk-unggulan .productTitle {
+    font-size: 1.5rem !important;
+  }
+
+  .produk-unggulan .description {
+    font-size: 1rem !important;
+  }
+
+  .produk-unggulan .cardContainer {
+    padding: 1rem !important;
+  }
+
+  .shake-animation {
+    transform: scale(0.9) !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .produk-unggulan .section {
+    padding: 40px 0 !important;
+  }
+
+  .produk-unggulan .descriptionContainer {
+    padding: 15px !important;
+  }
+
+  .produk-unggulan .heading {
+    font-size: 1.8rem !important;
+  }
+
+  .produk-unggulan .productTitle {
+    font-size: 1.3rem !important;
+  }
+
+  .shake-animation {
+    transform: scale(0.8) !important;
+  }
+}

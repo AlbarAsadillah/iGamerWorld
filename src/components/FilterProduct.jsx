@@ -1,238 +1,218 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+import React, { useState, useRef, useEffect } from 'react';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
-const FilterProduct = ({ products, onFilter }) => {
-    const [category, setCategory] = useState('');
-    const [subcategory, setSubcategory] = useState('');
-    const [brand, setBrand] = useState('');
-    const [socket, setSocket] = useState('');
-    const [stockStatus, setStockStatus] = useState('');
-    const [sortOption, setSortOption] = useState('');
+const categories = [
+  'All',
+  'Mouse',
+  'Keyboard',
+  'Headset',
+];
 
-    // Data untuk dropdown
-    const categories = ['Komponen', 'Aksesoris', 'PC Bundling'];
-    const subcategories = ['Mouse', 'Keyboard'];
-    const brands = ['Logitech', 'Razer', 'SteelSeries', 'Fantech', 'Ajazz'];
-    const sockets = ['Intel', 'AMD'];
-    const stockStatusOptions = ['Ready Stock', 'Pre-Order'];
-    const sortingOptions = ['Harga Terendah', 'Harga Tertinggi', 'Terbaru'];
+const filterOptions = {
+  category: ['Komponen', 'Aksesoris', 'PC Bundling'],
+  subcategory: ['Mouse', 'Keyboard'],
+  brand: ['Logitech', 'Razer', 'SteelSeries', 'Fantech', 'Ajazz'],
+  socket: ['Intel', 'AMD'],
+  stockStatus: ['Ready Stock', 'Out of Stock'],
+  sortBy: ['Harga Terendah', 'Harga Tertinggi', 'Terbaru'],
+};
 
-    // Fungsi untuk menerapkan filter
-    const applyFilter = () => {
-        let filteredProducts = [...products];
+const FilterProduct = ({ onCategoryChange }) => {
+  const [activeCategory, setActiveCategory] = useState('Web Design');
+  const [filterOpen, setFilterOpen] = useState(false);
 
-        if (category) {
-            filteredProducts = filteredProducts.filter((product) => product.category === category);
-        }
+  const [filters, setFilters] = useState({
+    category: '',
+    subcategory: '',
+    brand: '',
+    socket: '',
+    stockStatus: '',
+    sortBy: '',
+  });
 
-        if (subcategory) {
-            filteredProducts = filteredProducts.filter((product) => product.subcategory === subcategory);
-        }
+  const panelRef = useRef();
 
-        if (brand) {
-            filteredProducts = filteredProducts.filter((product) => product.brand === brand);
-        }
+  const handleCategoryClick = (category) => {
+    setActiveCategory(category);
+    if (onCategoryChange) onCategoryChange(category);
+  };
 
-        if (socket) {
-            filteredProducts = filteredProducts.filter((product) => product.socket === socket);
-        }
+  const toggleFilterPanel = () => setFilterOpen((prev) => !prev);
 
-        if (stockStatus) {
-            filteredProducts = filteredProducts.filter((product) => product.stockStatus === stockStatus);
-        }
-
-        if (sortOption) {
-            if (sortOption === 'Harga Terendah') {
-                filteredProducts = filteredProducts.sort((a, b) => a.price - b.price);
-            } else if (sortOption === 'Harga Tertinggi') {
-                filteredProducts = filteredProducts.sort((a, b) => b.price - a.price);
-            } else if (sortOption === 'Terbaru') {
-                filteredProducts = filteredProducts.sort((a, b) => b.id - a.id);
-            }
-        }
-
-        onFilter(filteredProducts); // Kirimkan produk yang difilter ke komponen parent
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target) &&
+        !event.target.closest('.filter-toggle-button')
+      ) {
+        setFilterOpen(false);
+      }
     };
+    if (filterOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [filterOpen]);
 
-    // Gunakan useEffect untuk menerapkan filter setiap kali nilai filter berubah
-    useEffect(() => {
-        applyFilter();
-    }, [category, subcategory, brand, socket, stockStatus, sortOption]);
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
 
-    return (
-        <div
-            className="responsive-filter"
-            style={{
-                backgroundColor: '#212121',
-                padding: '15px',
-                borderRadius: '6px',
-                color: '#fff',
-                width: '100%',
-                maxWidth: '250px',
-            }}
+  const applyFilters = () => {
+    console.log('Filters applied:', filters);
+    // Kirim filter ke parent atau lakukan aksi filter
+    setFilterOpen(false);
+  };
+
+  return (
+    <div style={{ width: '100%' }}>
+      {/* Bar kategori dengan garis bawah dan bg hitam lembut */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 24,
+          padding: '8px 16px',
+          borderRadius: 32,
+          borderBottom: '2px solid #FFD700',  // Garis bawah kuning
+          overflowX: 'auto',
+          whiteSpace: 'nowrap',
+          background: 'rgba(20, 20, 20, 0.8)', // hitam transparan lembut
+          boxShadow: '0 2px 8px rgba(0,0,0,0.6)',
+          backdropFilter: 'blur(6px)',
+        }}
+      >
+        {categories.map((category) => {
+          const isActive = category === activeCategory;
+          return (
+            <button
+              key={category}
+              onClick={() => handleCategoryClick(category)}
+              style={{
+                backgroundColor: isActive ? '#FFD700' : 'transparent',
+                fontWeight: isActive ? 700 : 500,
+                color: isActive ? '#000' : '#fff',
+                border: 'none',
+                borderRadius: 32,
+                padding: '6px 20px',
+                cursor: 'pointer',
+                fontSize: 14,
+                whiteSpace: 'nowrap',
+                transition: 'background-color 0.3s, color 0.3s',
+              }}
+            >
+              {category}
+            </button>
+          );
+        })}
+
+        <button
+          onClick={toggleFilterPanel}
+          className="filter-toggle-button"
+          style={{
+            marginLeft: 'auto',
+            cursor: 'pointer',
+            backgroundColor: 'transparent',
+            border: '1px solid #555',
+            padding: '6px 14px',
+            borderRadius: 24,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontSize: 14,
+            color: '#fff',
+          }}
+          aria-label="Filter"
         >
-            <h6 className="mb-3" style={{ color: '#fff', fontSize: '16px' }}>Filter Produk</h6>
-            <Form>
-                <Row>
-                    {/* Kategori */}
-                    <Col xs={12}>
-                        <Form.Group className="mb-2">
-                            <Form.Label style={{ fontSize: '14px' }}>Kategori</Form.Label>
-                            <Autocomplete
-                                disablePortal
-                                options={categories}
-                                value={category}
-                                style={{borderColor: '#fff'}}
+          <FilterListIcon style={{ fontSize: 20, color: '#fff' }} />
+          Filters
+        </button>
+      </div>
 
-                                onChange={(e, newValue) => setCategory(newValue)}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Pilih Kategoris"
-                                        variant="outlined"
-                                        size="small"
-                                        sx={{
-                                            
-                                            borderRadius: '4px',
-                                            borderColor: '#FFFFFF',
-                                            outlineColor: '#fff'
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Form.Group>
-                    </Col>
+      {/* Panel filter dengan bg hitam lembut dan shadow */}
+      {filterOpen && (
+        <div
+          ref={panelRef}
+          style={{
+            marginTop: 12,
+            padding: 16,
+            background: 'rgba(20, 20, 20, 0.85)', // gradasi hitam transparan lembut
+            borderRadius: 12,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.9)',
+            maxWidth: 1920,
+            width: '100%',
+            color: '#fff',
+            backdropFilter: 'blur(8px)',
+          }}
+        >
+          <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+            {Object.entries(filterOptions).map(([key, options]) => (
+              <div key={key} style={{ flex: '1 1 180px' }}>
+                <label
+                  htmlFor={key}
+                  style={{
+                    display: 'block',
+                    marginBottom: 6,
+                    fontWeight: 'light',
+                    color: '#fff',
+                    textTransform: 'capitalize',
+                  }}
+                >
+                  {key === 'sortBy' ? 'Urutkan' : key === 'stockStatus' ? 'Status Stok' : key}
+                </label>
+                <select
+                  id={key}
+                  name={key}
+                  value={filters[key]}
+                  onChange={handleFilterChange}
+                  style={{
+                    width: '100%',
+                    padding: 8,
+                    borderRadius: 6,
+                    border: '1px solid #555',
+                    backgroundColor: '#000000',
+                    color: '#fff',
+                  }}
+                >
+                  <option value="">
+                    {key === 'sortBy' ? 'Semua Urutan' : key === 'stockStatus' ? 'Semua Status' : `Semua ${key}`}
+                  </option>
+                  {options.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
+          </div>
 
-                    {/* Subkategori */}
-                    <Col xs={12}>
-                        <Form.Group className="mb-2">
-                            <Form.Label style={{ fontSize: '14px' }}>Subkategori</Form.Label>
-                            <Autocomplete
-                                disablePortal
-                                options={subcategories}
-                                value={subcategory}
-                                onChange={(e, newValue) => setSubcategory(newValue)}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Pilih Subkategori"
-                                        variant="outlined"
-                                        size="small"
-                                        sx={{
-                                            backgroundColor: '#fff',
-                                            borderRadius: '4px',
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Form.Group>
-                    </Col>
-
-                    {/* Brand */}
-                    <Col xs={12}>
-                        <Form.Group className="mb-2">
-                            <Form.Label style={{ fontSize: '14px' }}>Brand</Form.Label>
-                            <Autocomplete
-                                disablePortal
-                                options={brands}
-                                value={brand}
-                                onChange={(e, newValue) => setBrand(newValue)}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Pilih Brand"
-                                        variant="outlined"
-                                        size="small"
-                                        sx={{
-                                            backgroundColor: '#fff',
-                                            borderRadius: '4px',
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Form.Group>
-                    </Col>
-
-                    {/* Socket */}
-                    <Col xs={12}>
-                        <Form.Group className="mb-2">
-                            <Form.Label style={{ fontSize: '14px' }}>Socket</Form.Label>
-                            <Autocomplete
-                                disablePortal
-                                options={sockets}
-                                value={socket}
-                                onChange={(e, newValue) => setSocket(newValue)}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Pilih Socket"
-                                        variant="outlined"
-                                        size="small"
-                                        sx={{
-                                            backgroundColor: '#fff',
-                                            borderRadius: '4px',
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Form.Group>
-                    </Col>
-
-                    {/* Status Stok */}
-                    <Col xs={12}>
-                        <Form.Group className="mb-2">
-                            <Form.Label style={{ fontSize: '14px' }}>Status Stok</Form.Label>
-                            <Autocomplete
-                                disablePortal
-                                options={stockStatusOptions}
-                                value={stockStatus}
-                                onChange={(e, newValue) => setStockStatus(newValue)}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Pilih Status Stok"
-                                        variant="outlined"
-                                        size="small"
-                                        sx={{
-                                            backgroundColor: '#fff',
-                                            borderRadius: '4px',
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Form.Group>
-                    </Col>
-
-                    {/* Urutkan */}
-                    <Col xs={12}>
-                        <Form.Group className="mb-2">
-                            <Form.Label style={{ fontSize: '14px' }}>Urutkan</Form.Label>
-                            <Autocomplete
-                                disablePortal
-                                options={sortingOptions}
-                                value={sortOption}
-                                onChange={(e, newValue) => setSortOption(newValue)}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Urutkan"
-                                        variant="outlined"
-                                        size="small"
-                                        sx={{
-                                            backgroundColor: '#fff',
-                                            borderRadius: '4px',
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Form.Group>
-                    </Col>
-                </Row>
-            </Form>
+          <div style={{ marginTop: 20, textAlign: 'right' }}>
+            <button
+              onClick={applyFilters}
+              style={{
+                backgroundColor: '#FFD700',
+                border: 'none',
+                padding: '10px 24px',
+                borderRadius: 10,
+                cursor: 'pointer',
+                fontWeight: 'medium',
+                color: '#000',
+              }}
+            >
+              Terapkan Filter
+            </button>
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default FilterProduct;

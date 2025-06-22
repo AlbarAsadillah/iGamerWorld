@@ -1,0 +1,363 @@
+/* Ant Design Poppins Font Override - Highest Priority */
+/* Import Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Override Ant Design's default font family */
+.ant-app,
+.ant-app *,
+[class*="ant-"],
+[class*="ant-"] *,
+[class*="ant-"]::before,
+[class*="ant-"]::after {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Specific Ant Design component overrides */
+.ant-layout {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-layout * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-menu {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-menu * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-table {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-table * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-btn {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-btn * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-input {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-input * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-form {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-form * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-card {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-card * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-modal {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-modal * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-drawer {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-drawer * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-tabs {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-tabs * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-breadcrumb {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-breadcrumb * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-tag {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-tag * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-typography {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-typography * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-list {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-list * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-select {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-select * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-dropdown {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-dropdown * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-pagination {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-pagination * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-statistic {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-statistic * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-alert {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-alert * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-message {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-message * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-notification {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-notification * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-tooltip {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-tooltip * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-popover {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-popover * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-popconfirm {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-popconfirm * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-checkbox {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-checkbox * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-radio {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-radio * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-switch {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-switch * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-upload {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-upload * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-progress {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-progress * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-steps {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-steps * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-collapse {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-collapse * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-tree {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-tree * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-transfer {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-transfer * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-cascader {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-cascader * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-picker {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-picker * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-calendar {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-calendar * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-date-picker {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-date-picker * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-time-picker {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-time-picker * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Force override for any remaining elements */
+div[class*="ant-"],
+span[class*="ant-"],
+button[class*="ant-"],
+input[class*="ant-"],
+textarea[class*="ant-"],
+label[class*="ant-"],
+a[class*="ant-"],
+li[class*="ant-"],
+ul[class*="ant-"],
+ol[class*="ant-"],
+table[class*="ant-"],
+tr[class*="ant-"],
+td[class*="ant-"],
+th[class*="ant-"] {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Override for pseudo-elements */
+[class*="ant-"]::before,
+[class*="ant-"]::after {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Override for nested elements */
+[class*="ant-"] div,
+[class*="ant-"] span,
+[class*="ant-"] p,
+[class*="ant-"] h1,
+[class*="ant-"] h2,
+[class*="ant-"] h3,
+[class*="ant-"] h4,
+[class*="ant-"] h5,
+[class*="ant-"] h6,
+[class*="ant-"] a,
+[class*="ant-"] button,
+[class*="ant-"] input,
+[class*="ant-"] textarea,
+[class*="ant-"] label,
+[class*="ant-"] strong,
+[class*="ant-"] em,
+[class*="ant-"] small {
+  font-family: 'Poppins', sans-serif !important;
+}

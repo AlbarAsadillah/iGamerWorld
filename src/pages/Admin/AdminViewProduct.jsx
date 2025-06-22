@@ -1,4 +1,4 @@
-import { Layout, Row, Col, Button, Descriptions, Image, Space, Breadcrumb } from 'antd'; // Ant Design components
+import { Layout, Row, Col, Button, Descriptions, Image, Space, Breadcrumb, Tag } from 'antd'; // Ant Design components
 import AdminNavbar from '../../components/AdminNavbar'; // Import AdminNavbar
 import AdminSideNav from '../../components/AdminSideNav'; // Import AdminSideNav
 import { useNavigate, useParams } from 'react-router-dom'; // Import hooks for navigation and params
@@ -109,6 +109,36 @@ const AdminViewProduct = () => {
                   <Descriptions.Item label="Description" span={3}>
                     {product.description}
                   </Descriptions.Item>
+                  {product.variants && product.variants.length > 0 && (
+                    <Descriptions.Item label="Variants" span={3}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                        {product.variants.map((variant) => (
+                          <Tag
+                            key={variant.id}
+                            style={{
+                              padding: '4px 8px',
+                              fontSize: '12px',
+                              borderRadius: '12px',
+                              border: '1px solid #1890ff',
+                              backgroundColor: '#e6f7ff',
+                              color: '#1890ff',
+                              fontWeight: '500'
+                            }}
+                          >
+                            {variant.name}
+                          </Tag>
+                        ))}
+                      </div>
+                      <div style={{
+                        marginTop: '6px',
+                        fontSize: '11px',
+                        color: '#666',
+                        fontStyle: 'italic'
+                      }}>
+                        {product.variants.length} variant{product.variants.length > 1 ? 's' : ''} available
+                      </div>
+                    </Descriptions.Item>
+                  )}
                 </Descriptions>
               </Col>
             </Row>

@@ -1,0 +1,163 @@
+/* Customer Pages Global Styling */
+
+/* Background color untuk semua halaman customer */
+.customer-page {
+  background-color: #0D0D0D; /* Warna background utama - ubah di sini */
+  min-height: 100vh;
+  color: #fff;
+}
+
+/* Background untuk container customer */
+.customer-container {
+  background-color: #0D0D0D; /* Warna background container */
+  min-height: 100vh;
+}
+
+/* Background untuk semua halaman dengan class customer */
+[class*="customer"] {
+  background-color: #0D0D0D;
+}
+
+/* Specific customer routes */
+body:has([data-customer="true"]) {
+  background-color: #0D0D0D !important;
+}
+
+/* Override untuk halaman customer tertentu */
+.homepage,
+.product-detail,
+.cart-page,
+.checkout-page,
+.payment-page,
+.history-page,
+.profile-page,
+.wishlist-page,
+.custom-pc-page,
+.components-page,
+.summary-page {
+  background-color: #0D0D0D;
+  min-height: 100vh;
+}
+
+/* Pastikan semua child elements mengikuti background */
+.customer-page *,
+.customer-container *,
+.homepage *,
+.product-detail *,
+.cart-page *,
+.checkout-page *,
+.payment-page *,
+.history-page *,
+.profile-page *,
+.wishlist-page *,
+.custom-pc-page *,
+.components-page *,
+.summary-page * {
+  color: inherit;
+}
+
+/* Override untuk Bootstrap containers di customer pages */
+.customer-page .container,
+.customer-page .container-fluid,
+.customer-container .container,
+.customer-container .container-fluid {
+  background-color: transparent;
+}
+
+/* Override untuk Cards di customer pages */
+.customer-page .card,
+.customer-container .card {
+  background-color: #1a1a1a; /* Card background yang sedikit lebih terang */
+  border: 1px solid #333;
+  color: #fff;
+}
+
+/* Override untuk Modals di customer pages */
+.customer-page .modal-content,
+.customer-container .modal-content {
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 1px solid #333;
+}
+
+/* Override untuk Forms di customer pages */
+.customer-page .form-control,
+.customer-container .form-control {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  color: #fff;
+}
+
+.customer-page .form-control:focus,
+.customer-container .form-control:focus {
+  background-color: #2a2a2a;
+  border-color: #FFD700;
+  color: #fff;
+  box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+/* Override untuk Tables di customer pages */
+.customer-page .table,
+.customer-container .table {
+  background-color: transparent;
+  color: #fff;
+}
+
+.customer-page .table th,
+.customer-page .table td,
+.customer-container .table th,
+.customer-container .table td {
+  border-color: #333;
+  color: #fff;
+}
+
+/* Override untuk Buttons di customer pages */
+.customer-page .btn-primary,
+.customer-container .btn-primary {
+  background-color: #FFD700;
+  border-color: #FFD700;
+  color: #000;
+}
+
+.customer-page .btn-primary:hover,
+.customer-container .btn-primary:hover {
+  background-color: #CCAC00;
+  border-color: #CCAC00;
+  color: #000;
+}
+
+/* Override untuk Alerts di customer pages */
+.customer-page .alert,
+.customer-container .alert {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #fff;
+}
+
+/* Gaming theme accents */
+.customer-page .accent-yellow,
+.customer-container .accent-yellow {
+  color: #FFD700 !important;
+}
+
+.customer-page .bg-accent,
+.customer-container .bg-accent {
+  background-color: #FFD700 !important;
+  color: #000 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .customer-page,
+  .customer-container {
+    background-color: #0D0D0D;
+  }
+}
+
+/* Dark theme consistency */
+.customer-page,
+.customer-container {
+  --bs-body-bg: #0D0D0D;
+  --bs-body-color: #fff;
+  --bs-border-color: #333;
+}

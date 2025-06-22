@@ -1,0 +1,324 @@
+/* Bootstrap Poppins Font Override */
+/* Import Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Bootstrap component overrides */
+.navbar,
+.navbar *,
+.navbar-brand,
+.navbar-nav,
+.nav,
+.nav-link,
+.nav-item,
+.dropdown,
+.dropdown-menu,
+.dropdown-item,
+.dropdown-toggle,
+.dropdown-header,
+.dropdown-divider {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.btn,
+.btn *,
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-warning,
+.btn-info,
+.btn-light,
+.btn-dark,
+.btn-link,
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-outline-success,
+.btn-outline-danger,
+.btn-outline-warning,
+.btn-outline-info,
+.btn-outline-light,
+.btn-outline-dark {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.form-control,
+.form-control *,
+.form-select,
+.form-select *,
+.form-label,
+.form-text,
+.form-check,
+.form-check-input,
+.form-check-label,
+.form-switch,
+.form-range,
+.input-group,
+.input-group-text,
+.form-floating,
+.form-floating label {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.card,
+.card *,
+.card-header,
+.card-body,
+.card-footer,
+.card-title,
+.card-subtitle,
+.card-text,
+.card-link,
+.card-img-overlay {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.list-group,
+.list-group *,
+.list-group-item,
+.list-group-item-action {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.modal,
+.modal *,
+.modal-dialog,
+.modal-content,
+.modal-header,
+.modal-title,
+.modal-body,
+.modal-footer {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.alert,
+.alert *,
+.alert-primary,
+.alert-secondary,
+.alert-success,
+.alert-danger,
+.alert-warning,
+.alert-info,
+.alert-light,
+.alert-dark,
+.alert-heading,
+.alert-link {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.badge,
+.badge *,
+.badge-primary,
+.badge-secondary,
+.badge-success,
+.badge-danger,
+.badge-warning,
+.badge-info,
+.badge-light,
+.badge-dark {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.breadcrumb,
+.breadcrumb *,
+.breadcrumb-item {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.pagination,
+.pagination *,
+.page-link,
+.page-item {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.progress,
+.progress *,
+.progress-bar {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.spinner-border,
+.spinner-grow,
+.spinner-border *,
+.spinner-grow * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.toast,
+.toast *,
+.toast-header,
+.toast-body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.tooltip,
+.tooltip *,
+.tooltip-inner,
+.tooltip-arrow {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.popover,
+.popover *,
+.popover-header,
+.popover-body,
+.popover-arrow {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.accordion,
+.accordion *,
+.accordion-item,
+.accordion-header,
+.accordion-button,
+.accordion-body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.offcanvas,
+.offcanvas *,
+.offcanvas-header,
+.offcanvas-title,
+.offcanvas-body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.carousel,
+.carousel *,
+.carousel-item,
+.carousel-caption,
+.carousel-control-prev,
+.carousel-control-next,
+.carousel-indicators {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.table,
+.table *,
+.table-responsive,
+.table-striped,
+.table-bordered,
+.table-hover,
+.table-dark,
+.table-light {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Container and layout classes */
+.container,
+.container *,
+.container-fluid,
+.container-fluid *,
+.row,
+.row *,
+.col,
+.col * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Typography classes */
+.display-1,
+.display-2,
+.display-3,
+.display-4,
+.display-5,
+.display-6,
+.lead,
+.text-muted,
+.text-primary,
+.text-secondary,
+.text-success,
+.text-danger,
+.text-warning,
+.text-info,
+.text-light,
+.text-dark,
+.text-white {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Utility classes */
+.fw-bold,
+.fw-bolder,
+.fw-normal,
+.fw-light,
+.fw-lighter,
+.fst-italic,
+.fst-normal,
+.text-decoration-none,
+.text-decoration-underline,
+.text-decoration-line-through {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Force override for any Bootstrap class */
+[class*="btn"],
+[class*="form"],
+[class*="card"],
+[class*="nav"],
+[class*="modal"],
+[class*="alert"],
+[class*="badge"],
+[class*="breadcrumb"],
+[class*="pagination"],
+[class*="progress"],
+[class*="spinner"],
+[class*="toast"],
+[class*="tooltip"],
+[class*="popover"],
+[class*="accordion"],
+[class*="offcanvas"],
+[class*="carousel"],
+[class*="table"],
+[class*="container"],
+[class*="row"],
+[class*="col"],
+[class*="display"],
+[class*="text"],
+[class*="fw"],
+[class*="fst"] {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Override for all Bootstrap elements */
+[class*="btn"] *,
+[class*="form"] *,
+[class*="card"] *,
+[class*="nav"] *,
+[class*="modal"] *,
+[class*="alert"] *,
+[class*="badge"] *,
+[class*="breadcrumb"] *,
+[class*="pagination"] *,
+[class*="progress"] *,
+[class*="spinner"] *,
+[class*="toast"] *,
+[class*="tooltip"] *,
+[class*="popover"] *,
+[class*="accordion"] *,
+[class*="offcanvas"] *,
+[class*="carousel"] *,
+[class*="table"] *,
+[class*="container"] *,
+[class*="row"] *,
+[class*="col"] * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* React Bootstrap specific overrides */
+.react-bootstrap,
+.react-bootstrap * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Override for pseudo-elements */
+[class*="btn"]::before,
+[class*="btn"]::after,
+[class*="form"]::before,
+[class*="form"]::after,
+[class*="card"]::before,
+[class*="card"]::after,
+[class*="nav"]::before,
+[class*="nav"]::after {
+  font-family: 'Poppins', sans-serif !important;
+}

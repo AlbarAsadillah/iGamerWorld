@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, InputGroup, Modal } from 'react-bootstrap';
 import { Eye, EyeOff } from 'lucide-react';
+import Button1 from '../../../components/Button';
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false); // State untuk toggle password visibility
@@ -24,25 +25,25 @@ const Register = () => {
     const handleCloseModal = () => setShowModal(false); // Menutup modal
 
     return (
-        <div style={{ backgroundColor: '#1a1a1a', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Container style={{ maxWidth: '800px', backgroundColor: '#fff', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Container style={{ maxWidth: '1000px', overflow: 'hidden', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
                 <Row>
                     {/* Bagian Kiri: Gambar */}
-                    <Col xs={12} md={6} style={{ backgroundColor: '#FFD700', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Col xs={12} md={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <img
-                            src="/images/login.png" // Ganti dengan URL gambar Anda
-                            alt="Gameboy"
-                            style={{ maxWidth: '100%', height: 'auto', borderRadius: '10px' }} // Gambar dengan sudut membulat
+                            src="/images/login2.png" // Ganti dengan URL gambar Anda
+                            alt="register"
+                            style={{ maxWidth: '100%', height: '100%', borderRadius: '10px' }} // Gambar dengan sudut membulat
                         />
                     </Col>
 
                     {/* Bagian Kanan: Form Register */}
-                    <Col xs={12} md={6} style={{ padding: '30px' }}>
-                        <h2 className="text-center mb-4" style={{ fontWeight: 'semibold', color: '#000' }}>Register</h2>
-                        <Form onSubmit={handleRegister}>
+                    <Col xs={12} md={6} style={{ padding: '30px', backgroundColor:'#212121', borderRadius:'10px', borderColor:'#858585' }}>
+                        <h2 className="text-center mb-4" style={{ fontWeight: 'semibold', color: '#ffffff' }}>Register</h2>
+                        <Form>
                             {/* Input Username */}
                             <Form.Group className="mb-3" style={{ textAlign: 'left' }}>
-                                <Form.Label style={{ fontWeight: 'medium', color: '#000' }}>Username</Form.Label>
+                                <Form.Label style={{ fontWeight: 'medium'}}>Username</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="type your username"
@@ -54,7 +55,7 @@ const Register = () => {
 
                             {/* Input Email */}
                             <Form.Group className="mb-3" style={{ textAlign: 'left' }}>
-                                <Form.Label style={{ fontWeight: 'medium', color: '#000' }}>Email</Form.Label>
+                                <Form.Label style={{ fontWeight: 'medium' }}>Email</Form.Label>
                                 <Form.Control
                                     type="email"
                                     placeholder="type your email"
@@ -66,7 +67,7 @@ const Register = () => {
 
                             {/* Input Phone */}
                             <Form.Group className="mb-3" style={{ textAlign: 'left' }}>
-                                <Form.Label style={{ fontWeight: 'medium', color: '#000' }}>Phone Number</Form.Label>
+                                <Form.Label style={{ fontWeight: 'medium'}}>Phone Number</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="type your phone number"
@@ -78,7 +79,7 @@ const Register = () => {
 
                             {/* Input Password */}
                             <Form.Group className="mb-3" style={{ textAlign: 'left' }}>
-                                <Form.Label style={{ fontWeight: 'medium', color: '#000' }}>Password</Form.Label>
+                                <Form.Label style={{ fontWeight: 'medium'}}>Password</Form.Label>
                                 <InputGroup>
                                     <Form.Control
                                         type={showPassword ? 'text' : 'password'}
@@ -103,7 +104,7 @@ const Register = () => {
 
                             {/* Input Confirm Password */}
                             <Form.Group className="mb-3" style={{ textAlign: 'left' }}>
-                                <Form.Label style={{ fontWeight: 'medium', color: '#000' }}>Confirm Password</Form.Label>
+                                <Form.Label style={{ fontWeight: 'medium'}}>Confirm Password</Form.Label>
                                 <InputGroup>
                                     <Form.Control
                                         type={showConfirmPassword ? 'text' : 'password'}
@@ -127,23 +128,16 @@ const Register = () => {
                             </Form.Group>
 
                             {/* Tombol Register */}
-                            <Button
-                                variant="warning"
-                                type="submit"
-                                className="w-100"
-                                style={{
-                                    fontWeight: 'bold',
-                                    borderRadius: '5px',
-                                    color: '#000',
-                                }}
-                            >
-                                Register
-                            </Button>
+                            <Button1
+                                label="Register"
+                                onClick={handleRegister}
+                                style={{width: '100%'}}
+                            />
                         </Form>
 
                         {/* Link ke Login */}
-                        <p className="text-center mt-3" style={{ color: '#000' }}>
-                            Already have an account? <a href="/login" style={{ color: '#FFD700', fontWeight: 'bold' }}>Click here!</a>
+                        <p className="text-center mt-3">
+                            Already have an account? <a href="/login" style={{ color: '#FFD700', fontWeight: 'light' }}>Click here!</a>
                         </p>
 
                         {/* Pesan error jika register gagal */}

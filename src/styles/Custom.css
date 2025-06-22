@@ -1,0 +1,6 @@
+
+/* Hilangkan outline putih pada badge dot Ant Design */
+.ant-badge-dot {
+  box-shadow: none !important;
+  background-color: #ff4d4f !important; /* merah sesuai style Ant Design */
+}

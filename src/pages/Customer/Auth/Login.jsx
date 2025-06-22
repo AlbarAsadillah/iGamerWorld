@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
 import { Eye, EyeOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // Untuk navigasi
+import Button1 from '../../../components/Button';
+import { width } from '@fortawesome/free-solid-svg-icons/fa0';
 
 // Data dummy email dan password
 const users = [
     {
         email: 'albar@gmail.com',
-        password: '123', // Gunakan password dummy
+        password: '123',
         username: 'Albar As'
     },
     {
@@ -26,6 +29,7 @@ const Login = () => {
     const [email, setEmail] = useState(''); // State untuk email
     const [password, setPassword] = useState(''); // State untuk password
     const [loginFailed, setLoginFailed] = useState(false); // State untuk menampilkan pesan gagal login
+    const navigate = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault(); // Menghindari refresh halaman saat submit form
@@ -44,17 +48,17 @@ const Login = () => {
     };
 
     return (
-        <div style={{ backgroundColor: '#1a1a1a', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Container style={{ maxWidth: '800px', backgroundColor: '#fff', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Container style={{ maxWidth: '800px', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)' }}>
                 <Row>
-                    <Col xs={12} md={6} style={{ backgroundColor: '#FFD700', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <img src="/images/login.png" alt="Login" style={{ maxWidth: '100%', height: 'auto', borderRadius: '10px' }} />
+                    <Col xs={12} md={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <img src="/images/login2.png" alt="Login" style={{ maxWidth: '100%', height: '100%', borderRadius: '10px' }} />
                     </Col>
-                    <Col xs={12} md={6} style={{ padding: '30px' }}>
-                        <h2 className="text-center mb-4" style={{ fontWeight: 'semibold', color: '#000' }}>Login</h2>
-                        <Form onSubmit={handleLogin}>
+                    <Col xs={12} md={6} style={{ padding: '30px', backgroundColor: '#212121', borderRadius:'10px', borderColor:'#858585' }}>
+                        <h2 className="text-center mb-4" style={{ fontWeight: 'semibold', color: '#ffffff' }}>Login</h2>
+                        <Form>
                             <Form.Group className="mb-3" style={{ textAlign: 'left' }}>
-                                <Form.Label style={{ fontWeight: 'medium', color: '#000' }}>Email</Form.Label>
+                                <Form.Label style={{ fontWeight: 'medium', color: '#fff' }}>Email</Form.Label>
                                 <Form.Control
                                     type="email"
                                     placeholder="type your email"
@@ -65,7 +69,7 @@ const Login = () => {
                             </Form.Group>
 
                             <Form.Group className="mb-3" style={{ textAlign: 'left' }}>
-                                <Form.Label style={{ fontWeight: 'medium', color: '#000' }}>Password</Form.Label>
+                                <Form.Label style={{ fontWeight: 'medium', color: '#fff' }}>Password</Form.Label>
                                 <InputGroup>
                                     <Form.Control
                                         type={showPassword ? 'text' : 'password'}
@@ -88,23 +92,35 @@ const Login = () => {
                                 </InputGroup>
                             </Form.Group>
 
-                            <Button
-                                variant="warning"
-                                type="submit"
-                                className="w-100"
-                                style={{
-                                    fontWeight: 'bold',
-                                    borderRadius: '5px',
-                                    color: '#000',
-                                }}
-                            >
-                                Login
-                            </Button>
+                            <div className="d-flex justify-content-end mb-3">
+                                <a
+                                    href="/forgot-password"
+                                    style={{
+                                        color: '#FFD700',
+                                        textDecoration: 'none',
+                                        fontSize: '14px'
+                                    }}
+                                    onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                                    onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                                >
+                                    Lupa Password?
+                                </a>
+                            </div>
+
+                            <Button1
+                                label="Login"
+                                onClick={handleLogin}
+                                style={{ width: '100%' }}
+                            />
                         </Form>
 
                         {loginFailed && (
-                            <p className="text-danger text-center">Email atau password salah!</p>
+                            <p className="text-danger text-center mt-3">Email atau password salah!</p>
                         )}
+
+                        <p className="text-center mt-3" style={{ color: '#ffffff' }}>
+                            Don't have account? <a href="/Register" style={{ color: '#FFD700', fontWeight: 'light' }}>Click here!</a>
+                        </p>
                     </Col>
                 </Row>
             </Container>

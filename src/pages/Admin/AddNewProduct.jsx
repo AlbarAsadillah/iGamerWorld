@@ -1,5 +1,6 @@
-import { Layout, Form, Input, InputNumber, Button, Select, Upload, message, Breadcrumb, Row, Col } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Layout, Form, Input, InputNumber, Button, Select, Upload, message, Breadcrumb, Row, Col, Tag } from 'antd';
+import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
 import AdminNavbar from '../../components/AdminNavbar';
 import AdminSideNav from '../../components/AdminSideNav';
 import { useNavigate } from 'react-router-dom';
@@ -10,17 +11,36 @@ const { Option } = Select;
 const AddNewProduct = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [variants, setVariants] = useState([]);
+  const [newVariantName, setNewVariantName] = useState('');
 
-  const onFinish = () => {
+  const addVariant = () => {
+    if (newVariantName.trim() && !variants.find(v => v.name === newVariantName.trim())) {
+      const newVariant = {
+        id: Date.now(),
+        name: newVariantName.trim()
+      };
+      setVariants([...variants, newVariant]);
+      setNewVariantName('');
+    }
+  };
+
+  const removeVariant = (variantId) => {
+    setVariants(variants.filter(v => v.id !== variantId));
+  };
+
+  const onFinish = (values) => {
+    console.log('Form values:', values);
+    console.log('Variants:', variants);
     message.success('Product added successfully!');
     navigate('/admin-product');
   };
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <AdminNavbar />
+      <AdminSideNav />
       <Layout>
-        <AdminSideNav />
+        <AdminNavbar />
         <Layout style={{ padding: '0 24px 24px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>Admin</Breadcrumb.Item>
@@ -34,7 +54,6 @@ const AddNewProduct = () => {
               minHeight: 280,
               background: '#fff',
               borderRadius: '8px',
-              boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
             }}
           >
             <Form
@@ -43,7 +62,6 @@ const AddNewProduct = () => {
               onFinish={onFinish}
               autoComplete="off"
             >
-              {/* Baris 1: 4 kolom */}
               <Row gutter={16}>
                 <Col xs={24} md={6}>
                   <Form.Item
@@ -91,7 +109,6 @@ const AddNewProduct = () => {
                   </Form.Item>
                 </Col>
               </Row>
-              {/* Baris 2: 2 kolom */}
               <Row gutter={16}>
                 <Col xs={24} md={12}>
                   <Form.Item
@@ -111,13 +128,80 @@ const AddNewProduct = () => {
                   >
                     <Select placeholder="Status">
                       <Option value="Ready Stock">Ready Stock</Option>
-                      <Option value="Pre Order">Pre Order</Option>
                       <Option value="Out of Stock">Out of Stock</Option>
                     </Select>
                   </Form.Item>
                 </Col>
               </Row>
-              {/* Baris 3: Description */}
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item
+                    label="Product Variants"
+                    name="variants"
+                  >
+                    <div style={{ border: '1px solid #d9d9d9', borderRadius: '6px', padding: '16px' }}>
+                      <div style={{ marginBottom: '16px' }}>
+                        <h6 style={{ marginBottom: '12px', fontWeight: '600' }}>Add New Variant:</h6>
+                        <Row gutter={8} align="middle">
+                          <Col xs={24} sm={16}>
+                            <Input
+                              placeholder="Variant name (e.g., Red, Large, 256GB, Blue Switch)"
+                              value={newVariantName}
+                              onChange={(e) => setNewVariantName(e.target.value)}
+                              onPressEnter={addVariant}
+                            />
+                          </Col>
+                          <Col xs={24} sm={8}>
+                            <Button
+                              type="primary"
+                              icon={<PlusOutlined />}
+                              onClick={addVariant}
+                              style={{ width: '100%' }}
+                            >
+                              Add Variant
+                            </Button>
+                          </Col>
+                        </Row>
+                      </div>
+
+                      {variants.length > 0 && (
+                        <div>
+                          <h6 style={{ marginBottom: '12px', fontWeight: '600' }}>Added Variants:</h6>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                            {variants.map((variant) => (
+                              <Tag
+                                key={variant.id}
+                                closable
+                                onClose={() => removeVariant(variant.id)}
+                                style={{
+                                  padding: '4px 12px',
+                                  fontSize: '14px',
+                                  borderRadius: '16px',
+                                  border: '1px solid #d9d9d9',
+                                  backgroundColor: '#f0f0f0'
+                                }}
+                              >
+                                {variant.name}
+                              </Tag>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {variants.length === 0 && (
+                        <div style={{
+                          textAlign: 'center',
+                          color: '#999',
+                          fontStyle: 'italic',
+                          padding: '20px 0'
+                        }}>
+                          No variants added yet. Add variants like colors, sizes, or specifications.
+                        </div>
+                      )}
+                    </div>
+                  </Form.Item>
+                </Col>
+              </Row>
               <Row>
                 <Col span={24}>
                   <Form.Item
@@ -125,11 +209,10 @@ const AddNewProduct = () => {
                     name="description"
                     rules={[{ required: true, message: 'Please input description!' }]}
                   >
-                    <Input.TextArea rows={4} placeholder="Descriptionr" />
+                    <Input.TextArea rows={4} placeholder="Description" />
                   </Form.Item>
                 </Col>
               </Row>
-              {/* Baris 4: Upload Image */}
               <Row>
                 <Col span={24}>
                   <Form.Item
@@ -145,7 +228,6 @@ const AddNewProduct = () => {
                   </Form.Item>
                 </Col>
               </Row>
-              {/* Baris 5: Tombol */}
               <Row justify="end" gutter={16}>
                 <Col>
                   <Button onClick={() => navigate('/admin-product')}>Cancel</Button>

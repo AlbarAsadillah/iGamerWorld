@@ -1,0 +1,447 @@
+/* Global Poppins Font Override for All Components */
+/* Import Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Universal font override - highest priority */
+* {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+*::before,
+*::after {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* HTML and body */
+html,
+body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* All text elements */
+h1, h2, h3, h4, h5, h6,
+p, span, div, a, button, input, textarea, label, strong, em, small, code, pre,
+li, ul, ol, dl, dt, dd, blockquote, cite, q, abbr, acronym, address, big, del, ins, kbd, samp, var {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Form elements */
+input,
+textarea,
+select,
+option,
+button,
+.form-control,
+.form-select,
+.form-label,
+.form-text,
+.form-check-label {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Bootstrap components */
+.navbar,
+.navbar-brand,
+.nav,
+.nav-link,
+.nav-item,
+.dropdown,
+.dropdown-menu,
+.dropdown-item,
+.dropdown-toggle,
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-warning,
+.btn-info,
+.btn-light,
+.btn-dark,
+.btn-link,
+.card,
+.card-header,
+.card-body,
+.card-footer,
+.card-title,
+.card-subtitle,
+.card-text,
+.list-group,
+.list-group-item,
+.modal,
+.modal-dialog,
+.modal-content,
+.modal-header,
+.modal-title,
+.modal-body,
+.modal-footer,
+.alert,
+.alert-primary,
+.alert-secondary,
+.alert-success,
+.alert-danger,
+.alert-warning,
+.alert-info,
+.alert-light,
+.alert-dark,
+.badge,
+.breadcrumb,
+.breadcrumb-item,
+.pagination,
+.page-link,
+.page-item,
+.progress,
+.progress-bar,
+.spinner-border,
+.spinner-grow,
+.toast,
+.toast-header,
+.toast-body,
+.tooltip,
+.tooltip-inner,
+.popover,
+.popover-header,
+.popover-body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Ant Design components - comprehensive override */
+.ant-layout,
+.ant-layout-header,
+.ant-layout-sider,
+.ant-layout-content,
+.ant-layout-footer,
+.ant-menu,
+.ant-menu-item,
+.ant-menu-item-selected,
+.ant-menu-item-active,
+.ant-menu-item-disabled,
+.ant-menu-submenu,
+.ant-menu-submenu-title,
+.ant-menu-submenu-arrow,
+.ant-menu-item-group-title,
+.ant-breadcrumb,
+.ant-breadcrumb-link,
+.ant-breadcrumb-separator,
+.ant-table,
+.ant-table-thead,
+.ant-table-tbody,
+.ant-table-tfoot,
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table-tfoot > tr > th,
+.ant-table-tfoot > tr > td,
+.ant-table-cell,
+.ant-table-filter-dropdown,
+.ant-table-filter-dropdown-btns,
+.ant-table-selection,
+.ant-table-selection-column,
+.ant-table-expand-icon,
+.ant-card,
+.ant-card-head,
+.ant-card-head-title,
+.ant-card-head-extra,
+.ant-card-body,
+.ant-card-actions,
+.ant-card-meta,
+.ant-card-meta-title,
+.ant-card-meta-description,
+.ant-form,
+.ant-form-item,
+.ant-form-item-label,
+.ant-form-item-label > label,
+.ant-form-item-control,
+.ant-form-item-control-input,
+.ant-form-item-explain,
+.ant-form-item-extra,
+.ant-input,
+.ant-input-password,
+.ant-input-password input,
+.ant-input-affix-wrapper,
+.ant-input-group,
+.ant-input-group-addon,
+.ant-input-group-wrapper,
+.ant-input-search,
+.ant-input-number,
+.ant-textarea,
+.ant-btn,
+.ant-btn span,
+.ant-btn-primary,
+.ant-btn-default,
+.ant-btn-dashed,
+.ant-btn-text,
+.ant-btn-link,
+.ant-btn-ghost,
+.ant-btn-loading,
+.ant-tabs,
+.ant-tabs-nav,
+.ant-tabs-tab,
+.ant-tabs-tab-btn,
+.ant-tabs-content,
+.ant-tabs-tabpane,
+.ant-tabs-ink-bar,
+.ant-drawer,
+.ant-drawer-header,
+.ant-drawer-header-title,
+.ant-drawer-body,
+.ant-drawer-footer,
+.ant-modal,
+.ant-modal-header,
+.ant-modal-title,
+.ant-modal-body,
+.ant-modal-footer,
+.ant-modal-confirm,
+.ant-modal-confirm-title,
+.ant-modal-confirm-content,
+.ant-list,
+.ant-list-item,
+.ant-list-item-meta,
+.ant-list-item-meta-title,
+.ant-list-item-meta-description,
+.ant-list-item-meta-content,
+.ant-list-item-action,
+.ant-typography,
+.ant-typography h1,
+.ant-typography h2,
+.ant-typography h3,
+.ant-typography h4,
+.ant-typography h5,
+.ant-typography h6,
+.ant-typography p,
+.ant-typography span,
+.ant-typography div,
+.ant-typography-caption,
+.ant-typography-copy,
+.ant-typography-edit,
+.ant-statistic,
+.ant-statistic-title,
+.ant-statistic-content,
+.ant-statistic-content-value,
+.ant-statistic-content-suffix,
+.ant-statistic-content-prefix,
+.ant-tag,
+.ant-tag-text,
+.ant-tooltip,
+.ant-tooltip-inner,
+.ant-tooltip-arrow,
+.ant-pagination,
+.ant-pagination-item,
+.ant-pagination-item a,
+.ant-pagination-prev,
+.ant-pagination-next,
+.ant-pagination-jump-prev,
+.ant-pagination-jump-next,
+.ant-pagination-options,
+.ant-pagination-simple,
+.ant-select,
+.ant-select-selector,
+.ant-select-selection-item,
+.ant-select-selection-placeholder,
+.ant-select-selection-search,
+.ant-select-dropdown,
+.ant-select-item,
+.ant-select-item-option,
+.ant-dropdown,
+.ant-dropdown-menu,
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-title,
+.ant-dropdown-menu-submenu,
+.ant-checkbox,
+.ant-checkbox-wrapper,
+.ant-checkbox-inner,
+.ant-radio,
+.ant-radio-wrapper,
+.ant-radio-inner,
+.ant-switch,
+.ant-switch-inner,
+.ant-slider,
+.ant-slider-mark,
+.ant-slider-mark-text,
+.ant-rate,
+.ant-rate-text,
+.ant-upload,
+.ant-upload-list,
+.ant-upload-list-item,
+.ant-upload-list-item-name,
+.ant-upload-text,
+.ant-upload-hint,
+.ant-progress,
+.ant-progress-text,
+.ant-progress-inner,
+.ant-alert,
+.ant-alert-message,
+.ant-alert-description,
+.ant-alert-action,
+.ant-message,
+.ant-message-notice,
+.ant-message-notice-content,
+.ant-notification,
+.ant-notification-notice,
+.ant-notification-notice-message,
+.ant-notification-notice-description,
+.ant-popover,
+.ant-popover-title,
+.ant-popover-inner,
+.ant-popover-inner-content,
+.ant-popconfirm,
+.ant-popconfirm-message,
+.ant-popconfirm-buttons,
+.ant-collapse,
+.ant-collapse-header,
+.ant-collapse-content,
+.ant-collapse-content-box,
+.ant-steps,
+.ant-steps-item,
+.ant-steps-item-title,
+.ant-steps-item-description,
+.ant-steps-item-subtitle,
+.ant-anchor,
+.ant-anchor-link,
+.ant-anchor-link-title,
+.ant-affix,
+.ant-back-top,
+.ant-avatar,
+.ant-avatar-string,
+.ant-badge,
+.ant-badge-count,
+.ant-badge-dot,
+.ant-calendar,
+.ant-picker,
+.ant-picker-input,
+.ant-picker-suffix,
+.ant-picker-clear,
+.ant-picker-dropdown,
+.ant-picker-panel,
+.ant-picker-header,
+.ant-picker-body,
+.ant-picker-footer,
+.ant-date-picker,
+.ant-time-picker,
+.ant-cascader,
+.ant-cascader-menu,
+.ant-cascader-menu-item,
+.ant-tree,
+.ant-tree-node-content-wrapper,
+.ant-tree-title,
+.ant-tree-switcher,
+.ant-transfer,
+.ant-transfer-list,
+.ant-transfer-list-header,
+.ant-transfer-list-body,
+.ant-transfer-list-footer,
+.ant-auto-complete,
+.ant-mentions,
+.ant-mentions-dropdown,
+.ant-spin,
+.ant-spin-text,
+.ant-empty,
+.ant-empty-description,
+.ant-result,
+.ant-result-title,
+.ant-result-subtitle,
+.ant-result-content,
+.ant-skeleton,
+.ant-skeleton-title,
+.ant-skeleton-paragraph {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Ensure all pseudo-elements also use Poppins */
+.ant-btn::before,
+.ant-btn::after,
+.ant-input::before,
+.ant-input::after,
+.ant-card::before,
+.ant-card::after,
+.ant-table::before,
+.ant-table::after {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Override any remaining font declarations */
+[class*="ant-"] {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+[class*="ant-"] * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* React components */
+[class*="react-"] {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+[class*="react-"] * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Custom classes */
+.admin-layout,
+.admin-page,
+.superadmin-layout,
+.customer-layout {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.admin-layout *,
+.admin-page *,
+.superadmin-layout *,
+.customer-layout * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Tambahkan style hover kuning untuk dropdown antd di navbar */
+.ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
+  background-color: #FFD700 !important;
+  color: #212121 !important;
+}
+
+/* Jika ingin text tetap hitam saat hover kuning */
+.ant-dropdown-menu-item:hover a, .ant-dropdown-menu-submenu-title:hover a {
+  color: #212121 !important;
+}
+
+/*
+  Override warna biru default Ant Design pada Menu menjadi kuning (background #FFD700, teks #212121)
+  Berlaku untuk semua menu Ant Design (sidebar, dropdown, dsb)
+*/
+.ant-menu,
+.ant-menu-submenu,
+.ant-menu-item {
+  /* background: #FFD700 !important; */
+  color: #212121 !important;
+  border: none !important;
+}
+.ant-menu-item-selected,
+.ant-menu-item-active,
+.ant-menu-item:hover {
+  background: #FFD700 !important;
+  color: #212121 !important;
+}
+.ant-menu-item-selected a,
+.ant-menu-item-active a,
+.ant-menu-item:hover a {
+  color: #fff !important;
+}
+
+/* Ant Design primary button override */
+.ant-btn-primary {
+  background-color: #FFD600 !important;
+  border-color: #FFD600 !important;
+  color: #212121 !important;
+}
+.ant-btn-primary:hover, .ant-btn-primary:focus {
+  background-color: #FFC400 !important;
+  border-color: #FFC400 !important;
+  color: #212121 !important;
+}
+.ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover {
+  background-color: #FFF9C4 !important;
+  border-color: #FFF9C4 !important;
+  color: #BDBDBD !important;
+}
+/* Optional: make sure text stays readable on yellow */
+.ant-btn-primary span {
+  color: #212121 !important;
+}

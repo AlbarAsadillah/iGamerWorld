@@ -7,22 +7,22 @@ const SubKategori = () => {
     const navigate = useNavigate();
 
     const categories = [
-        { icon: <img src="/images/icons/motherboard.png" alt="Motherboard" style={{ width: '50px', height: '50px' }} />, name: 'Motherboard', count: '1 Produk', subkategori: 'motherboard' },
-        { icon: <img src="/images/icons/cpu.png" alt="CPU" style={{ width: '50px', height: '50px' }} />, name: 'Processor', count: '1 Produk', subkategori: 'processor' },
-        { icon: <img src="/images/icons/ram.png" alt="RAM" style={{ width: '50px', height: '50px' }} />, name: 'RAM', count: '1 Produk', subkategori: 'ram' },
-        { icon: <img src="/images/icons/gpu.png" alt="GPU" style={{ width: '50px', height: '50px' }} />, name: 'GPU', count: '1 Produk', subkategori: 'gpu' },
-        { icon: <img src="/images/icons/headset.png" alt="Headset" style={{ width: '50px', height: '50px' }} />, name: 'Headset', count: '1 Produk', subkategori: 'headset' },
-        { icon: <img src="/images/icons/mouse.png" alt="Mouse" style={{ width: '50px', height: '50px' }} />, name: 'Mouse', count: '1 Produk', subkategori: 'mouse' },
-        { icon: <img src="/images/icons/keyboard.png" alt="Keyboard" style={{ width: '50px', height: '50px' }} />, name: 'Keyboard', count: '1 Produk', subkategori: 'keyboard' },
-        { icon: <img src="/images/icons/pc-gaming.png" alt="Pc-gaming" style={{ width: '50px', height: '50px' }} />, name: 'PC Gaming', count: '1 Produk', subkategori: 'pc-gaming' },
-        { icon: <img src="/images/icons/pc-editing.png" alt="Pc-Editing" style={{ width: '50px', height: '50px' }} />, name: 'PC Editing', count: '1 Produk', subkategori: 'pc-editing' },
-        { icon: <img src="/images/icons/pc-kerja.png" alt="Pc-Kerja" style={{ width: '50px', height: '50px' }} />, name: 'PC Kerja', count: '1 Produk', subkategori: 'pc-kerja' },
-        { icon: <img src="/images/icons/monitor.png" alt="Monitor" style={{ width: '50px', height: '50px' }} />, name: 'Monitor', count: '1 Produk', subkategori: 'monitor' },
-        { icon: <img src="/images/icons/storage.png" alt="Storage" style={{ width: '50px', height: '50px' }} />, name: 'Storage', count: '1 Produk', subkategori: 'storage' },
-        { icon: <img src="/images/icons/psu.png" alt="PSU" style={{ width: '50px', height: '50px' }} />, name: 'PSU', count: '1 Produk', subkategori: 'psu' },
-        { icon: <img src="/images/icons/casing.png" alt="Casing" style={{ width: '50px', height: '50px' }} />, name: 'Casing', count: '1 Produk', subkategori: 'casing' },
-        { icon: <img src="/images/icons/fan.png" alt="Fan" style={{ width: '50px', height: '50px' }} />, name: 'Fan', count: '1 Produk', subkategori: 'fan' },
-        { icon: <img src="/images/icons/cooler.png" alt="Cooler" style={{ width: '50px', height: '50px' }} />, name: 'Cooler', count: '1 Produk', subkategori: 'cooler' },
+        { icon: <img src="/images/icons/motherboard.png" alt="Motherboard" style={{ width: '50px', height: '50px' }} />, name: 'Motherboard', subkategori: 'motherboard' },
+        { icon: <img src="/images/icons/cpu.png" alt="CPU" style={{ width: '50px', height: '50px' }} />, name: 'Processor', subkategori: 'processor' },
+        { icon: <img src="/images/icons/ram.png" alt="RAM" style={{ width: '50px', height: '50px' }} />, name: 'RAM', subkategori: 'ram' },
+        { icon: <img src="/images/icons/gpu.png" alt="GPU" style={{ width: '50px', height: '50px' }} />, name: 'GPU',subkategori: 'gpu' },
+        { icon: <img src="/images/icons/headset.png" alt="Headset" style={{ width: '50px', height: '50px' }} />, name: 'Headset',subkategori: 'headset' },
+        { icon: <img src="/images/icons/mouse.png" alt="Mouse" style={{ width: '50px', height: '50px' }} />, name: 'Mouse',subkategori: 'mouse' },
+        { icon: <img src="/images/icons/keyboard.png" alt="Keyboard" style={{ width: '50px', height: '50px' }} />, name: 'Keyboard', subkategori: 'keyboard' },
+        { icon: <img src="/images/icons/pc-gaming.png" alt="Pc-gaming" style={{ width: '50px', height: '50px' }} />, name: 'PC Gaming', subkategori: 'pc-gaming' },
+        { icon: <img src="/images/icons/pc-editing.png" alt="Pc-Editing" style={{ width: '50px', height: '50px' }} />, name: 'PC Editing', subkategori: 'pc-editing' },
+        { icon: <img src="/images/icons/pc-kerja.png" alt="Pc-Kerja" style={{ width: '50px', height: '50px' }} />, name: 'PC Kerja', subkategori: 'pc-kerja' },
+        { icon: <img src="/images/icons/monitor.png" alt="Monitor" style={{ width: '50px', height: '50px' }} />, name: 'Monitor', subkategori: 'monitor' },
+        { icon: <img src="/images/icons/storage.png" alt="Storage" style={{ width: '50px', height: '50px' }} />, name: 'Storage', subkategori: 'storage' },
+        { icon: <img src="/images/icons/psu.png" alt="PSU" style={{ width: '50px', height: '50px' }} />, name: 'PSU', subkategori: 'psu' },
+        { icon: <img src="/images/icons/casing.png" alt="Casing" style={{ width: '50px', height: '50px' }} />, name: 'Casing', subkategori: 'casing' },
+        { icon: <img src="/images/icons/fan.png" alt="Fan" style={{ width: '50px', height: '50px' }} />, name: 'Fan', subkategori: 'fan' },
+        { icon: <img src="/images/icons/cooler.png" alt="Cooler" style={{ width: '50px', height: '50px' }} />, name: 'Cooler', subkategori: 'cooler' },
     ];
 
     const handleCategoryClick = (subkategori) => {

@@ -1,122 +1,218 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
   {
-    image: '/images/komponen.png',
-    link: '/kategori/komponen',
+    title: 'KOMPONEN',
+    image: '/images/background-card.jpg',
+    floatingImage: '/images/floating-image.png',
+    description: 'Komponen berkualitas tinggi untuk membangun sistem yang handal',
+    link: '/catalog',
   },
   {
-    image: '/images/aksesoris.png',
-    link: '/kategori/aksesoris',
+    title: 'AKSESORIS',
+    image: '/images/background-card2.jpg',
+    floatingImage: '/images/floating-image2.png',
+    description: 'Beragam aksesoris komputer untuk meningkatkan kenyamanan',
+    link: '/catalog',
   },
   {
-    image: '/images/pc-bundling.png',
-    link: '/kategori/pc-bundling',
+    title: 'PC BUNDLING',
+    image: '/images/background-card3.jpg',
+    floatingImage: '/images/floating-image3.png',
+    // description: 'Deskripsi singkat kategori C',
+    link: '/catalog',
   },
 ];
 
-const CategorySection = () => {
-  const [hoveredIndex, setHoveredIndex] = React.useState(null);
+const fullHeight = 400;
+
+const CategoryCard = ({ category, style, customContent }) => {
+  const [hovered, setHovered] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(category.link);
+  };
 
   return (
-    <section style={styles.section}>
-      <div style={styles.overlay}>
-        <div style={styles.headingContainer}>
-          <h2 style={styles.title}>KATEGORI</h2>
-          <div style={styles.underline}></div>
+    <div
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') handleClick(e);
+      }}
+      style={{
+        ...styles.card,
+        ...style,
+        backgroundColor: hovered ? '#FFD700' : 'rgba(114, 114, 114, 0.15)',
+        boxShadow: hovered
+          ? '0 10px 30px rgba(0,0,0,0.3)'
+          : '0 10px 20px rgba(0,0,0,0.3)',
+        backdropFilter: hovered ? 'none' : 'blur(10px)',
+        WebkitBackdropFilter: hovered ? 'none' : 'blur(10px)',
+        transition: 'all 0.3s ease',
+        backgroundImage: `url(${category.image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        display: 'flex',
+        flexDirection: style?.flexDirection || 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+        boxSizing: 'border-box',
+        cursor: 'pointer',
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <img
+        src={category.floatingImage}
+        alt={`${category.title} floating`}
+        style={{
+          ...styles.floatingImage,
+          width: style?.imgWidth || 200,
+          height: 'auto',
+          position: style?.imgPosition || 'absolute',
+          top: style?.imgTop || 20,
+          right: style?.imgRight || 20,
+          transform: hovered
+            ? 'translateY(5%) translateX(-10%) scale(1.2)'
+            : 'translateY(5%) translateX(-10%) scale(1)',
+          transition: 'transform 0.3s ease',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          zIndex: 3,
+        }}
+      />
+
+      {customContent ? (
+        <div style={{ ...styles.textContent, position: 'relative', color: '#fff' }}>
+          {customContent}
         </div>
-        <div style={styles.grid}>
-          {categories.map((category, index) => (
-            <Link
-              key={index}
-              to={category.link}
-              style={styles.linkWrapper}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
+      ) : (
+        <div
+          style={{
+            ...styles.textContent,
+            position: style?.textPosition || 'absolute',
+            bottom: style?.textBottom || 30,
+            left: style?.textLeft || 20,
+            right: style?.textRight || 20,
+            color: '#fff',
+            zIndex: 3,
+            textAlign: style?.textAlign || 'left',
+          }}
+        >
+          <h3 style={styles.title}>{category.title}</h3>
+          <p style={styles.description}>{category.description}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const CategorySection = () => {
+  const styleContainer = {
+    ...styles.container,
+    height: fullHeight,
+    backgroundImage: `url(/images/category-bg.png)`,
+    backgroundSize: `100% ${fullHeight}px`,
+    backgroundPosition: 'center bottom',
+    backgroundRepeat: 'no-repeat',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  };
+
+  return (
+    <div style={styleContainer}>
+      <CategoryCard
+        category={categories[0]}
+        style={{ width: 280, height: 280, flexDirection: 'column' }}
+      />
+      <CategoryCard
+        category={categories[1]}
+        style={{ width: 280, height: 280, flexDirection: 'column' }}
+      />
+      <CategoryCard
+        category={categories[2]}
+        style={{
+          width: 420,
+          height: 280,
+          flexDirection: 'row',
+          imgPosition: 'relative',
+          imgWidth: 150,
+          imgTop: 10,
+          imgRight: -10,
+          textPosition: 'relative',
+          textBottom: 'auto',
+          textLeft: 20,
+          textRight: 'auto',
+          textAlign: 'left',
+          padding: 10,
+        }}
+        customContent={
+          <>
+            <h2 style={{ margin: 0, fontWeight: 'bold' }}>PC Bundling</h2>
+            <p style={{ margin: '8px 0', fontSize: 14 }}>
+              Nikmati paket bundling PC lengkap dengan harga spesial.
+            </p>
+            {/* <button
+              style={{
+                backgroundColor: '#FFD700',
+                border: 'none',
+                padding: '8px 16px',
+                borderRadius: 6,
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                color: '#000',
+              }}
             >
-              <div
-                className="category-card"
-                style={{
-                  ...styles.card,
-                  ...(hoveredIndex === index ? styles.cardHover : {}),
-                }}
-              >
-                <img src={category.image} alt={category.title} style={styles.image} />
-                <h4 style={styles.label}>{category.title}</h4>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
+              Pelajari Lebih Lanjut
+            </button> */}
+          </>
+        }
+      />
+    </div>
   );
 };
 
 const styles = {
-  section: {
-    backgroundImage: 'url("/images/background-kategori.jpg")',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    color: '#fff',
-    padding: '72px',
-  },
-  headingContainer: {
-    marginBottom: '2rem',
-    textAlign: 'left',
-  },
-  title: {
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    marginBottom: '0.5rem',
-  },
-  underline: {
-    height: '6px',
-    width: '120px',
-    backgroundColor: '#FFD700',
-    marginLeft: 0,
-    borderRadius: '4px',
-  },
-  grid: {
+  container: {
     display: 'flex',
+    gap: 20,
     justifyContent: 'center',
-    gap: '2.5rem',
-    flexWrap: 'wrap',
-  },
-  linkWrapper: {
-    textDecoration: 'none',
-    color: 'inherit',
+    padding: 40,
   },
   card: {
-    backgroundColor: '#111',
-    borderRadius: '10px',
-    overflow: 'hidden',
-    width: '430px',
     position: 'relative',
-    boxShadow: '0 0 12px rgba(255, 255, 255, 0.05)',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease', // Added border transition
-    cursor: 'pointer',
-    border: '2px solid transparent', // Default border
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
   },
-  cardHover: {
-    transform: 'scale(1.05)', // Slightly enlarge the card
-    boxShadow: '0 0 20px rgba(255, 255, 255, 0.2)', // Add a stronger shadow
-    border: '2px solid #FFFFFF', // White border on hover
+  floatingImage: {
+    pointerEvents: 'none',
+    userSelect: 'none',
+    zIndex: 3,
+    transition: 'transform 0.3s ease',
   },
-  image: {
-    width: '100%',
-    height: 'auto',
-    display: 'block',
+  textContent: {
+    color: '#FFFFFF',
+    zIndex: 3,
   },
-  label: {
-    position: 'absolute',
-    top: '15px',
-    left: '20px',
-    fontSize: '1.4rem',
+  title: {
+    fontSize: 24,
+    marginBottom: 12,
     fontWeight: 'bold',
-    color: '#fff',
-    textShadow: '1px 1px 4px #000',
+  },
+  description: {
+    fontSize: 14,
+    marginBottom: 20,
+    lineHeight: 1.3,
   },
 };
 

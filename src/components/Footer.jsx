@@ -17,64 +17,53 @@ const Footer = () => {
                     {/* Tentang Kami */}
                     <Col md={2}>
                         <h5 style={{ fontWeight: 'semibold', textAlign: 'left' }}>Tentang Kami</h5>
-                        <ul style={{ listStyle: 'none', padding: 0, textAlign: 'left' }}>
-                            <li>
-                                <Link to="/about" style={{ textDecoration: 'none', color: '#000' }}>
-                                    Tentang Kami
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/privacy-policy" style={{ textDecoration: 'none', color: '#000' }}>
-                                    Kebijakan Privasi
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/terms-and-conditions" style={{ textDecoration: 'none', color: '#000' }}>
-                                    Syarat & Ketentuan
-                                </Link>
-                            </li>
-                        </ul>
+                        <p style={{textAlign:'left'}}>iGamerWorld adalah platform e-commerce yang menyediakan produk gaming dan aksesoris komputer berkualitas untuk memenuhi kebutuhan para gamer dan tech enthusiast di Indonesia.</p>
                     </Col>
 
                     {/* Bantuan */}
-                    <Col md={2}>
+                    <Col md={1}>
                         <h5 style={{ fontWeight: 'semibold', textAlign: 'left' }}>Bantuan</h5>
                         <ul style={{ listStyle: 'none', padding: 0, textAlign: 'left' }}>
-                            <li>
+                            {/* <li>
                                 <Link to="/how-to-shop" style={{ textDecoration: 'none', color: '#000' }}>
                                     Cara Berbelanja
                                 </Link>
-                            </li>
-                            <li>
+                            </li> */}
+                            {/* <li>
                                 <Link to="/payment-methods" style={{ textDecoration: 'none', color: '#000' }}>
                                     Cara Pembayaran
                                 </Link>
-                            </li>
-                            <li>
+                            </li> */}
+                            {/* <li>
                                 <Link to="/order-status" style={{ textDecoration: 'none', color: '#000' }}>
                                     Status Pesanan
                                 </Link>
-                            </li>
-                            <li>
+                            </li> */}
+                            {/* <li>
                                 <Link to="/product-returns" style={{ textDecoration: 'none', color: '#000' }}>
                                     Pengembalian Produk
                                 </Link>
-                            </li>
-                            <li>
-                                <Link to="/contact-us" style={{ textDecoration: 'none', color: '#000' }}>
+                            </li> */}
+                            {/* <li> */}
+                                {/* <Link to="/contact-us" style={{ textDecoration: 'none', color: '#000' }}>
                                     Hubungi Kami
                                 </Link>
-                            </li>
-                            <li>
+                            </li> */}
+                            {/* <li>
                                 <Link to="/feedback" style={{ textDecoration: 'none', color: '#000' }}>
                                     Feedback
+                                </Link>
+                            </li> */}
+                                                        <li>
+                                <Link to="/pengaduan" style={{ textDecoration: 'none', color: '#000' }}>
+                                    Pengaduan
                                 </Link>
                             </li>
                         </ul>
                     </Col>
 
                     {/* Customer Care */}
-                    <Col md={2}>
+                    <Col md={3}>
                         <h5 style={{ fontWeight: 'semibold', textAlign: 'left' }}>Customer Care</h5>
                         <p style={{ textAlign: 'left' }}>
                             Grand City, Ruko Sentra Niaga Block RSN 3 No.18, Jaka Setia

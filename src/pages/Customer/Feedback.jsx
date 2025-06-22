@@ -1,85 +1,119 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Form, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const Feedback = () => {
-  const [feedback, setFeedback] = useState(''); // State untuk teks feedback
-  const [rating, setRating] = useState(0); // State untuk rating
-  const [showModal, setShowModal] = useState(false); // State untuk modal
+  const [username, setUsername] = useState('');
+  const [feedback, setFeedback] = useState('');
+  const [rating, setRating] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username') || '';
+    setUsername(storedUsername);
+  }, []);
 
   const handleRating = (value) => {
-    setRating(value); // Set nilai rating berdasarkan klik
+    setRating(value);
   };
 
   const handleSubmit = () => {
-    if (!feedback || rating === 0) {
+    if (!feedback.trim() || rating === 0) {
       alert('Harap isi feedback dan pilih rating!');
       return;
     }
-    setShowModal(true); // Tampilkan modal
+    setShowModal(true);
     setFeedback('');
     setRating(0);
   };
 
   const handleCloseModal = () => {
-    setShowModal(false); // Tutup modal
+    setShowModal(false);
   };
 
   return (
     <>
-      <Container className="py-5" style={{ minHeight: '100vh', backgroundColor: '#212121', color: '#fff', borderRadius: '10px' }}>
+      <Container
+        className="py-5"
+        style={{
+          minHeight: '100vh',
+          backgroundColor: '#212121',
+          color: '#fff',
+          borderRadius: '10px',
+          marginTop: 20,
+          marginBottom: 20,
+          padding: 70,
+        }}
+      >
         <h2 className="mb-4 text-start">Feedback</h2>
         <Row>
-          <Col xs={12}>
-            {/* Input Feedback */}
+          {/* Username di kiri */}
+          <Col xs={12} md={4} style={{ borderRight: '1px solid #444', paddingRight: 30 }}>
+            {/* <h5 style={{ marginBottom: 20 }}>Username</h5> */}
+            <div
+              style={{
+                backgroundColor: '#333',
+                padding: 20,
+                borderRadius: 10,
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}
+            >
+              {username || 'Guest'}
+            </div>
+          </Col>
+
+          {/* Form feedback di kanan */}
+          <Col xs={12} md={8} style={{ paddingLeft: 30 }}>
             <Form.Group className="mb-4">
+              <Form.Label style={{ textAlign: 'left', display: 'block' }}>
+                FEEDBACK
+              </Form.Label>
+
+              {/* Bintang rating rata kiri */}
+              <div className="mb-3 d-flex justify-content-start">
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <span
+                    key={value}
+                    onClick={() => handleRating(value)}
+                    style={{ cursor: 'pointer', fontSize: 28, color: '#FFD700', margin: '0 8px' }}
+                  >
+                    <FontAwesomeIcon icon={faStar} style={{ opacity: value <= rating ? 1 : 0.4 }} />
+                  </span>
+                ))}
+              </div>
+
               <Form.Control
                 as="textarea"
-                rows={4}
-                placeholder="Type your feedback"
+                rows={6}
+                placeholder="Tulis feedback Anda di sini"
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
-                style={{ backgroundColor: '#fff', color: '#000', borderRadius: '10px' }}
+                style={{ backgroundColor: '#fff', color: '#000', borderRadius: 10 }}
               />
             </Form.Group>
-          </Col>
-        </Row>
-        <Row className="mb-4">
-          <Col xs={12} className="d-flex justify-content-center">
-            {/* Rating Bintang */}
-            {[1, 2, 3, 4, 5].map((value) => (
-              <span
-                key={value}
-                onClick={() => handleRating(value)}
-                style={{ cursor: 'pointer', fontSize: '24px', color: '#FFD700', margin: '0 5px' }}
-              >
-                <FontAwesomeIcon icon={faStar} style={{ opacity: value <= rating ? 1 : 0.4 }} />
-              </span>
-            ))}
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} className="d-flex justify-content-end">
-            {/* Tombol Simpan */}
-            <Button variant="warning" onClick={handleSubmit}>
-              Simpan
-            </Button>
+
+            <div className="d-flex justify-content-end">
+              <Button variant="warning" onClick={handleSubmit}>
+                Simpan
+              </Button>
+            </div>
           </Col>
         </Row>
       </Container>
 
-      {/* Modal */}
+      {/* Modal konfirmasi */}
       <Modal show={showModal} onHide={handleCloseModal} centered animation>
         <Modal.Body
           style={{
             backgroundColor: '#212121',
             color: '#fff',
             textAlign: 'center',
-            borderRadius: '10px',
+            borderRadius: 10,
           }}
         >
-          <h3 style={{ marginBottom: '20px' }}>Terimakasih Atas Saran Nya</h3>
+          <h3 style={{ marginBottom: 20 }}>Terimakasih Atas Saran Nya</h3>
           <Button variant="warning" onClick={handleCloseModal}>
             Tutup
           </Button>

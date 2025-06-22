@@ -1,0 +1,201 @@
+/* Admin Pages - Poppins Font Override */
+/* Import Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Global override for all admin components */
+.admin-layout,
+.admin-layout *,
+.admin-layout .ant-layout,
+.admin-layout .ant-layout-header,
+.admin-layout .ant-layout-sider,
+.admin-layout .ant-layout-content,
+.admin-layout .ant-menu,
+.admin-layout .ant-menu-item,
+.admin-layout .ant-menu-item-selected,
+.admin-layout .ant-menu-submenu,
+.admin-layout .ant-breadcrumb,
+.admin-layout .ant-breadcrumb-link,
+.admin-layout .ant-table,
+.admin-layout .ant-table-thead > tr > th,
+.admin-layout .ant-table-tbody > tr > td,
+.admin-layout .ant-table-cell,
+.admin-layout .ant-card,
+.admin-layout .ant-card-head,
+.admin-layout .ant-card-head-title,
+.admin-layout .ant-card-body,
+.admin-layout .ant-form,
+.admin-layout .ant-form-item,
+.admin-layout .ant-form-item-label,
+.admin-layout .ant-form-item-label > label,
+.admin-layout .ant-input,
+.admin-layout .ant-input-password,
+.admin-layout .ant-btn,
+.admin-layout .ant-btn span,
+.admin-layout .ant-tabs,
+.admin-layout .ant-tabs-tab,
+.admin-layout .ant-tabs-tab-btn,
+.admin-layout .ant-drawer,
+.admin-layout .ant-drawer-header,
+.admin-layout .ant-drawer-header-title,
+.admin-layout .ant-drawer-body,
+.admin-layout .ant-list,
+.admin-layout .ant-list-item,
+.admin-layout .ant-list-item-meta,
+.admin-layout .ant-list-item-meta-title,
+.admin-layout .ant-list-item-meta-description,
+.admin-layout .ant-typography,
+.admin-layout .ant-typography h1,
+.admin-layout .ant-typography h2,
+.admin-layout .ant-typography h3,
+.admin-layout .ant-typography h4,
+.admin-layout .ant-typography h5,
+.admin-layout .ant-typography h6,
+.admin-layout .ant-typography p,
+.admin-layout .ant-statistic,
+.admin-layout .ant-statistic-title,
+.admin-layout .ant-statistic-content,
+.admin-layout .ant-statistic-content-value,
+.admin-layout .ant-tag,
+.admin-layout .ant-tooltip,
+.admin-layout .ant-tooltip-inner,
+.admin-layout .ant-modal,
+.admin-layout .ant-modal-header,
+.admin-layout .ant-modal-title,
+.admin-layout .ant-modal-body,
+.admin-layout .ant-modal-footer,
+.admin-layout .ant-pagination,
+.admin-layout .ant-pagination-item,
+.admin-layout .ant-select,
+.admin-layout .ant-select-selection-item,
+.admin-layout .ant-dropdown,
+.admin-layout .ant-dropdown-menu,
+.admin-layout .ant-dropdown-menu-item,
+.admin-layout h1,
+.admin-layout h2,
+.admin-layout h3,
+.admin-layout h4,
+.admin-layout h5,
+.admin-layout h6,
+.admin-layout p,
+.admin-layout span,
+.admin-layout div,
+.admin-layout a,
+.admin-layout button,
+.admin-layout input,
+.admin-layout textarea,
+.admin-layout label,
+.admin-layout strong,
+.admin-layout em {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Specific targeting for admin navbar brand */
+.admin-layout .ant-layout-header div {
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 700 !important;
+}
+
+/* Menu items styling */
+.admin-layout .ant-menu-item {
+  font-weight: 500 !important;
+}
+
+.admin-layout .ant-menu-item-selected {
+  font-weight: 600 !important;
+}
+
+/* Table headers */
+.admin-layout .ant-table-thead > tr > th {
+  font-weight: 600 !important;
+}
+
+/* Button styling */
+.admin-layout .ant-btn {
+  font-weight: 500 !important;
+}
+
+/* Card titles */
+.admin-layout .ant-card-head-title {
+  font-weight: 600 !important;
+}
+
+/* Form labels */
+.admin-layout .ant-form-item-label > label {
+  font-weight: 500 !important;
+}
+
+/* Breadcrumb styling */
+.admin-layout .ant-breadcrumb {
+  font-weight: 400 !important;
+}
+
+.admin-layout .ant-breadcrumb-link {
+  font-weight: 500 !important;
+}
+
+/* Statistic titles */
+.admin-layout .ant-statistic-title {
+  font-weight: 500 !important;
+}
+
+.admin-layout .ant-statistic-content-value {
+  font-weight: 600 !important;
+}
+
+/* Tab styling */
+.admin-layout .ant-tabs-tab-btn {
+  font-weight: 500 !important;
+}
+
+.admin-layout .ant-tabs-tab-active .ant-tabs-tab-btn {
+  font-weight: 600 !important;
+}
+
+/* Drawer title */
+.admin-layout .ant-drawer-header-title {
+  font-weight: 600 !important;
+}
+
+/* List item titles */
+.admin-layout .ant-list-item-meta-title {
+  font-weight: 500 !important;
+}
+
+/* Modal titles */
+.admin-layout .ant-modal-title {
+  font-weight: 600 !important;
+}
+
+/* Tag styling */
+.admin-layout .ant-tag {
+  font-weight: 500 !important;
+}
+
+/* Ensure all text inputs use Poppins */
+.admin-layout input,
+.admin-layout textarea,
+.admin-layout .ant-input,
+.admin-layout .ant-input-password input {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Dropdown and select styling */
+.admin-layout .ant-select-selection-item,
+.admin-layout .ant-dropdown-menu-item {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Pagination styling */
+.admin-layout .ant-pagination-item a {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Tooltip styling */
+.ant-tooltip .ant-tooltip-inner {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Global override for any missed elements */
+[data-admin="true"] * {
+  font-family: 'Poppins', sans-serif !important;
+}

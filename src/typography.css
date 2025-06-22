@@ -1,0 +1,14 @@
+:root {
+    --font-utama: 'Poppins', sans-serif;
+    /* --font-sekunder: 'Poppins', sans-serif; */
+
+    --display: 60px;
+    --he1: 44px;
+    --he2: 36px;
+    --he3: 28px;
+    --he4: 24px;
+    --he5: 20px;
+    --p1: 18px;
+    --p2: 16px;
+    --p3: 12px;
+}

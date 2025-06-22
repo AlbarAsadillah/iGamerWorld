@@ -1,0 +1,679 @@
+import React, { useEffect, useState } from 'react';
+import { Layout, Row, Col, Button, Breadcrumb, Card, Table, Input, Select, message, Modal, Image, Upload } from 'antd';
+import { FileImageOutlined, UploadOutlined } from '@ant-design/icons';
+import AdminNavbar from '../../components/AdminNavbar';
+import AdminSideNav from '../../components/AdminSideNav';
+import { useNavigate, useParams } from 'react-router-dom';
+import { dummyProducts } from '../../data/dummyProducts';
+
+const { Content } = Layout;
+const { Option } = Select;
+
+const statusOptions = [
+  { label: 'Menunggu Pembayaran', value: 'menungguPembayaran' },
+  { label: 'Menunggu Verifikasi', value: 'menungguVerifikasi' },
+  { label: 'Diproses', value: 'diproses' },
+  { label: 'Dalam Pengiriman', value: 'dalamPengiriman' },
+  { label: 'Selesai', value: 'selesai' },
+  { label: 'Dibatalkan', value: 'dibatalkan' },
+];
+
+const mapStatusToCamelCase = (status) => {
+  if (!status) return 'menungguPembayaran';
+  const lower = status.toLowerCase().replace(/\s+/g, '').replace(/-/g, '');
+  switch (lower) {
+    case 'menunggupembayaran': return 'menungguPembayaran';
+    case 'menungguverifikasi': return 'menungguVerifikasi';
+    case 'diproses': return 'diproses';
+    case 'dalampengiriman': return 'dalamPengiriman';
+    case 'siapdikirim': return 'dalamPengiriman'; // Map siap dikirim to dalam pengiriman
+    case 'selesai': return 'selesai';
+    case 'dibatalkan': return 'dibatalkan';
+    default: return 'menungguPembayaran';
+  }
+};
+
+const getStatusLabel = (status) => {
+  switch (status) {
+    case 'menungguPembayaran': return 'Menunggu Pembayaran';
+    case 'menungguVerifikasi': return 'Menunggu Verifikasi';
+    case 'diproses': return 'Diproses';
+    case 'dalamPengiriman': return 'Dalam Pengiriman';
+    case 'selesai': return 'Selesai';
+    case 'dibatalkan': return 'Dibatalkan';
+    default: return 'Unknown';
+  }
+};
+
+const AdminEditOrder = () => {
+  const navigate = useNavigate();
+  const { orderId } = useParams();
+  const [order, setOrder] = useState(null);
+  const [status, setStatus] = useState('menungguPembayaran');
+  const [resi, setResi] = useState('');
+  const [savedAddress, setSavedAddress] = useState(null);
+  const [paymentProofModal, setPaymentProofModal] = useState(false);
+  const [selectedPaymentProof, setSelectedPaymentProof] = useState(null);
+  const [selectedShippingProof, setSelectedShippingProof] = useState(null);
+  const [verificationModal, setVerificationModal] = useState(false);
+  const [shippingModal, setShippingModal] = useState(false);
+  const [shippingProof, setShippingProof] = useState(null);
+  const [shippingProofList, setShippingProofList] = useState([]);
+
+  useEffect(() => {
+    const localOrders = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+    const local = localOrders.find((o) => String(o.id) === orderId);
+
+    const addressData = localStorage.getItem('selectedAddress');
+    const savedAddress = addressData ? JSON.parse(addressData) : null;
+    setSavedAddress(savedAddress);
+
+    if (local) {
+      const items = (local.items || []).map((item) => {
+        const prod = dummyProducts.find((p) => p.id === item.id);
+        return {
+          productId: item.id,
+          qty: item.quantity || 1,
+          name: prod?.name || 'Produk Tidak Diketahui',
+          category: prod?.category || '-',
+          price: prod?.price || item.price || 0,
+          image: prod?.image || '/images/products/default.png',
+          description: prod?.description || '',
+        };
+      });
+
+      setOrder({
+        orderId: String(local.id),
+        invoice: `INV-${local.id}`,
+        date: new Date(local.createdAt).toLocaleDateString('id-ID'),
+        customer: savedAddress ? savedAddress.name : 'Guest',
+        phone: savedAddress ? savedAddress.phone : '-',
+        address: savedAddress ? savedAddress.address : '-',
+        status: mapStatusToCamelCase(local.status),
+        shipping: 'JNE-Reguler',
+        shippingCost: 25000,
+        resi: local.resi || '',
+        total: local.total,
+        items,
+      });
+      setStatus(mapStatusToCamelCase(local.status));
+      setResi(local.resi || '');
+    }
+  }, [orderId]);
+
+  if (!order) return <div style={{ padding: 32 }}>Order not found</div>;
+
+  const columns = [
+    {
+      title: 'Product Id',
+      dataIndex: 'productId',
+      key: 'productId',
+      align: 'center',
+    },
+    {
+      title: 'Nama Produk',
+      dataIndex: 'name',
+      key: 'name',
+      render: (text, record) => (
+        <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <img src={record.image} alt={record.name} style={{ width: 32, height: 32, objectFit: 'contain' }} />
+          {text}
+        </span>
+      ),
+    },
+    {
+      title: 'Kategori',
+      dataIndex: 'category',
+      key: 'category',
+      align: 'center',
+    },
+    {
+      title: 'Harga',
+      dataIndex: 'price',
+      key: 'price',
+      align: 'right',
+      render: (price) => price.toLocaleString('id-ID'),
+    },
+    {
+      title: 'Qty',
+      dataIndex: 'qty',
+      key: 'qty',
+      align: 'center',
+    },
+    {
+      title: 'Sub Total',
+      key: 'subtotal',
+      align: 'right',
+      render: (_, record) => (record.price * record.qty).toLocaleString('id-ID'),
+    },
+  ];
+
+  const handleViewMedia = () => {
+    const localOrders = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+    const localOrder = localOrders.find((o) => String(o.id) === orderId);
+
+    if (localOrder && (localOrder.paymentProof || localOrder.shippingProof)) {
+      setSelectedPaymentProof(localOrder.paymentProof);
+      setSelectedShippingProof(localOrder.shippingProof);
+      setPaymentProofModal(true);
+    }
+  };
+
+  // Fungsi untuk verifikasi pembayaran
+  const handleVerifyPayment = () => {
+    const localOrders = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+    const localOrder = localOrders.find((o) => String(o.id) === orderId);
+
+    if (localOrder && localOrder.paymentProof) {
+      setSelectedPaymentProof(localOrder.paymentProof);
+      setVerificationModal(true);
+    } else {
+      message.error('Bukti pembayaran tidak ditemukan!');
+    }
+  };
+
+  // Fungsi untuk konfirmasi verifikasi
+  const handleConfirmVerification = () => {
+    const localOrders = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+
+    const updatedOrders = localOrders.map((o) => {
+      if (String(o.id) === orderId) {
+        return {
+          ...o,
+          status: 'diproses',
+        };
+      }
+      return o;
+    });
+
+    localStorage.setItem('transactionHistory', JSON.stringify(updatedOrders));
+    setStatus('diproses');
+    setVerificationModal(false);
+    message.success('Pembayaran berhasil diverifikasi! Status diubah menjadi Diproses.');
+    window.dispatchEvent(new Event('transactionHistoryUpdated'));
+  };
+
+  // Fungsi untuk proses pengiriman
+  const handleProcessShipping = () => {
+    setShippingModal(true);
+  };
+
+  // Fungsi untuk handle upload foto bukti pengiriman
+  const handleShippingProofUpload = (info) => {
+    const { fileList } = info;
+    setShippingProofList(fileList);
+
+    if (fileList.length > 0) {
+      const file = fileList[0];
+      if (file.status === 'done' || file.originFileObj) {
+        // Convert file to base64 for storage
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setShippingProof(e.target.result);
+        };
+        reader.readAsDataURL(file.originFileObj || file);
+      }
+    } else {
+      setShippingProof(null);
+    }
+  };
+
+  // Fungsi untuk konfirmasi pengiriman
+  const handleConfirmShipping = () => {
+    if (!resi.trim()) {
+      message.error('Nomor resi harus diisi!');
+      return;
+    }
+
+    if (!shippingProof) {
+      message.error('Bukti pengiriman harus diupload!');
+      return;
+    }
+
+    const localOrders = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+
+    const updatedOrders = localOrders.map((o) => {
+      if (String(o.id) === orderId) {
+        return {
+          ...o,
+          status: 'dalamPengiriman',
+          resi: resi,
+          shippingProof: shippingProof,
+        };
+      }
+      return o;
+    });
+
+    localStorage.setItem('transactionHistory', JSON.stringify(updatedOrders));
+    setStatus('dalamPengiriman');
+    setShippingModal(false);
+    setShippingProof(null);
+    setShippingProofList([]);
+    message.success('Pesanan berhasil dikirim! Status diubah menjadi Dalam Pengiriman.');
+    window.dispatchEvent(new Event('transactionHistoryUpdated'));
+  };
+
+  // Fungsi untuk batalkan pesanan
+  const handleCancelOrder = () => {
+    let cancelReason = '';
+
+    Modal.confirm({
+      title: 'Batalkan Pesanan',
+      content: (
+        <div>
+          <p>Apakah Anda yakin ingin membatalkan pesanan ini?</p>
+          <div style={{ marginTop: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+              Alasan Pembatalan:
+            </label>
+            <Input.TextArea
+              placeholder="Masukkan alasan pembatalan..."
+              rows={3}
+              onChange={(e) => { cancelReason = e.target.value; }}
+              style={{ width: '100%' }}
+            />
+          </div>
+        </div>
+      ),
+      okText: 'Ya, Batalkan',
+      cancelText: 'Tidak',
+      okType: 'danger',
+      onOk: () => {
+        if (!cancelReason.trim()) {
+          message.error('Alasan pembatalan harus diisi!');
+          return Promise.reject();
+        }
+
+        const localOrders = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+
+        const updatedOrders = localOrders.map((o) => {
+          if (String(o.id) === orderId) {
+            return {
+              ...o,
+              status: 'dibatalkan',
+              cancelReason: cancelReason.trim(),
+            };
+          }
+          return o;
+        });
+
+        localStorage.setItem('transactionHistory', JSON.stringify(updatedOrders));
+        setStatus('dibatalkan');
+        message.success('Pesanan berhasil dibatalkan.');
+        window.dispatchEvent(new Event('transactionHistoryUpdated'));
+      }
+    });
+  };
+
+  const handleUpdate = () => {
+    const localOrders = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+
+    const updatedOrders = localOrders.map((o) => {
+      if (String(o.id) === orderId) {
+        return {
+          ...o,
+          status,
+          resi,
+        };
+      }
+      return o;
+    });
+
+    localStorage.setItem('transactionHistory', JSON.stringify(updatedOrders));
+    message.success('Order berhasil diperbarui!');
+    window.dispatchEvent(new Event('transactionHistoryUpdated'));
+    navigate('/admin-orders');
+  };
+
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <AdminNavbar />
+      <Layout>
+        <AdminSideNav />
+        <Layout style={{ padding: '0 24px 24px' }}>
+          <Breadcrumb style={{ margin: '16px 0' }}>
+            <Breadcrumb.Item>Admin</Breadcrumb.Item>
+            <Breadcrumb.Item>Order</Breadcrumb.Item>
+            <Breadcrumb.Item>Edit Order</Breadcrumb.Item>
+          </Breadcrumb>
+          <Content>
+            <Card
+              style={{
+                padding: 24,
+                margin: 0,
+                minHeight: 280,
+                background: '#fff',
+                borderRadius: '8px',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+              }}
+            >
+              <Row gutter={24}>
+                <Col xs={24} md={16} style={{ textAlign: 'left' }}>
+                  <div style={{ fontWeight: 600, fontSize: 16 }}>{order.invoice}</div>
+                  <div>{order.customer}</div>
+                  <div>{order.phone}</div>
+                  <div>{order.address}</div>
+                </Col>
+                <Col
+                  xs={24}
+                  md={8}
+                  style={{
+                    textAlign: 'left',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px',
+                  }}
+                >
+                  <div style={{ fontWeight: 600, marginBottom: 8 }}>Invoice Info</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Order Id</span>
+                    <span>{order.orderId}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Date</span>
+                    <span>{order.date}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>Status</span>
+                    <span style={{
+                      fontWeight: '600'
+                    }}>
+                      {getStatusLabel(status)}
+                    </span>
+                  </div>
+                </Col>
+              </Row>
+              <Table
+                style={{ marginTop: 32, marginBottom: 16 }}
+                columns={columns}
+                dataSource={order.items}
+                pagination={false}
+                rowKey="productId"
+                bordered={false}
+              />
+              <Row gutter={16} style={{ marginBottom: 16 }}>
+                <Col xs={24} md={6}>
+                  <div>Biaya Pengiriman</div>
+                  <Input value={order.shippingCost.toLocaleString('id-ID')} disabled style={{ marginTop: 4 }} />
+                </Col>
+                <Col xs={24} md={6}>
+                  <div>Pengiriman</div>
+                  <Input value={order.shipping} disabled style={{ marginTop: 4 }} />
+                </Col>
+                <Col xs={24} md={6}>
+                  <div>No. Resi</div>
+                  <Input
+                    placeholder="No.Resi"
+                    style={{ marginTop: 4 }}
+                    value={resi}
+                    onChange={(e) => setResi(e.target.value)}
+                    disabled
+                  />
+                </Col>
+                <Col xs={24} md={6}>
+                  <div>Total Pesanan</div>
+                  <Input value={order.total.toLocaleString('id-ID')} disabled style={{ marginTop: 4 }} />
+                </Col>
+              </Row>
+
+              {/* Tampilkan alasan dibatalkan jika status dibatalkan */}
+              {status === 'dibatalkan' && (() => {
+                const localOrders = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+                const localOrder = localOrders.find((o) => String(o.id) === orderId);
+
+                return localOrder && localOrder.cancelReason ? (
+                  <Row gutter={16} style={{ marginBottom: 16 }}>
+                    <Col xs={24}>
+                      <div style={{
+                        padding: '12px',
+                        backgroundColor: '#fff2f0',
+                        border: '1px solid #ffccc7',
+                        borderRadius: '6px'
+                      }}>
+                        <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#cf1322' }}>
+                          Alasan Dibatalkan:
+                        </div>
+                        <div style={{ color: '#595959' }}>
+                          {localOrder.cancelReason}
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                ) : null;
+              })()}
+
+              <Row>
+                <Col xs={24} style={{ marginTop: 24 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                    {/* Left side buttons */}
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                      <Button onClick={() => navigate('/admin-orders')}>
+                        Back
+                      </Button>
+
+                      {/* Conditional Action Buttons based on Status */}
+                      {status === 'menungguVerifikasi' && (
+                        <Button
+                          type="primary"
+                          onClick={handleVerifyPayment}
+                          style={{ backgroundColor: '#1890ff', borderColor: '#1890ff' }}
+                        >
+                          Verifikasi Pembayaran
+                        </Button>
+                      )}
+
+                      {status === 'diproses' && (
+                        <Button
+                          type="primary"
+                          onClick={handleProcessShipping}
+                          style={{ backgroundColor: '#1890ff', borderColor: '#1890ff' }}
+                        >
+                          Proses Pengiriman
+                        </Button>
+                      )}
+
+                      {/* Media Button - View Payment Proof and Shipping Proof */}
+                      {(() => {
+                        const localOrders = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+                        const localOrder = localOrders.find((o) => String(o.id) === orderId);
+                        return (localOrder && localOrder.paymentProof) || (localOrder && localOrder.shippingProof) ? (
+                          <Button
+                            icon={<FileImageOutlined />}
+                            onClick={handleViewMedia}
+                            style={{
+                              backgroundColor: '#1890ff',
+                              borderColor: '#1890ff',
+                              color: '#fff'
+                            }}
+                          >
+                            Media
+                          </Button>
+                        ) : null;
+                      })()}
+                    </div>
+
+                    {/* Right side - Cancel Order Button */}
+                    {!['selesai', 'dibatalkan'].includes(status) && (
+                      <Button
+                        danger
+                        onClick={handleCancelOrder}
+                      >
+                        Batalkan Pesanan
+                      </Button>
+                    )}
+                  </div>
+                </Col>
+              </Row>
+            </Card>
+          </Content>
+        </Layout>
+      </Layout>
+
+      {/* Modal Media - Bukti Bayar dan Bukti Pengiriman */}
+      <Modal
+        title="Media"
+        open={paymentProofModal}
+        onCancel={() => setPaymentProofModal(false)}
+        footer={[
+          <Button key="close" onClick={() => setPaymentProofModal(false)}>
+            Tutup
+          </Button>
+        ]}
+        width={800}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {selectedPaymentProof && (
+            <div>
+              <h4 style={{ marginBottom: '10px', color: '#1890ff' }}>Bukti Pembayaran:</h4>
+              <div style={{ marginBottom: '16px' }}>
+                <p><strong>Bank:</strong> {selectedPaymentProof.bankName}</p>
+                <p><strong>Atas Nama:</strong> {selectedPaymentProof.accountName}</p>
+                <p><strong>Nomor Rekening:</strong> {selectedPaymentProof.accountNumber}</p>
+                <p><strong>Waktu Upload:</strong> {new Date(selectedPaymentProof.uploadedAt).toLocaleString('id-ID')}</p>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <Image
+                  src={selectedPaymentProof.image}
+                  alt="Bukti Pembayaran"
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '400px',
+                    border: '1px solid #d9d9d9',
+                    borderRadius: '6px'
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {selectedShippingProof && (
+            <div>
+              <h4 style={{ marginBottom: '10px', color: '#1890ff' }}>Bukti Pengiriman:</h4>
+              <div style={{ textAlign: 'center' }}>
+                <Image
+                  src={selectedShippingProof}
+                  alt="Bukti Pengiriman"
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '400px',
+                    border: '1px solid #d9d9d9',
+                    borderRadius: '6px'
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {!selectedPaymentProof && !selectedShippingProof && (
+            <div style={{ textAlign: 'center', padding: '20px' }}>
+              <p>Tidak ada media yang tersedia</p>
+            </div>
+          )}
+        </div>
+      </Modal>
+
+      {/* Modal untuk verifikasi pembayaran */}
+      <Modal
+        title="Verifikasi Pembayaran"
+        open={verificationModal}
+        onCancel={() => setVerificationModal(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setVerificationModal(false)}>
+            Batal
+          </Button>,
+          <Button key="verify" type="primary" onClick={handleConfirmVerification}>
+            Verifikasi Pembayaran
+          </Button>
+        ]}
+        width={600}
+      >
+        <div style={{ marginBottom: 16 }}>
+          <p><strong>Bukti Pembayaran dari Customer:</strong></p>
+          {selectedPaymentProof && (
+            <div style={{ textAlign: 'center', marginBottom: 16 }}>
+              <div style={{ marginBottom: '16px' }}>
+                <p><strong>Bank:</strong> {selectedPaymentProof.bankName}</p>
+                <p><strong>Atas Nama:</strong> {selectedPaymentProof.accountName}</p>
+                <p><strong>Nomor Rekening:</strong> {selectedPaymentProof.accountNumber}</p>
+                <p><strong>Waktu Upload:</strong> {new Date(selectedPaymentProof.uploadedAt).toLocaleString('id-ID')}</p>
+              </div>
+              <Image
+                src={selectedPaymentProof.image}
+                alt="Bukti Pembayaran"
+                style={{ maxWidth: '100%', maxHeight: '300px' }}
+              />
+            </div>
+          )}
+          <p>Apakah Anda yakin ingin memverifikasi pembayaran ini? Status akan berubah menjadi <strong>"Diproses"</strong>.</p>
+        </div>
+      </Modal>
+
+      {/* Modal untuk proses pengiriman */}
+      <Modal
+        title="Proses Pengiriman"
+        open={shippingModal}
+        onCancel={() => {
+          setShippingModal(false);
+          setShippingProof(null);
+          setShippingProofList([]);
+        }}
+        footer={[
+          <Button key="cancel" onClick={() => {
+            setShippingModal(false);
+            setShippingProof(null);
+            setShippingProofList([]);
+          }}>
+            Batal
+          </Button>,
+          <Button key="ship" type="primary" onClick={handleConfirmShipping}>
+            Konfirmasi Pengiriman
+          </Button>
+        ]}
+        width={600}
+      >
+        <div style={{ marginBottom: 16 }}>
+          <p><strong>Nomor Resi:</strong></p>
+          <Input
+            value={resi}
+            onChange={(e) => setResi(e.target.value)}
+            placeholder="Masukkan nomor resi pengiriman"
+            style={{ marginBottom: 16 }}
+          />
+
+          <p><strong>Bukti Pengiriman:</strong></p>
+          <Upload
+            listType="picture-card"
+            fileList={shippingProofList}
+            onChange={handleShippingProofUpload}
+            beforeUpload={() => false} // Prevent auto upload
+            maxCount={1}
+            accept="image/*"
+            style={{ marginBottom: 16 }}
+          >
+            {shippingProofList.length === 0 && (
+              <div>
+                <UploadOutlined />
+                <div style={{ marginTop: 8 }}>Upload Foto</div>
+              </div>
+            )}
+          </Upload>
+
+          {shippingProof && (
+            <div style={{ marginBottom: 16, textAlign: 'center' }}>
+              <p><strong>Preview Bukti Pengiriman:</strong></p>
+              <Image
+                src={shippingProof}
+                alt="Bukti Pengiriman"
+                style={{ maxWidth: '100%', maxHeight: '200px' }}
+              />
+            </div>
+          )}
+
+          <p>Setelah konfirmasi, status akan berubah menjadi <strong>"Dalam Pengiriman"</strong>.</p>
+        </div>
+      </Modal>
+    </Layout>
+  );
+};
+
+export default AdminEditOrder;

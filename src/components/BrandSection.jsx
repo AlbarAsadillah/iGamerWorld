@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // Import Link dari react-router-dom
+import { Link } from 'react-router-dom';
 
 const BrandSection = () => {
     const officialBrands = [
@@ -22,19 +22,22 @@ const BrandSection = () => {
     ];
 
     return (
-        <section
-            style={{
-                backgroundColor: '#0D0D0D',
-                padding: '40px 0',
-            }}
-        >
+        <section style={{ padding: '40px 0' }}>
             <Container>
                 <Row>
                     {/* Official Brands */}
                     <Col md={9}>
-                        <Card style={{ backgroundColor: '#212121' }} className="text-white border-0 p-4">
+                        <Card
+                            style={{
+                                background: 'linear-gradient(135deg, #1a1a1a 0%, #000000 100%)',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.8)',
+                            }}
+                            className="text-white border-0 p-4"
+                        >
                             <Card.Body>
-                                <h5 className="text-warning mb-4">Official Brands</h5>
+                                <h5 className="text-warning mb-4" style={{ textAlign: 'left' }}>
+                                    Official Brands
+                                </h5>
                                 <Row className="g-3">
                                     {officialBrands.map((brand, index) => (
                                         <Col key={index} xs={4} sm={3} md={2} className="text-center">
@@ -43,12 +46,12 @@ const BrandSection = () => {
                                                     src={brand.logo}
                                                     alt={brand.name}
                                                     style={{
-                                                        width: '60px',
+                                                        width: '80px',
                                                         height: '60px',
-                                                        borderRadius: '50%',
+                                                        borderRadius: '10px',
                                                         backgroundColor: 'white',
                                                         padding: '10px',
-                                                        transition: 'transform 0.3s ease', // Animasi hover
+                                                        transition: 'transform 0.3s ease',
                                                     }}
                                                     className="brand-hover"
                                                 />
@@ -62,9 +65,17 @@ const BrandSection = () => {
 
                     {/* E-commerce */}
                     <Col md={3}>
-                         <Card style={{ backgroundColor: '#212121' }} className="text-white border-0 p-4">
+                        <Card
+                            style={{
+                                background: 'linear-gradient(135deg, #1a1a1a 0%, #000000 100%)',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.8)',
+                            }}
+                            className="text-white border-0 p-4"
+                        >
                             <Card.Body>
-                                <h5 className="text-warning mb-4">E-commerce</h5>
+                                <h5 className="text-warning mb-4" style={{ textAlign: 'left' }}>
+                                    E-commerce
+                                </h5>
                                 <Row className="g-3">
                                     {eCommerce.map((platform, index) => (
                                         <Col key={index}>
@@ -74,7 +85,7 @@ const BrandSection = () => {
                                                     alt={platform.name}
                                                     style={{
                                                         height: '60px',
-                                                        transition: 'transform 0.3s ease', // Animasi hover
+                                                        transition: 'transform 0.3s ease',
                                                     }}
                                                     className="ecommerce-hover"
                                                 />

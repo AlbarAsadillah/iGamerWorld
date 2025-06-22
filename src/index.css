@@ -1,11 +1,54 @@
+/* Import Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Force Poppins font on everything - highest priority */
+* {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+*::before,
+*::after {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+html {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+#root {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Override all possible selectors */
+div, span, p, h1, h2, h3, h4, h5, h6, a, button, input, textarea, label, strong, em, small, code, pre, li, ul, ol, dl, dt, dd, blockquote, cite, q, abbr, acronym, address, big, del, ins, kbd, samp, var, table, tr, td, th, thead, tbody, tfoot, caption, form, fieldset, legend, select, option, optgroup {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Global Poppins Font Override for All Components */
+*,
+*::before,
+*::after {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+html,
+body,
+#root {
+  font-family: 'Poppins', sans-serif !important;
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  /* color-scheme: light dark; */
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #0D0D0D; /* Ubah warna background di sini */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -39,7 +82,27 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 44px;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 36px;
+  line-height: 1.1;
+}
+
+h3 {
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+h4 {
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+h5 {
+  font-size: 20px;
   line-height: 1.1;
 }
 
@@ -75,5 +138,267 @@ button:focus-visible {
   }
 }
 
+/* Admin Pages - Poppins Font */
+.ant-layout,
+.ant-layout-header,
+.ant-layout-sider,
+.ant-layout-content,
+.ant-menu,
+.ant-menu-item,
+.ant-breadcrumb,
+.ant-table,
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-card,
+.ant-card-head,
+.ant-card-body,
+.ant-form,
+.ant-form-item,
+.ant-form-item-label,
+.ant-input,
+.ant-btn,
+.ant-tabs,
+.ant-tabs-tab,
+.ant-drawer,
+.ant-drawer-header,
+.ant-drawer-body,
+.ant-list,
+.ant-list-item,
+.ant-typography,
+.ant-statistic,
+.ant-statistic-title,
+.ant-statistic-content {
+  font-family: 'Poppins', sans-serif !important;
+}
 
+/* Ensure all text elements in admin pages use Poppins */
+[class*="admin"] *,
+[class*="Admin"] * {
+  font-family: 'Poppins', sans-serif !important;
+}
 
+/* Specific targeting for admin routes */
+body:has([data-admin="true"]) *,
+.admin-layout *,
+.admin-page * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Global Ant Design Components Font Override */
+.ant-layout,
+.ant-layout-header,
+.ant-layout-sider,
+.ant-layout-content,
+.ant-layout-footer,
+.ant-menu,
+.ant-menu-item,
+.ant-menu-item-selected,
+.ant-menu-item-active,
+.ant-menu-submenu,
+.ant-menu-submenu-title,
+.ant-breadcrumb,
+.ant-breadcrumb-link,
+.ant-breadcrumb-separator,
+.ant-table,
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table-cell,
+.ant-table-filter-dropdown,
+.ant-table-filter-dropdown-btns,
+.ant-card,
+.ant-card-head,
+.ant-card-head-title,
+.ant-card-body,
+.ant-card-meta,
+.ant-card-meta-title,
+.ant-card-meta-description,
+.ant-form,
+.ant-form-item,
+.ant-form-item-label,
+.ant-form-item-label > label,
+.ant-form-item-control,
+.ant-input,
+.ant-input-password,
+.ant-input-password input,
+.ant-input-affix-wrapper,
+.ant-input-group,
+.ant-input-group-addon,
+.ant-textarea,
+.ant-btn,
+.ant-btn span,
+.ant-btn-primary,
+.ant-btn-default,
+.ant-btn-link,
+.ant-tabs,
+.ant-tabs-tab,
+.ant-tabs-tab-btn,
+.ant-tabs-content,
+.ant-tabs-tabpane,
+.ant-drawer,
+.ant-drawer-header,
+.ant-drawer-header-title,
+.ant-drawer-body,
+.ant-drawer-footer,
+.ant-modal,
+.ant-modal-header,
+.ant-modal-title,
+.ant-modal-body,
+.ant-modal-footer,
+.ant-list,
+.ant-list-item,
+.ant-list-item-meta,
+.ant-list-item-meta-title,
+.ant-list-item-meta-description,
+.ant-list-item-meta-content,
+.ant-typography,
+.ant-typography h1,
+.ant-typography h2,
+.ant-typography h3,
+.ant-typography h4,
+.ant-typography h5,
+.ant-typography h6,
+.ant-typography p,
+.ant-typography span,
+.ant-typography div,
+.ant-statistic,
+.ant-statistic-title,
+.ant-statistic-content,
+.ant-statistic-content-value,
+.ant-statistic-content-suffix,
+.ant-statistic-content-prefix,
+.ant-tag,
+.ant-tooltip,
+.ant-tooltip-inner,
+.ant-tooltip-arrow,
+.ant-pagination,
+.ant-pagination-item,
+.ant-pagination-item a,
+.ant-pagination-prev,
+.ant-pagination-next,
+.ant-pagination-jump-prev,
+.ant-pagination-jump-next,
+.ant-select,
+.ant-select-selector,
+.ant-select-selection-item,
+.ant-select-selection-placeholder,
+.ant-select-dropdown,
+.ant-dropdown,
+.ant-dropdown-menu,
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-title,
+.ant-checkbox,
+.ant-checkbox-wrapper,
+.ant-radio,
+.ant-radio-wrapper,
+.ant-switch,
+.ant-slider,
+.ant-rate,
+.ant-upload,
+.ant-upload-list,
+.ant-upload-list-item,
+.ant-progress,
+.ant-progress-text,
+.ant-alert,
+.ant-alert-message,
+.ant-alert-description,
+.ant-message,
+.ant-notification,
+.ant-notification-notice,
+.ant-notification-notice-message,
+.ant-notification-notice-description,
+.ant-popover,
+.ant-popover-title,
+.ant-popover-inner-content,
+.ant-popconfirm,
+.ant-popconfirm-message,
+.ant-popconfirm-buttons,
+.ant-collapse,
+.ant-collapse-header,
+.ant-collapse-content,
+.ant-steps,
+.ant-steps-item,
+.ant-steps-item-title,
+.ant-steps-item-description,
+.ant-anchor,
+.ant-anchor-link,
+.ant-anchor-link-title,
+.ant-affix,
+.ant-back-top,
+.ant-avatar,
+.ant-badge,
+.ant-badge-count,
+.ant-calendar,
+.ant-date-picker,
+.ant-time-picker,
+.ant-cascader,
+.ant-tree,
+.ant-tree-node-content-wrapper,
+.ant-tree-title,
+.ant-transfer,
+.ant-transfer-list,
+.ant-transfer-list-header,
+.ant-transfer-list-body,
+.ant-auto-complete,
+.ant-mentions,
+h1, h2, h3, h4, h5, h6,
+p, span, div, a, button, input, textarea, label, strong, em, small,
+.navbar-brand,
+.nav-link,
+.btn,
+.form-control,
+.form-label,
+.card-title,
+.card-text,
+.card-header,
+.card-body,
+.card-footer,
+.list-group-item,
+.dropdown-item,
+.dropdown-toggle,
+.modal-title,
+.modal-body,
+.modal-footer,
+.alert,
+.badge,
+.breadcrumb-item {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Ensure all text inputs use Poppins */
+input,
+textarea,
+select,
+option,
+.ant-input,
+.ant-input-password input,
+.ant-textarea,
+.ant-select-selection-item,
+.ant-select-selection-placeholder {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Bootstrap components */
+.form-control,
+.form-select,
+.btn,
+.nav-link,
+.dropdown-item,
+.card-title,
+.card-text,
+.modal-title,
+.alert {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* React Bootstrap components */
+.navbar-brand,
+.nav-link,
+.btn,
+.form-control,
+.form-label,
+.card-title,
+.card-text,
+.modal-title,
+.alert {
+  font-family: 'Poppins', sans-serif !important;
+}

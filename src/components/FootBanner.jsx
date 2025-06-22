@@ -9,11 +9,11 @@ const FootBanner = () => {
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 height: '300px', // Tinggi banner
-                width: '95%',
+                width: '100%',
                 backgroundColor: '#000', // Warna fallback jika gambar tidak muncul
-                margin: '0 auto',
-                marginBottom: '40px',
-                borderRadius: '6px',
+                // margin: '0 auto',
+                // marginBottom: '40px',
+                // borderRadius: '6px',
             }}
         ></section>
     );

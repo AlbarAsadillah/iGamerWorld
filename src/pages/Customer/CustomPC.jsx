@@ -1,94 +1,57 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Button, Form, Dropdown } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const CustomPC = () => {
-  const [selectedComponents, setSelectedComponents] = useState([]);
-  const [isAssembled, setIsAssembled] = useState(false);
-  const [pickupMethod, setPickupMethod] = useState('');
-  const [totalPrice, setTotalPrice] = useState(0);
-  const navigate = useNavigate(); // Inisialisasi useNavigate
+  const navigate = useNavigate();
 
-  const handleAddComponent = () => {
-    // Arahkan ke halaman lain (contoh: /components)
-    navigate('/components');
-  };
-
-  const handleToggleAssembled = () => {
-    setIsAssembled(!isAssembled);
-    setTotalPrice(isAssembled ? totalPrice - 100000 : totalPrice + 100000); // Biaya tambahan Rp 100.000
-  };
-
-  const handlePickupMethodChange = (method) => {
-    setPickupMethod(method);
-  };
-
-  const handleSubmit = () => {
-    alert('Form Custom PC berhasil dikirim!');
+  const handleStartJourney = () => {
+    navigate('/components/cpu'); // Navigasi ke halaman pilih CPU
   };
 
   return (
-    <Container className="py-5" style={{ minHeight: '100vh', backgroundColor: '#212121', color: '#fff', borderRadius: '10px' }}>
-      <h2 className="mb-4 text-start">Custom PC</h2>
-      <Row className="mb-3">
-        <Col xs={12} md={8}>
-          <Form.Control
-            type="text"
-            placeholder="Komponen"
-            readOnly
-            value={selectedComponents.join(', ') || 'Belum ada komponen dipilih'}
-            style={{ backgroundColor: '#333', color: '#fff', border: '1px solid #444' }}
-          />
-        </Col>
-        <Col xs={12} md={4}>
-          <Button variant="warning" onClick={handleAddComponent} style={{ width: '100%' }}>
-            Pilih Komponen
-          </Button>
-        </Col>
-      </Row>
-
-      <Row className="mb-4">
-        <Col xs={12}>
-          <Form.Check
-            type="checkbox"
-            label="Dirakit oleh toko (Biaya tambahan)"
-            checked={isAssembled}
-            onChange={handleToggleAssembled}
-            style={{ color: '#fff' }}
-          />
-        </Col>
-      </Row>
-
-      <Row className="mb-4">
-        <Col xs={12} md={6}>
-          <Form.Group>
-            <Form.Label style={{ color: '#fff' }}>Metode pengambilan</Form.Label>
-            <Dropdown>
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic" style={{ width: '100%' }}>
-                {pickupMethod || 'Pilih Metode'}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handlePickupMethodChange('Ambil di Toko')}>Ambil di Toko</Dropdown.Item>
-                <Dropdown.Item onClick={() => handlePickupMethodChange('Dikirim ke Rumah')}>Dikirim ke Rumah</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Form.Group>
-        </Col>
-        <Col xs={12} md={6}>
-          <p style={{ color: '#fff', marginTop: '32px' }}>
-            <strong>Total Harga:</strong> Rp {totalPrice.toLocaleString('id-ID')}
-          </p>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xs={12}>
-          <Button variant="warning" onClick={handleSubmit} style={{ width: '100%' }}>
-            Kirim Form Perakitan
-          </Button>
-        </Col>
-      </Row>
-    </Container>
+    <div
+      className="d-flex justify-content-center align-items-center py-5"
+      style={{
+        minHeight: '100vh',
+        backgroundImage: 'url(/images/bg-custom.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <Container>
+        <Row className="justify-content-center">
+          <Col xs={12} sm={10} md={8} lg={6} xl={5}>
+            <div
+              onClick={handleStartJourney}
+              style={{
+                cursor: 'pointer',
+                width: '100%',
+                maxWidth: '700px',
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: 'clamp(24px, 5vw, 50px)', // Responsive font size
+                textAlign: 'center',
+                userSelect: 'none',
+                transition: 'all 0.3s ease',
+                padding: '20px',
+                margin: '0 auto',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = '#FFD700'; // kuning emas
+                e.currentTarget.style.transform = 'scale(1.05)'; // Reduced scale for mobile
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              Start Your Journey
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

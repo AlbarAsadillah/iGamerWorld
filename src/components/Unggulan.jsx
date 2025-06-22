@@ -31,7 +31,7 @@ const Unggulan = () => {
 
     return (
         <section style={styles.section}>
-            <h2 style={styles.heading}>Produk Unggulan</h2>
+            <h2 style={styles.heading}>PRODUK UNGGULAN</h2>
             <div style={styles.grid}>
                 {products.map((product) => (
                     <ProductCard

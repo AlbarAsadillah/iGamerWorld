@@ -1,81 +1,30 @@
-import { useState } from 'react';
-import { Layout, Table, Button, Breadcrumb, Row, Col, Tag, Space, Modal, Tooltip } from 'antd';
-import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import AdminNavbar from '../../components/AdminNavbar';
-import AdminSideNav from '../../components/AdminSideNav';
+import React, { useState, useEffect } from 'react';
+import {
+  Table,
+  Button,
+  Breadcrumb,
+  Tag,
+  Space,
+  Modal,
+  Tooltip,
+} from 'antd';
+import {
+  EyeOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
+import AdminLayout from '../../Layout/AdminLayout';
 import { useNavigate } from 'react-router-dom';
 
-const { Content } = Layout;
-
-// Dummy data orders sesuai gambar
-const dummyOrders = [
-  {
-    key: '1',
-    orderId: '01',
-    date: '12 Oct 2024',
-    customer: 'Mikael Renaldi',
-    status: 'Dalam Pengiriman',
-    shipping: 'JNE - Reguler',
-    total: 1985000,
-  },
-  {
-    key: '2',
-    orderId: '02',
-    date: '19 Oct 2024',
-    customer: 'Rusnadi Adi',
-    status: 'Siap Dikirim',
-    shipping: 'JNE - Reguler',
-    total: 350000,
-  },
-  {
-    key: '3',
-    orderId: '03',
-    date: '5 nov 2024',
-    customer: 'Adi Prasetya',
-    status: 'Dibatalkan',
-    shipping: 'JNE - Reguler',
-    total: 500000,
-  },
-  {
-    key: '4',
-    orderId: '04',
-    date: '6 Nov 2024',
-    customer: 'Muhammad Arid',
-    status: 'Siap Dikirim',
-    shipping: 'JNE - Reguler',
-    total: 675000,
-  },
-  {
-    key: '5',
-    orderId: '05',
-    date: '7 Nov 2024',
-    customer: 'Ramhat Dermawan',
-    status: 'Selesai',
-    shipping: 'JNE - Reguler',
-    total: 3000000,
-  },
-  {
-    key: '6',
-    orderId: '06',
-    date: '12 Dec 2024',
-    customer: 'Luna Lani',
-    status: 'Dalam Pengiriman',
-    shipping: 'JNE - Reguler',
-    total: 230000,
-  },
-  {
-    key: '7',
-    orderId: '07',
-    date: '1 Jan 2025',
-    customer: 'Kala mentari',
-    status: 'Dalam Pengiriman',
-    shipping: 'JNE - Reguler',
-    total: 300000,
-  },
-];
+const { confirm } = Modal;
 
 const statusColor = (status) => {
   switch (status) {
+    case 'Menunggu Pembayaran':
+      return 'gold';
+    case 'Diproses':
+      return 'purple';
     case 'Dalam Pengiriman':
       return 'blue';
     case 'Siap Dikirim':
@@ -90,33 +39,71 @@ const statusColor = (status) => {
 };
 
 const AdminOrder = () => {
-  const [orders, setOrders] = useState(dummyOrders);
+  const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
-  const handleView = (record) => {
-    navigate(`/adminvieworder/${record.orderId}`);
-  };
+  const loadOrders = () => {
+    const localHistory = JSON.parse(localStorage.getItem('transactionHistory')) || [];
 
-  const handleEdit = (record) => {
-    // Implementasi edit order jika diperlukan
-    Modal.info({
-      title: `Edit Order: ${record.orderId}`,
-      content: <div>Edit order feature here.</div>,
-      onOk() {},
+    // Filter hanya transaksi produk biasa (bukan custom PC)
+    const regularOrders = localHistory.filter((order) => {
+      // Filter berdasarkan type atau ID prefix
+      return order.type === 'product' || (!order.type && !String(order.id).startsWith('CP'));
     });
+
+    const transformed = regularOrders.map((order) => ({
+      key: String(order.id),
+      orderId: String(order.id),
+      date: new Date(order.createdAt).toLocaleDateString('id-ID'),
+      customer: 'Guest',
+      status:
+        order.status === 'diproses'
+          ? 'Diproses'
+          : order.status === 'dalamPengiriman'
+          ? 'Dalam Pengiriman'
+          : order.status === 'menungguPembayaran'
+          ? 'Menunggu Pembayaran'
+          : order.status === 'menungguVerifikasi'
+          ? 'Menunggu Verifikasi'
+          : order.status.charAt(0).toUpperCase() + order.status.slice(1),
+      shipping: 'JNE - Reguler',
+      total: order.total || 0, // Ensure total is never undefined
+      originalOrder: order,
+    }));
+
+    setOrders(transformed);
   };
 
-  const handleDelete = (record) => {
-    Modal.confirm({
+  useEffect(() => {
+    loadOrders();
+    window.addEventListener('transactionHistoryUpdated', loadOrders);
+    return () => window.removeEventListener('transactionHistoryUpdated', loadOrders);
+  }, []);
+
+  const showDeleteConfirm = (record) => {
+    confirm({
       title: 'Are you sure you want to delete this order?',
+      icon: <ExclamationCircleOutlined />,
       content: `Order ID: ${record.orderId}`,
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
       onOk() {
+        const localHistory = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+        const updatedHistory = localHistory.filter((item) => String(item.id) !== record.orderId);
+        localStorage.setItem('transactionHistory', JSON.stringify(updatedHistory));
         setOrders((prev) => prev.filter((item) => item.key !== record.key));
+        window.dispatchEvent(new Event('transactionHistoryUpdated'));
       },
     });
+  };
+
+  const handleView = (record) => {
+    navigate(`/adminvieworder/${record.orderId}`, { state: { order: record.originalOrder } });
+  };
+
+  const handleEdit = (record) => {
+    navigate(`/admineditorder/${record.orderId}`, { state: { order: record.originalOrder } });
   };
 
   const columns = [
@@ -137,6 +124,7 @@ const AdminOrder = () => {
       dataIndex: 'customer',
       key: 'customer',
       sorter: (a, b) => a.customer.localeCompare(b.customer),
+      responsive: ['md'],
     },
     {
       title: 'Status',
@@ -148,38 +136,55 @@ const AdminOrder = () => {
         </Tag>
       ),
       filters: [
+        { text: 'Menunggu Pembayaran', value: 'Menunggu Pembayaran' },
+        { text: 'Diproses', value: 'Diproses' },
         { text: 'Dalam Pengiriman', value: 'Dalam Pengiriman' },
         { text: 'Siap Dikirim', value: 'Siap Dikirim' },
         { text: 'Dibatalkan', value: 'Dibatalkan' },
         { text: 'Selesai', value: 'Selesai' },
       ],
       onFilter: (value, record) => record.status === value,
+      responsive: ['sm'],
     },
     {
       title: 'Pengiriman',
       dataIndex: 'shipping',
       key: 'shipping',
+      responsive: ['lg'],
     },
     {
       title: 'Total Payment',
       dataIndex: 'total',
       key: 'total',
-      render: (total) => total.toLocaleString('id-ID'),
-      sorter: (a, b) => a.total - b.total,
+      render: (total) => {
+        if (total === undefined || total === null) {
+          return 'Rp 0';
+        }
+        return `Rp ${total.toLocaleString('id-ID')}`;
+      },
+      sorter: (a, b) => (a.total || 0) - (b.total || 0),
+      responsive: ['md'],
     },
     {
       title: 'Action',
       key: 'action',
+      fixed: 'right',
+      width: 120,
       render: (_, record) => (
         <Space>
-          <Tooltip title="View">
-            <Button icon={<EyeOutlined />} onClick={() => handleView(record)} />
-          </Tooltip>
+          {/* <Tooltip title="View">
+            <Button icon={<EyeOutlined />} onClick={() => handleView(record)} size="small" />
+          </Tooltip> */}
           <Tooltip title="Edit">
-            <Button icon={<EditOutlined />} onClick={() => handleEdit(record)} />
+            <Button icon={<EditOutlined />} onClick={() => handleEdit(record)} size="small" />
           </Tooltip>
           <Tooltip title="Delete">
-            <Button icon={<DeleteOutlined />} danger onClick={() => handleDelete(record)} />
+            <Button
+              icon={<DeleteOutlined />}
+              danger
+              onClick={() => showDeleteConfirm(record)}
+              size="small"
+            />
           </Tooltip>
         </Space>
       ),
@@ -187,40 +192,21 @@ const AdminOrder = () => {
   ];
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <AdminNavbar />
-      <Layout>
-        <AdminSideNav />
-        <Layout style={{ padding: '0 24px 24px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>Admin</Breadcrumb.Item>
-            <Breadcrumb.Item>Orders</Breadcrumb.Item>
-          </Breadcrumb>
-          <Content
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-              background: '#fff',
-              borderRadius: '8px',
-              boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            }}
-          >
-            <Row gutter={16}>
-              <Col span={24}>
-                {/* <h2>Order List</h2> */}
-              </Col>
-            </Row>
-            <Table
-              dataSource={orders}
-              columns={columns}
-              pagination={false}
-              bordered
-            />
-          </Content>
-        </Layout>
-      </Layout>
-    </Layout>
+    <AdminLayout>
+      <div className="admin-page">
+        <Breadcrumb style={{ marginBottom: 16 }}>
+          <Breadcrumb.Item>Admin</Breadcrumb.Item>
+          <Breadcrumb.Item>Orders</Breadcrumb.Item>
+        </Breadcrumb>
+
+        <Table
+          dataSource={orders}
+          columns={columns}
+          pagination={{ pageSize: 10 }}
+          scroll={{ x: 'max-content' }}
+        />
+      </div>
+    </AdminLayout>
   );
 };
 

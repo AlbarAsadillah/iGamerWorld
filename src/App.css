@@ -74,9 +74,14 @@ body {
 
 /* Pastikan seluruh halaman memiliki latar belakang hitam */
 html, body {
-  background-color: #1C1C1C;
+  background-color: #080808; /* Ubah warna background di sini */
   color: #fff;
   margin: 0;
   padding: 0;
   height: 100%;
 }
+
+/* .modal-backdrop-blur {
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.3) !important;
+} */
