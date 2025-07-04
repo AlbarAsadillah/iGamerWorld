@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form, Modal } from 'react-bootstrap';
 import Button1 from '../../components/Button';
 
 const Checkout = () => {
@@ -9,16 +9,21 @@ const Checkout = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [selectedShippingMethod, setSelectedShippingMethod] = useState('');
   const [shippingAddress, setShippingAddress] = useState(null);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [addresses, setAddresses] = useState([]);
   const navigate = useNavigate();
 
-  const shippingOptions = ['JNE', 'J&T', 'SiCepat', 'POS Indonesia'];
-  const paymentMethods = ['BCA Transfer', 'BNI Transfer', 'BRI Transfer', 'Jenius Transfer'];
-  const shippingCost = 25000;
-  
-  // Calculate the subtotal from the cart items
-  const subtotal = selectedCartItems?.reduce((total, item) => total + item.price * item.quantity, 0) || 0;
+  const shippingMethods = [
+    { id: 'JNE', name: 'JNE', cost: 30000 },
+    { id: 'J&T', name: 'J&T', cost: 28000 },
+    { id: 'SiCepat', name: 'SiCepat', cost: 25000 },
+    { id: 'POS Indonesia', name: 'POS Indonesia', cost: 35000 },
+  ];
+  const currentShippingMethod = shippingMethods.find(method => method.name === selectedShippingMethod);
+  const shippingCost = currentShippingMethod ? currentShippingMethod.cost : 0;
 
-  // Total price to include shipping cost
+  const paymentMethods = ['BCA Transfer', 'BNI Transfer', 'BRI Transfer', 'Jenius Transfer'];
+  const subtotal = selectedCartItems?.reduce((total, item) => total + item.price * item.quantity, 0) || 0;
   const totalPrice = subtotal + shippingCost;
 
   useEffect(() => {
@@ -26,10 +31,20 @@ const Checkout = () => {
     if (addressData) {
       setShippingAddress(JSON.parse(addressData));
     }
+    const allAddresses = localStorage.getItem('addresses');
+    if (allAddresses) {
+      setAddresses(JSON.parse(allAddresses));
+    }
   }, []);
 
   const handlePaymentMethodChange = (e) => {
     setSelectedPaymentMethod(e.target.value);
+  };
+
+  const handleSelectAddress = (addr) => {
+    localStorage.setItem('selectedAddress', JSON.stringify(addr));
+    setShippingAddress(addr);
+    setShowAddressModal(false);
   };
 
   const handleConfirmPayment = () => {
@@ -38,11 +53,10 @@ const Checkout = () => {
       return;
     }
 
-    // Create the transaction object
     const transaction = {
-      id: `PR${Date.now()}`, // Prefix PR untuk Product
+      id: `PR${Date.now()}`,
       totalAmount: totalPrice,
-      status: 'menungguPembayaran', // Status awal
+      status: 'menungguPembayaran',
       customerName: shippingAddress?.name || 'Nama Pelanggan',
       customerAddress: shippingAddress?.address || 'Alamat Pengiriman',
       orderDate: new Date().toLocaleDateString('id-ID'),
@@ -54,20 +68,14 @@ const Checkout = () => {
       shippingMethod: selectedShippingMethod,
       paymentMethod: selectedPaymentMethod,
       total: totalPrice,
-      type: 'product', // Menandai ini adalah pesanan produk reguler
+      type: 'product',
     };
 
     try {
-      // Save the transaction in local storage
       const existingTransactions = JSON.parse(localStorage.getItem('transactionHistory')) || [];
       localStorage.setItem('transactionHistory', JSON.stringify([transaction, ...existingTransactions]));
-
-      // Trigger event untuk refresh history
       window.dispatchEvent(new Event('transactionHistoryUpdated'));
 
-      console.log('✅ Data tersimpan dari Checkout:', transaction);
-
-      // Navigate to the payment page dengan data transaksi
       navigate('/payment', {
         state: {
           selectedCartItems,
@@ -76,8 +84,8 @@ const Checkout = () => {
           shippingCost,
           shippingMethod: selectedShippingMethod,
           paymentMethod: selectedPaymentMethod,
-          transactionId: transaction.id, // Pass transaction ID
-          order: transaction, // Pass full transaction data
+          transactionId: transaction.id,
+          order: transaction,
         },
       });
     } catch (error) {
@@ -87,10 +95,10 @@ const Checkout = () => {
   };
 
   const paymentIcons = {
-    'BCA Transfer': "/images/BCA.png", // Replace with actual logo image paths
-    'BNI Transfer': "/images/BNI.png",
-    'BRI Transfer': "/images/BRI.png",
-    'Jenius Transfer': "/images/Jenius.png",
+    'BCA Transfer': '/images/BCA.png',
+    'BNI Transfer': '/images/BNI.png',
+    'BRI Transfer': '/images/BRI.png',
+    'Jenius Transfer': '/images/Jenius.png',
   };
 
   return (
@@ -110,33 +118,47 @@ const Checkout = () => {
       <h2 className="mb-4 text-start">Checkout</h2>
       <Row>
         <Col xs={12} md={8} className="mb-4">
+          {/* Alamat Pengiriman */}
           <div
             style={{
               backgroundColor: '#333',
               borderRadius: '10px',
               padding: '20px',
               marginBottom: '20px',
-              border: '1px solid #FFD700',
+              // border: '1px solid #FFD700',
               textAlign: 'left',
             }}
           >
-            <h5 style={{ color: '#FFD700', fontWeight: 'semibold' }}>Alamat Pengiriman</h5>
+            <Row className="align-items-center mb-2">
+              <Col>
+                <h5 style={{ color: '#FFD700', fontWeight: 'semibold', marginBottom: 0 }}>
+                  Alamat Pengiriman
+                </h5>
+              </Col>
+              <Col xs="auto">
+                <Button1
+                  variant={shippingAddress ? 'outline-warning' : 'warning'}
+                  size="sm"
+                  onClick={() => setShowAddressModal(true)}
+                >
+                  {shippingAddress ? 'Ganti Alamat' : 'Pilih Alamat'}
+                </Button1>
+              </Col>
+            </Row>
+
             {shippingAddress ? (
               <>
-                <p>{shippingAddress.name}</p>
-                <p>{shippingAddress.phone}</p>
-                <p>{shippingAddress.address}</p>
+                <p className="mb-1">{shippingAddress.name}</p>
+                <p className="mb-1">{shippingAddress.phone}</p>
+                <p className="mb-1">{shippingAddress.address}</p>
+                <p className="mb-0"><em>Catatan: {shippingAddress.note}</em></p>
               </>
             ) : (
-              <>
-                <p>Belum ada alamat. Silakan pilih di halaman alamat.</p>
-                <Button variant="warning" size="sm" onClick={() => navigate('/address')}>
-                  Pilih Alamat
-                </Button>
-              </>
+              <p className="mb-0">Belum ada alamat. Silakan pilih alamat pengiriman.</p>
             )}
           </div>
 
+          {/* Metode Pengiriman */}
           <div
             style={{
               backgroundColor: '#333',
@@ -157,14 +179,15 @@ const Checkout = () => {
               }}
             >
               <option>Pilih pengiriman</option>
-              {shippingOptions.map((option, idx) => (
-                <option key={idx} value={option}>
-                  {option}
+              {shippingMethods.map((option, idx) => (
+                <option key={option.id} value={option.name}>
+                  {option.name} (Rp {option.cost.toLocaleString('id-ID')})
                 </option>
               ))}
             </Form.Select>
           </div>
 
+          {/* Daftar Produk */}
           {selectedCartItems?.map((item) => (
             <div
               key={item.id}
@@ -191,13 +214,18 @@ const Checkout = () => {
               />
               <div style={{ flex: 1, textAlign: 'left' }}>
                 <h5>{item.name}</h5>
-                <p>Harga: Rp {item.price.toLocaleString('id-ID')}</p>
+                <p>Harga: Rp {
+                  item.selectedVariant && item.selectedVariant.price
+                    ? item.selectedVariant.price.toLocaleString('id-ID')
+                    : item.price?.toLocaleString('id-ID')
+                }</p>
                 <p>Jumlah: {item.quantity}</p>
               </div>
             </div>
           ))}
         </Col>
 
+        {/* Sidebar Ringkasan dan Pembayaran */}
         <Col xs={12} md={4}>
           <div
             style={{
@@ -213,20 +241,16 @@ const Checkout = () => {
                 key={idx}
                 style={{
                   display: 'flex',
-                  justifyContent: 'space-between', // Spacing out the radio button and text
+                  justifyContent: 'space-between',
                   alignItems: 'center',
                   marginBottom: '10px',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <img
-                    src={paymentIcons[method]} // Bank icon displayed here
+                    src={paymentIcons[method]}
                     alt={method}
-                    style={{
-                      width: '50px',
-                      height: '50px',
-                      marginRight: '10px',
-                    }}
+                    style={{ width: '50px', height: '50px', marginRight: '10px' }}
                   />
                   <span style={{ color: '#FFFFFF' }}>{method}</span>
                 </div>
@@ -236,10 +260,7 @@ const Checkout = () => {
                   value={method}
                   checked={selectedPaymentMethod === method}
                   onChange={handlePaymentMethodChange}
-                  style={{
-                    color: '#FFFFFF',
-                    marginLeft: '0px',
-                  }}
+                  style={{ color: '#FFFFFF' }}
                 />
               </div>
             ))}
@@ -259,7 +280,7 @@ const Checkout = () => {
               <strong>Rp {totalPrice.toLocaleString('id-ID')}</strong>
             </div>
             <Button1
-              label={"Bayar Sekarang"}
+              label={'Bayar Sekarang'}
               variant="warning"
               className="mt-3 w-100"
               onClick={handleConfirmPayment}
@@ -269,6 +290,39 @@ const Checkout = () => {
           </div>
         </Col>
       </Row>
+
+      {/* Modal Pilih Alamat - Dark Mode */}
+      <Modal show={showAddressModal} onHide={() => setShowAddressModal(false)} centered>
+        <Modal.Header closeButton style={{ backgroundColor: '#222', color: '#fff' }}>
+          <Modal.Title>Pilih Alamat Pengiriman</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ backgroundColor: '#1a1a1a', color: '#fff' }}>
+          {addresses.length === 0 ? (
+            <p>Belum ada alamat. Silakan tambahkan alamat di halaman Address Book.</p>
+          ) : (
+            addresses.map((addr) => (
+              <div
+                key={addr.id}
+                style={{
+                  border: '1px solid #444',
+                  borderRadius: '10px',
+                  padding: '10px',
+                  marginBottom: '10px',
+                  cursor: 'pointer',
+                  backgroundColor: '#2c2c2c',
+                }}
+                onClick={() => handleSelectAddress(addr)}
+              >
+                <strong>{addr.name}</strong>
+                <p>{addr.phone}</p>
+                <p>{addr.address}</p>
+                <p><em>Catatan: {addr.note}</em></p>
+                {addr.isDefault && <span style={{color:'#FFD700', fontWeight:'bold'}}>Alamat Utama</span>}
+              </div>
+            ))
+          )}
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };

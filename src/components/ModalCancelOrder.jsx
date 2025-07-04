@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Form } from 'react-bootstrap';
 import Button1 from './Button';
+import Button2 from './Button2';
 
 const ModalCancelOrder = ({ show, onHide, onConfirm, orderData }) => {
   const [cancelReason, setCancelReason] = useState('');
@@ -134,9 +135,9 @@ const ModalCancelOrder = ({ show, onHide, onConfirm, orderData }) => {
               value={otherReason}
               onChange={(e) => setOtherReason(e.target.value)}
               style={{
-                backgroundColor: '#333',
+                backgroundColor: '#fff',
                 border: '1px solid #555',
-                color: '#fff',
+                color: '#000',
                 borderRadius: '6px'
               }}
             />
@@ -168,18 +169,15 @@ const ModalCancelOrder = ({ show, onHide, onConfirm, orderData }) => {
           onClick={handleClose}
           style={{
             flex: 1,
-            backgroundColor: 'transparent',
-            borderColor: '#6c757d',
-            color: '#6c757d'
+            borderColor: '#000000',
           }}
         />
-        <Button1
+        <Button2
           label="Ya, Batalkan Pesanan"
           onClick={handleConfirm}
           style={{
             flex: 1,
-            backgroundColor: '#dc3545',
-            borderColor: '#dc3545',
+            borderColor: '#FFD700',
             marginLeft: '10px'
           }}
         />

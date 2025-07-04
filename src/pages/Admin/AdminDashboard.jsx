@@ -112,8 +112,8 @@ const AdminDashboard = () => {
 
   const productsData = [
     { key: '1', product: 'Logitech G102', image: '/images/products/logitech-g102-1.png', sold: 10, stock: 12 },
-    { key: '2', product: 'Razer Kraken', image: '/images/products/razer-kraken.png', sold: 9, stock: 15 },
-    { key: '3', product: 'Vortex Series Oni R1', image: '/images/products/vortex-oni-r1.png', sold: 9, stock: 15 },
+    { key: '2', product: 'Ajazz AK35I', image: '/images/products/ajazz-ak35i.png', sold: 9, stock: 15 },
+    { key: '3', product: 'Ajazz Apex', image: '/images/products/ajazz-apex.png', sold: 9, stock: 15 },
   ];
 
   // Sample data for top customers

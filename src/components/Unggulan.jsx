@@ -4,28 +4,28 @@ import ProductCard from './ProductCard';
 const Unggulan = () => {
     const products = [
         {
-            id: 1,
-            name: 'Logitech G102',
+            id: 11,
+            name: 'Logitech G102 Lightsync',
             price: 230000,
-            image: '/images/products/logitech-g102-1.png',
+            image: '/images/products/LogitechG1021.png',
         },
         {
-            id: 2,
-            name: 'Ajazz-AK35i',
-            price: 1500000,
-            image: '/images/products/ajazz-ak35i.png',
-        },
-        {
-            id: 3,
-            name: 'Ajazz-Apex',
+            id: 16,
+            name: 'Fantech MAXFIT61 Keyboard',
             price: 500000,
-            image: '/images/products/ajazz-apex.png',
+            image: '/images/products/Fantech MAXFIT61 Keyboard1.png',
         },
         {
-            id: 4,
-            name: 'Aria ii',
-            price: 560000,
-            image: '/images/products/fantech-aria-ii.png',
+            id: 12,
+            name: 'Logitech G Pro X Headset',
+            price: 950000,
+            image: '/images/products/Logitech Headset1.png',
+        },
+        {
+            id: 19,
+            name: 'Gigabyte AORUS Gen4 SSD 1TB',
+            price: 1700000,
+            image: '/images/products/Gigabyte Aorus1.png',
         },
     ];
 

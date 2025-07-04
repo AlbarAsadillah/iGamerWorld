@@ -101,6 +101,18 @@ const OrderDetail = () => {
     return customPcOrder && (customPcOrder.paymentProof || customPcOrder.shippingProof);
   };
 
+  // Helper untuk menampilkan harga (handle varian & undefined)
+  const getDisplayPrice = (item) => {
+    if (item.variants && item.variants.length > 0) {
+      const minPrice = Math.min(...item.variants.map(v => v.price));
+      return minPrice.toLocaleString('id-ID');
+    }
+    if (typeof item.price === 'number') {
+      return item.price.toLocaleString('id-ID');
+    }
+    return '-';
+  };
+
   if (!order) {
     return (
       <Container
@@ -289,7 +301,7 @@ const OrderDetail = () => {
                       {item.name}
                     </div>
                     <div style={{ fontSize: '14px', marginBottom: '2px' }}>
-                      Rp {item.price.toLocaleString('id-ID')}
+                      Rp {getDisplayPrice(item)}
                     </div>
                     <div style={{ fontSize: '14px' }}>Qty {item.quantity || 1}</div>
                     {/* Review Section */}

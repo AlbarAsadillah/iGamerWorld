@@ -32,8 +32,11 @@ const Cart = () => {
   };
 
   const totalPrice = cart.reduce((total, item) => {
+    const price = item.selectedVariant && item.selectedVariant.price
+      ? item.selectedVariant.price
+      : item.price || 0;
     if (selectedItems.includes(item.id)) {
-      return total + item.price * item.quantity;
+      return total + price * item.quantity;
     }
     return total;
   }, 0);
@@ -149,7 +152,13 @@ const Cart = () => {
 
                   <div style={{ flex: 1, textAlign: 'left' }}>
                     <h5 style={{ marginBottom: '5px' }}>{item.name}</h5>
-                    <p style={{ marginBottom: '3px' }}>Harga: Rp {item.price.toLocaleString('id-ID')}</p>
+                    <p style={{ marginBottom: '3px' }}>
+                      Harga: Rp {
+                        item.selectedVariant && item.selectedVariant.price
+                          ? item.selectedVariant.price.toLocaleString('id-ID')
+                          : item.price?.toLocaleString('id-ID')
+                      }
+                    </p>
                   </div>
 
                   {/* Quantity Selector */}

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Button, InputGroup, FormControl } from 'react-bootstrap';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Stepper from '../../../components/Stepper'; // sesuaikan path
 import Button1 from '../../../components/Button';
 import Button2 from '../../../components/Button2';
 import { dummyProducts } from '../../../data/dummyProducts';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
 const stepSubcategoryMap = {
   0: 'Processor',
@@ -19,23 +21,68 @@ const stepSubcategoryMap = {
 
 const ComponentsCPU = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [currentStep, setCurrentStep] = useState(0);
-  const [selectedItems, setSelectedItems] = useState({});
+  // Ambil currentStep dan selectedItems dari state jika ada
+  const initialStep = location.state?.currentStep ?? 0;
+  const initialSelectedItems = location.state?.selectedItems ?? {};
+
+  const [currentStep, setCurrentStep] = useState(initialStep);
+  const [selectedItems, setSelectedItems] = useState(initialSelectedItems);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 5;
+  const [selectedVariant, setSelectedVariant] = useState(null);
+
+  useEffect(() => {
+    // Jika user kembali dari summary, set step ke currentStep dari state
+    if (location.state?.currentStep !== undefined) {
+      setCurrentStep(location.state.currentStep);
+    }
+    if (location.state?.selectedItems) {
+      setSelectedItems(location.state.selectedItems);
+    }
+    // eslint-disable-next-line
+  }, [location.state]);
 
   const currentSubcategory = stepSubcategoryMap[currentStep];
   const lastStepIndex = Object.keys(stepSubcategoryMap).length - 1;
 
   const filteredProducts = dummyProducts.filter(
-    (p) => p.subcategory === currentSubcategory
+    (p) => p.subcategory === currentSubcategory &&
+      (!searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * productsPerPage,
+    currentPage * productsPerPage
+  );
+
+  // Reset ke halaman 1 jika filter berubah
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [currentSubcategory, searchTerm]);
 
   const selectedProduct = selectedItems[currentSubcategory] || null;
 
   const handleSelect = (product) => {
+    setSelectedVariant(selectedItems[stepSubcategoryMap[currentStep]]?.variant || null);
     setSelectedItems((prev) => ({
       ...prev,
       [currentSubcategory]: product,
+    }));
+  };
+
+  // Saat user memilih varian
+  const handleVariantSelect = (variant) => {
+    setSelectedVariant(variant);
+    setSelectedItems((prev) => ({
+      ...prev,
+      [currentSubcategory]: {
+        ...selectedItems[currentSubcategory],
+        variant,
+      },
     }));
   };
 
@@ -66,8 +113,8 @@ const ComponentsCPU = () => {
         color: '#fff',
         padding: 20,
         width: '1300px',
-        marginBottom: '20px',
-        marginTop: '20px',
+        marginBottom: '35px',
+        marginTop: '35px',
         borderRadius: '10px',
 
       }}
@@ -96,7 +143,10 @@ const ComponentsCPU = () => {
         <Button1
         label={currentStep === lastStepIndex ? 'DONE' : 'NEXT'}
           onClick={nextStep}
-          disabled={!selectedProduct}
+          disabled={
+            !selectedProduct ||
+            (selectedProduct?.variants?.length > 0 && !selectedVariant)
+          }
           style={{
             borderColor: '#FFD700',
             color: '#000',
@@ -110,21 +160,62 @@ const ComponentsCPU = () => {
       </div>
 
       <Row style={{ marginTop: 24 }}>
-        <Col
-          md={7}
-          style={{
-            marginBottom: 20,
-            maxHeight: '75vh',
-            overflowY: 'auto',
-            paddingRight: 10,
-          }}
-        >
+        <Col md={7} style={{ marginBottom: 20, maxHeight: '75vh', overflowY: 'auto', paddingRight: 10 }}>
+          {/* Search Bar ala Navbar */}
+          <div style={{ marginBottom: 16 }}>
+            {/* Custom CSS agar search sama dengan navbar */}
+            <style>{`
+              .navbar-search-input:focus {
+                background-color: #444 !important;
+                border-color: #FFD700 !important;
+                color: #fff !important;
+                box-shadow: none !important;
+              }
+              .navbar-search-input::placeholder {
+                color: #aaa !important;
+              }
+              .navbar-search-input:focus + .input-group-text,
+              .input-group-text:focus-within {
+                border-color: #FFD700 !important;
+                background-color: #444 !important;
+              }
+            `}</style>
+            <InputGroup style={{ maxWidth: 400, margin: '0 auto 16px 0' }}>
+              <InputGroup.Text
+                style={{
+                  backgroundColor: '#333',
+                  border: '1px solid #555',
+                  color: '#FFD700',
+                  borderRight: 'none',
+                }}
+              >
+                <svg width="18" height="18" fill="none" stroke="#FFD700" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              </InputGroup.Text>
+              <FormControl
+                type="search"
+                placeholder={`Cari ${currentSubcategory}...`}
+                aria-label="Search"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                style={{
+                  backgroundColor: '#333',
+                  border: '1px solid #555',
+                  borderLeft: 'none',
+                  color: '#fff',
+                  fontSize: '14px',
+                  borderRadius: '0 8px 8px 0',
+                }}
+                className="navbar-search-input"
+              />
+            </InputGroup>
+          </div>
+
           {filteredProducts.length === 0 && (
             <div style={{ color: '#888', padding: 20 }}>
               Tidak ada produk {currentSubcategory}
             </div>
           )}
-          {filteredProducts.map((product) => {
+          {paginatedProducts.map((product) => {
             const isSelected = selectedProduct?.id === product.id;
 
             return (
@@ -203,19 +294,67 @@ const ComponentsCPU = () => {
                       fontWeight: '600',
                     }}
                   >
-                    Rp. {product.price.toLocaleString('id-ID')}
+                    {
+                      product.variants && Array.isArray(product.variants) && product.variants.length > 0
+                        ? (() => {
+                            const prices = product.variants.map(v => v.price).filter(p => typeof p === 'number');
+                            if (prices.length > 0) {
+                              return `Rp. ${Math.min(...prices).toLocaleString('id-ID')}`;
+                            } else {
+                              return '-';
+                            }
+                          })()
+                        : typeof product.price === 'number'
+                          ? `Rp. ${product.price.toLocaleString('id-ID')}`
+                          : '-'
+                    }
                   </div>
                 </Card.Body>
               </Card>
             );
           })}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                style={{ marginRight: 8 }}
+              >
+                Prev
+              </Button>
+              {[...Array(totalPages)].map((_, idx) => (
+                <Button
+                  key={idx}
+                  variant={currentPage === idx + 1 ? 'warning' : 'outline-warning'}
+                  size="sm"
+                  onClick={() => setCurrentPage(idx + 1)}
+                  style={{ margin: '0 2px' }}
+                >
+                  {idx + 1}
+                </Button>
+              ))}
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                style={{ marginLeft: 8 }}
+              >
+                Next
+              </Button>
+            </div>
+          )}
         </Col>
 
         <Col
           md={5}
           style={{
             borderLeft: '1px solid #444',
-            paddingLeft: 30,
+            padding: 0,
             minHeight: '80vh',
           }}
         >
@@ -261,7 +400,41 @@ const ComponentsCPU = () => {
                 }}
               />
 
-              <div style={{ width: '100%', textAlign: 'left' }}>
+              {/* Pilihan varian jika ada */}
+              {selectedProduct.variants && selectedProduct.variants.length > 0 && (
+                <div style={{ marginBottom: 16, width: '100%' }}>
+                  <span style={{ color: '#FFD700', fontSize: 13 }}>Pilih Varian:</span>
+                  <Stack direction="row" spacing={1} style={{ flexWrap: 'wrap', gap: '8px', marginTop: 6 }}>
+                    {selectedProduct.variants.map((variant) => {
+                      const isSelected = selectedVariant && selectedVariant.id === variant.id;
+                      return (
+                        <Chip
+                          key={variant.id}
+                          label={variant.name.toLocaleString('id-ID')}
+                          clickable
+                          onClick={() => handleVariantSelect(variant)}
+                          style={{
+                            backgroundColor: isSelected ? '#FFD700' : 'rgba(255, 215, 0, 0.1)',
+                            color: isSelected ? '#000' : '#FFD700',
+                            border: '1px solid #FFD700',
+                            fontWeight: 'bold',
+                            marginBottom: '4px',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                          }}
+                        />
+                      );
+                    })}
+                  </Stack>
+                  {!selectedVariant && (
+                    <div style={{ color: '#ff4d4f', fontSize: 12, marginTop: 4 }}>
+                      Pilih varian terlebih dahulu
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div style={{ width: '100%', textAlign: 'left', marginTop: 24 }}>
                 <h6
                   style={{
                     color: '#FFD700',
@@ -272,74 +445,16 @@ const ComponentsCPU = () => {
                 >
                   SPECS
                 </h6>
-                <table
-                  style={{
-                    width: '100%',
-                    fontSize: 14,
-                    color: '#ddd',
-                    borderCollapse: 'collapse',
-                  }}
-                >
-                  <tbody>
-                    <tr>
-                      <td
-                        style={{
-                          fontWeight: '700',
-                          width: 130,
-                          padding: '6px 8px',
-                          verticalAlign: 'top',
-                        }}
-                      >
-                        Category:
-                      </td>
-                      <td style={{ padding: '6px 8px' }}>
-                        {selectedProduct.category || '-'}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        style={{
-                          fontWeight: '700',
-                          padding: '6px 8px',
-                          verticalAlign: 'top',
-                        }}
-                      >
-                        Subcategory:
-                      </td>
-                      <td style={{ padding: '6px 8px' }}>
-                        {selectedProduct.subcategory || '-'}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        style={{
-                          fontWeight: '700',
-                          padding: '6px 8px',
-                          verticalAlign: 'top',
-                        }}
-                      >
-                        Socket:
-                      </td>
-                      <td style={{ padding: '6px 8px' }}>
-                        {selectedProduct.socket || '-'}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        style={{
-                          fontWeight: '700',
-                          padding: '6px 8px',
-                          verticalAlign: 'top',
-                        }}
-                      >
-                        Price:
-                      </td>
-                      <td style={{ padding: '6px 8px' }}>
-                        Rp {selectedProduct.price.toLocaleString('id-ID')}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div style={{
+                  background: '#232323',
+                  borderRadius: 6,
+                  color: '#ccc',
+                  padding: '10px',
+                  whiteSpace: 'pre-line',
+                  fontSize: 14
+                }}>
+                  {selectedProduct.description || 'Deskripsi produk tidak tersedia.'}
+                </div>
               </div>
             </div>
           ) : (
@@ -365,3 +480,10 @@ const ComponentsCPU = () => {
 };
 
 export default ComponentsCPU;
+
+/* Tambahkan di akhir file (atau di file css global):
+.input-search-white::placeholder {
+  color: #fff !important;
+  opacity: 1;
+}
+*/

@@ -1,0 +1,21 @@
+.custom-pagination .page-link {
+  background: #222 !important;
+  color: #FFD700 !important;
+  border: 1px solid #FFD700 !important;
+  transition: background 0.2s, color 0.2s;
+}
+.custom-pagination .page-link:hover {
+  background: #FFD700 !important;
+  color: #222 !important;
+}
+.custom-pagination .active .page-link,
+.custom-pagination-item.active .page-link {
+  background: #FFD700 !important;
+  color: #222 !important;
+  border: 1px solid #FFD700 !important;
+}
+.custom-pagination .page-item.disabled .page-link {
+  background: #444 !important;
+  color: #888 !important;
+  border: 1px solid #FFD700 !important;
+}

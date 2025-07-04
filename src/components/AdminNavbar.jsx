@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Button, Grid, Badge, Popover, List, Typography, Divider, Modal } from 'antd';
 import { LogoutOutlined, MenuOutlined, BellOutlined, ShoppingCartOutlined, DesktopOutlined, MessageOutlined, CommentOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import ButtonDanger from './ButtonDanger.jsx';
 
 const { Header } = Layout;
 const { useBreakpoint } = Grid;
@@ -269,18 +270,12 @@ const AdminNavbar = ({ onToggleSidebar }) => {
         </Popover>
 
         {/* Logout Button */}
-        <Button
-          type="primary"
+        <ButtonDanger
+          label="Log Out"
           icon={<LogoutOutlined />}
           onClick={handleLogout}
-          style={{
-            backgroundColor: 'red',
-            borderColor: 'red',
-            fontFamily: 'Poppins, sans-serif'
-          }}
-        >
-          Log Out
-        </Button>
+          style={{ width: '120px', fontWeight: 500 }}
+        />
       </div>
     </Header>
   );

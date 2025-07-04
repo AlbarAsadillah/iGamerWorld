@@ -7,21 +7,20 @@ const categories = [
     image: '/images/background-card.jpg',
     floatingImage: '/images/floating-image.png',
     description: 'Komponen berkualitas tinggi untuk membangun sistem yang handal',
-    link: '/catalog',
+    link: '/catalog?category=KOMPONEN',
   },
   {
     title: 'AKSESORIS',
     image: '/images/background-card2.jpg',
     floatingImage: '/images/floating-image2.png',
     description: 'Beragam aksesoris komputer untuk meningkatkan kenyamanan',
-    link: '/catalog',
+    link: '/catalog?category=AKSESORIS',
   },
   {
     title: 'PC BUNDLING',
     image: '/images/background-card3.jpg',
     floatingImage: '/images/floating-image3.png',
-    // description: 'Deskripsi singkat kategori C',
-    link: '/catalog',
+    link: '/catalog?category=PC%20BUNDLING',
   },
 ];
 

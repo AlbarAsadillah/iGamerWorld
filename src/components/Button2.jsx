@@ -1,36 +1,59 @@
 import React from 'react';
 
-const Button2 = ({ label, onClick, width = 'auto', style = {} }) => {
+const Button2 = ({
+  label,
+  children,
+  onClick,
+  width = 'auto',
+  style = {},
+  type = 'button',
+  disabled = false,
+  icon,
+  className = '',
+  ...rest
+}) => {
+  const baseColor = 'black';
+  const hoverColor = '#333333';
   const buttonStyle = {
-    backgroundColor: 'black', /* Warna hitam (reverse dari kuning) */
-    width: width, /* Lebar button - bisa dikustomisasi */
-    color: '#FFD700', /* Warna teks kuning (reverse dari hitam) */
-    border: '2px solid #FFD700', /* Border kuning (reverse dari hitam) */
-    padding: '10px 20px', /* Padding atas-bawah 10px, kiri-kanan 20px */
-    fontSize: '16px', /* Ukuran font */
-    fontFamily: 'Poppins, sans-serif', /* Jenis font */
-    borderRadius: '6px', /* Sudut membulat */
-    cursor: 'pointer', /* Pointer saat hover */
-    transition: 'background-color 0.3s ease', /* Efek transisi saat hover */
-    ...style, /* Merge dengan style yang diberikan dari props */
+    backgroundColor: baseColor,
+    width: width,
+    color: '#FFD700',
+    border: '2px solid #FFD700',
+    padding: '10px 20px',
+    fontSize: '16px',
+    fontFamily: 'Poppins, sans-serif',
+    borderRadius: '6px',
+    cursor: disabled ? 'not-allowed' : 'pointer',
+    opacity: disabled ? 0.6 : 1,
+    transition: 'background-color 0.3s ease',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: icon ? 8 : 0,
+    ...style,
   };
 
   const handleHover = (e) => {
-    e.target.style.backgroundColor = '#333333'; /* Warna button saat hover (abu gelap) */
+    if (!disabled) e.target.style.backgroundColor = hoverColor;
   };
 
   const handleHoverOut = (e) => {
-    e.target.style.backgroundColor = 'black'; /* Warna button normal */
+    if (!disabled) e.target.style.backgroundColor = baseColor;
   };
 
   return (
     <button
+      type={type}
+      className={className}
       style={buttonStyle}
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
       onMouseEnter={handleHover}
       onMouseLeave={handleHoverOut}
+      disabled={disabled}
+      {...rest}
     >
-      {label}
+      {icon && <span style={{ display: 'inline-flex', alignItems: 'center' }}>{icon}</span>}
+      {children || label}
     </button>
   );
 };

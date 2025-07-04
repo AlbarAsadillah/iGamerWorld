@@ -70,14 +70,14 @@ const AdminLogin = () => {
                 </Form.Item>
 
                 <Form.Item>
-                  <Button1
+                  <Button
                   label="Login"
                     type="primary"
                     htmlType="submit"
                     style={{width:'100%', }}
                   >
                     Login
-                  </Button1>
+                  </Button>
                 </Form.Item>
 
                 <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>

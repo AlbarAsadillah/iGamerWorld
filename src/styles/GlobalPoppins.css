@@ -445,3 +445,20 @@ button,
 .ant-btn-primary span {
   color: #212121 !important;
 }
+
+/* Fix: pastikan tombol danger Ant Design tetap merah */
+.ant-btn-primary.ant-btn-dangerous, .ant-btn-dangerous {
+  background-color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  color: #fff !important;
+}
+.ant-btn-primary.ant-btn-dangerous:hover, .ant-btn-dangerous:hover, .ant-btn-primary.ant-btn-dangerous:focus, .ant-btn-dangerous:focus {
+  background-color: #d9363e !important;
+  border-color: #d9363e !important;
+  color: #fff !important;
+}
+
+/* Pastikan teks pada tombol danger Ant Design tetap putih */
+.ant-btn-dangerous span, .ant-btn-primary.ant-btn-dangerous span {
+  color: #fff !important;
+}

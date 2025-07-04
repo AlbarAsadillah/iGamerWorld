@@ -3,21 +3,28 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 
 const categories = [
   'All',
-  'Mouse',
-  'Keyboard',
-  'Headset',
+  'Komponen',
+  'Aksesoris',
+  'PC Bundling',
 ];
 
 const filterOptions = {
   category: ['Komponen', 'Aksesoris', 'PC Bundling'],
-  subcategory: ['Mouse', 'Keyboard'],
-  brand: ['Logitech', 'Razer', 'SteelSeries', 'Fantech', 'Ajazz'],
-  socket: ['Intel', 'AMD'],
+  subcategory: [
+    // Komponen
+    'Motherboard', 'Processor', 'RAM', 'GPU', 'Storage', 'PSU', 'Casing', 'Fan', 'Cooler',
+    // Aksesoris
+    'Headset', 'Mouse', 'Keyboard', 'Monitor',
+    // PC Bundling
+    'PC Gaming', 'PC Editing', 'PC Kerja',
+  ],
+  brand: ['ASUS', 'MSI', 'Gigabyte', 'Intel', 'AMD', 'Logitech', 'Ajazz', 'Fantech', 'Corsair', 'Kingston', 'WD', 'Zotac', 'Samsung', 'NZXT', 'Cube', 'Cooler Master', 'FSP'],
+  socket: ['Intel', 'AM4', 'LGA1700', null],
   stockStatus: ['Ready Stock', 'Out of Stock'],
   sortBy: ['Harga Terendah', 'Harga Tertinggi', 'Terbaru'],
 };
 
-const FilterProduct = ({ onCategoryChange }) => {
+const FilterProduct = ({ onCategoryChange, onApplyFilters, initialCategory }) => {
   const [activeCategory, setActiveCategory] = useState('Web Design');
   const [filterOpen, setFilterOpen] = useState(false);
 
@@ -34,6 +41,18 @@ const FilterProduct = ({ onCategoryChange }) => {
 
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
+    setFilters((prev) => {
+      let newFilters = { ...prev };
+      if (category === 'All') {
+        newFilters = { ...newFilters, category: '', subcategory: '' };
+      } else if (['Mouse', 'Keyboard', 'Headset'].includes(category)) {
+        newFilters = { ...newFilters, category: '', subcategory: category };
+      } else {
+        newFilters = { ...newFilters, category: category, subcategory: '' };
+      }
+      if (onApplyFilters) onApplyFilters(newFilters);
+      return newFilters;
+    });
     if (onCategoryChange) onCategoryChange(category);
   };
 
@@ -65,10 +84,20 @@ const FilterProduct = ({ onCategoryChange }) => {
   };
 
   const applyFilters = () => {
-    console.log('Filters applied:', filters);
-    // Kirim filter ke parent atau lakukan aksi filter
+    if (onApplyFilters) {
+      onApplyFilters(filters); // Kirim filter ke parent
+    }
     setFilterOpen(false);
   };
+
+  useEffect(() => {
+    if (initialCategory) {
+      setActiveCategory(initialCategory);
+      setFilters((prev) => ({ ...prev, category: initialCategory, subcategory: '' }));
+      if (onApplyFilters) onApplyFilters({ ...filters, category: initialCategory, subcategory: '' });
+    }
+    // eslint-disable-next-line
+  }, [initialCategory]);
 
   return (
     <div style={{ width: '100%' }}>

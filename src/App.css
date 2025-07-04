@@ -85,3 +85,8 @@ html, body {
   backdrop-filter: blur(6px);
   background-color: rgba(0, 0, 0, 0.3) !important;
 } */
+
+.input-search-white::placeholder {
+  color: #fff !important;
+  opacity: 1;
+}

@@ -5,6 +5,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 import '../styles/ProductCarousel.css'; // Import file CSS untuk styling tambahan
+import '../styles/ProductCarouselResponsive.css'; // Import file CSS responsif
 
 const ProductCarousel = ({ images }) => {
   const [selectedImage, setSelectedImage] = useState(images[0]); // State untuk gambar utama
@@ -32,13 +33,14 @@ const ProductCarousel = ({ images }) => {
       </div>
 
       {/* Main Image */}
-      <div className="main-image-container" style={{ flex: 1 }}>
+      <div className="main-image-container" style={{ flex: 1, minWidth: 0 }}>
         <Swiper
           modules={[Navigation, Pagination]}
           navigation
           pagination={{ clickable: true }}
           loop={true}
           className="main-swiper"
+          style={{ width: '100%' }}
         >
           <SwiperSlide>
             <img
@@ -47,8 +49,12 @@ const ProductCarousel = ({ images }) => {
               style={{
                 width: '100%',
                 height: 'auto',
+                maxHeight: '350px',
                 objectFit: 'contain',
                 borderRadius: '10px',
+                display: 'block',
+                margin: '0 auto',
+                maxWidth: '100%',
               }}
             />
           </SwiperSlide>

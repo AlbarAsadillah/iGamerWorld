@@ -17,7 +17,6 @@ import {
   message,
 } from 'antd';
 import {
-  EyeOutlined,
   EditOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
@@ -26,9 +25,8 @@ import {
 } from '@ant-design/icons';
 import AdminLayout from '../../Layout/AdminLayout';
 import { dummyProducts } from '../../data/dummyProducts';
+import { brandMeta } from '../../data/brandMeta';
 import { useNavigate } from 'react-router-dom';
-
-
 
 const { confirm } = Modal;
 const { Title, Text } = Typography;
@@ -50,20 +48,22 @@ const AdminProduct = () => {
     }))
   );
 
-  // Metadata modal state
+  const [searchText, setSearchText] = useState('');
   const [metadataModalVisible, setMetadataModalVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('categories');
 
-  // Sample categories and subcategories data
   const [categories, setCategories] = useState([
     { id: 1, name: 'Aksesoris', subcategories: ['Mouse', 'Keyboard', 'Headset', 'Mousepad'] },
     { id: 2, name: 'Komponen', subcategories: ['CPU', 'GPU', 'RAM', 'Storage', 'Motherboard'] },
     { id: 3, name: 'PC Bundling', subcategories: ['Gaming PC', 'Office PC', 'Workstation'] },
   ]);
 
+  const [brands, setBrands] = useState([...brandMeta]);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newSubcategoryName, setNewSubcategoryName] = useState('');
   const [selectedCategoryForSub, setSelectedCategoryForSub] = useState(null);
+  const [newBrandName, setNewBrandName] = useState('');
+  const [newBrandLogo, setNewBrandLogo] = useState(null);
 
   const showDeleteConfirm = (record) => {
     confirm({
@@ -85,11 +85,6 @@ const AdminProduct = () => {
     );
   };
 
-  const handleView = (record) => {
-    navigate(`/admin-view-product/${record.productId}`);
-  };
-
-  // Metadata management functions
   const handleAddCategory = () => {
     if (newCategoryName.trim()) {
       const newCategory = {
@@ -137,6 +132,18 @@ const AdminProduct = () => {
     message.success('Subcategory deleted successfully!');
   };
 
+  const handleAddBrand = () => {
+    if (newBrandName && newBrandLogo) {
+      const logoUrl = URL.createObjectURL(newBrandLogo);
+      setBrands([...brands, { name: newBrandName, logo: logoUrl }]);
+      setNewBrandName('');
+      setNewBrandLogo(null);
+      message.success('Brand added!');
+    } else {
+      message.error('Please input brand name and logo!');
+    }
+  };
+
   const columns = [
     {
       title: 'Product Id',
@@ -148,6 +155,8 @@ const AdminProduct = () => {
       title: 'Product',
       dataIndex: 'name',
       key: 'product',
+      filteredValue: searchText ? [searchText] : null,
+      onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
       sorter: (a, b) => a.name.localeCompare(b.name),
       render: (_, record) => (
         <Space align="center">
@@ -188,7 +197,6 @@ const AdminProduct = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          {/* <Button icon={<EyeOutlined />} onClick={() => handleView(record)} /> */}
           <Button
             icon={<EditOutlined />}
             onClick={() => navigate(`/admin-edit-product/${record.productId}`)}
@@ -217,12 +225,22 @@ const AdminProduct = () => {
           <Breadcrumb.Item>Products</Breadcrumb.Item>
         </Breadcrumb>
 
-        <Row gutter={[16, 16]} justify="end">
+        {/* Search Bar & Metadata Button sejajar */}
+        <Row gutter={[16, 16]} align="middle" justify="space-between" style={{ marginBottom: 16 }}>
           <Col xs={24} sm={12} md={8} lg={6}>
-            <Space direction="vertical" style={{ width: '100%' }}>
+            <Input.Search
+              placeholder="Search product..."
+              allowClear
+              enterButton="Search"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              style={{ fontFamily: 'Poppins, sans-serif' }}
+            />
+          </Col>
+          <Col xs={24} sm={12} md={8} lg={6} style={{ textAlign: 'right' }}>
+            <Space direction="horizontal" style={{ width: '100%', justifyContent: 'flex-end' }}>
               <Button
                 type="primary"
-                block
                 onClick={() => navigate('/admin-add-product')}
                 style={{ fontFamily: 'Poppins, sans-serif' }}
               >
@@ -230,7 +248,6 @@ const AdminProduct = () => {
               </Button>
               <Button
                 icon={<SettingOutlined />}
-                block
                 onClick={() => setMetadataModalVisible(true)}
                 style={{ fontFamily: 'Poppins, sans-serif' }}
               >
@@ -248,13 +265,8 @@ const AdminProduct = () => {
           style={{ marginTop: 16 }}
         />
 
-        {/* Metadata Management Modal */}
         <Modal
-          title={
-            <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px', fontWeight: '600' }}>
-              Metadata Management
-            </span>
-          }
+          title="Metadata Management"
           open={metadataModalVisible}
           onCancel={() => setMetadataModalVisible(false)}
           footer={null}
@@ -266,85 +278,67 @@ const AdminProduct = () => {
               <Button
                 type={activeTab === 'categories' ? 'primary' : 'default'}
                 onClick={() => setActiveTab('categories')}
-                style={{ fontFamily: 'Poppins, sans-serif' }}
               >
                 Categories
               </Button>
               <Button
                 type={activeTab === 'subcategories' ? 'primary' : 'default'}
                 onClick={() => setActiveTab('subcategories')}
-                style={{ fontFamily: 'Poppins, sans-serif' }}
               >
                 Subcategories
+              </Button>
+              <Button
+                type={activeTab === 'brands' ? 'primary' : 'default'}
+                onClick={() => setActiveTab('brands')}
+              >
+                Brands
               </Button>
             </Space>
           </div>
 
+          {/* Categories Tab */}
           {activeTab === 'categories' && (
             <div>
-              <Title level={4} style={{ fontFamily: 'Poppins, sans-serif' }}>
-                Manage Categories
-              </Title>
-
-              {/* Add New Category */}
+              <Title level={4}>Manage Categories</Title>
               <div style={{ marginBottom: 24, padding: 16, backgroundColor: '#f6ffed', borderRadius: 8 }}>
-                <Text strong style={{ fontFamily: 'Poppins, sans-serif', display: 'block', marginBottom: 12 }}>
-                  Add New Category
-                </Text>
+                <Text strong>Add New Category</Text>
                 <Space.Compact style={{ width: '100%' }}>
                   <Input
                     placeholder="Enter category name"
                     value={newCategoryName}
                     onChange={(e) => setNewCategoryName(e.target.value)}
                     onPressEnter={handleAddCategory}
-                    style={{ fontFamily: 'Poppins, sans-serif' }}
                   />
                   <Button
                     type="primary"
                     icon={<PlusOutlined />}
                     onClick={handleAddCategory}
-                    style={{ fontFamily: 'Poppins, sans-serif' }}
                   >
                     Add
                   </Button>
                 </Space.Compact>
               </div>
-
-              {/* Categories List */}
               <List
-                header={
-                  <Text strong style={{ fontFamily: 'Poppins, sans-serif' }}>
-                    Existing Categories ({categories.length})
-                  </Text>
-                }
+                header={<Text strong>Existing Categories ({categories.length})</Text>}
                 bordered
                 dataSource={categories}
                 renderItem={(category) => (
                   <List.Item
                     actions={[
                       <Popconfirm
-                        title="Are you sure you want to delete this category?"
-                        description="This will also delete all subcategories under this category."
+                        title="Delete this category?"
                         onConfirm={() => handleDeleteCategory(category.id)}
                         okText="Yes"
                         cancelText="No"
                       >
-                        <Button
-                          danger
-                          size="small"
-                          style={{ fontFamily: 'Poppins, sans-serif' }}
-                        >
-                          Delete
-                        </Button>
+                        <Button danger size="small">Delete</Button>
                       </Popconfirm>
                     ]}
                   >
                     <div>
-                      <Text strong style={{ fontFamily: 'Poppins, sans-serif' }}>
-                        {category.name}
-                      </Text>
+                      <Text strong>{category.name}</Text>
                       <br />
-                      <Text type="secondary" style={{ fontFamily: 'Poppins, sans-serif', fontSize: '12px' }}>
+                      <Text type="secondary" style={{ fontSize: '12px' }}>
                         {category.subcategories.length} subcategories
                       </Text>
                     </div>
@@ -354,23 +348,18 @@ const AdminProduct = () => {
             </div>
           )}
 
+          {/* Subcategories Tab */}
           {activeTab === 'subcategories' && (
             <div>
-              <Title level={4} style={{ fontFamily: 'Poppins, sans-serif' }}>
-                Manage Subcategories
-              </Title>
-
-              {/* Add New Subcategory */}
+              <Title level={4}>Manage Subcategories</Title>
               <div style={{ marginBottom: 24, padding: 16, backgroundColor: '#f6ffed', borderRadius: 8 }}>
-                <Text strong style={{ fontFamily: 'Poppins, sans-serif', display: 'block', marginBottom: 12 }}>
-                  Add New Subcategory
-                </Text>
+                <Text strong>Add New Subcategory</Text>
                 <Space direction="vertical" style={{ width: '100%' }}>
                   <Select
                     placeholder="Select category"
                     value={selectedCategoryForSub}
                     onChange={setSelectedCategoryForSub}
-                    style={{ width: '100%', fontFamily: 'Poppins, sans-serif' }}
+                    style={{ width: '100%' }}
                   >
                     {categories.map(category => (
                       <Option key={category.id} value={category.id}>
@@ -384,29 +373,21 @@ const AdminProduct = () => {
                       value={newSubcategoryName}
                       onChange={(e) => setNewSubcategoryName(e.target.value)}
                       onPressEnter={handleAddSubcategory}
-                      style={{ fontFamily: 'Poppins, sans-serif' }}
                     />
                     <Button
                       type="primary"
                       icon={<PlusOutlined />}
                       onClick={handleAddSubcategory}
                       disabled={!selectedCategoryForSub}
-                      style={{ fontFamily: 'Poppins, sans-serif' }}
                     >
                       Add
                     </Button>
                   </Space.Compact>
                 </Space>
               </div>
-
-              {/* Subcategories List */}
               {categories.map(category => (
                 <div key={category.id} style={{ marginBottom: 24 }}>
-                  <Divider orientation="left">
-                    <Text strong style={{ fontFamily: 'Poppins, sans-serif' }}>
-                      {category.name} ({category.subcategories.length})
-                    </Text>
-                  </Divider>
+                  <Divider orientation="left">{category.name}</Divider>
                   {category.subcategories.length > 0 ? (
                     <List
                       size="small"
@@ -416,34 +397,77 @@ const AdminProduct = () => {
                         <List.Item
                           actions={[
                             <Popconfirm
-                              title="Are you sure you want to delete this subcategory?"
+                              title="Delete this subcategory?"
                               onConfirm={() => handleDeleteSubcategory(category.id, subcategory)}
                               okText="Yes"
                               cancelText="No"
                             >
-                              <Button
-                                danger
-                                size="small"
-                                style={{ fontFamily: 'Poppins, sans-serif' }}
-                              >
-                                Delete
-                              </Button>
+                              <Button danger size="small">Delete</Button>
                             </Popconfirm>
                           ]}
                         >
-                          <Text style={{ fontFamily: 'Poppins, sans-serif' }}>
-                            {subcategory}
-                          </Text>
+                          <Text>{subcategory}</Text>
                         </List.Item>
                       )}
                     />
                   ) : (
-                    <Text type="secondary" style={{ fontFamily: 'Poppins, sans-serif', fontStyle: 'italic' }}>
-                      No subcategories yet
-                    </Text>
+                    <Text type="secondary" italic>No subcategories yet</Text>
                   )}
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Brands Tab */}
+          {activeTab === 'brands' && (
+            <div>
+              <Title level={4}>Manage Brands</Title>
+              <div style={{ marginBottom: 24, padding: 16, backgroundColor: '#f6ffed', borderRadius: 8 }}>
+                <Text strong>Add New Brand</Text>
+                <Space direction="vertical" style={{ width: '100%' }}>
+                  <Input
+                    placeholder="Enter brand name"
+                    value={newBrandName}
+                    onChange={e => setNewBrandName(e.target.value)}
+                    style={{ width: 300 }}
+                  />
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={e => setNewBrandLogo(e.target.files[0])}
+                    style={{ width: 300 }}
+                  />
+                  <Button
+                    type="primary"
+                    icon={<PlusOutlined />}
+                    onClick={handleAddBrand}
+                  >
+                    Add
+                  </Button>
+                </Space>
+              </div>
+              <List
+                header={<Text strong>Existing Brands ({brands.length})</Text>}
+                bordered
+                dataSource={brands}
+                renderItem={brand => (
+                  <List.Item
+                    actions={[
+                      <Popconfirm
+                        title="Delete this brand?"
+                        onConfirm={() => setBrands(brands.filter(b => b.name !== brand.name))}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <Button danger size="small">Delete</Button>
+                      </Popconfirm>
+                    ]}
+                  >
+                    <img src={brand.logo} alt={brand.name} style={{ width: 32, height: 32, objectFit: 'contain', marginRight: 12 }} />
+                    <Text strong>{brand.name}</Text>
+                  </List.Item>
+                )}
+              />
             </div>
           )}
         </Modal>

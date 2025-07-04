@@ -1,5 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import Button1 from './Button'; 
+import Button2 from './Button2'; 
 
 const ModalInvoice = ({ show, onHide, invoiceData, onPayNow }) => {
   if (!invoiceData) return null;
@@ -64,6 +66,36 @@ const ModalInvoice = ({ show, onHide, invoiceData, onPayNow }) => {
     fontWeight: '700',
     fontSize: 20,
     color: '#FFD700',
+  };
+
+  // Helper untuk menampilkan harga satuan (handle varian & undefined)
+  const getDisplayPrice = (item) => {
+    if (item.variant && typeof item.variant.price === 'number') {
+      return item.variant.price.toLocaleString('id-ID');
+    }
+    if (typeof item.price === 'number') {
+      return item.price.toLocaleString('id-ID');
+    }
+    if (item.variants && item.variants.length > 0) {
+      const minPrice = Math.min(...item.variants.map(v => v.price));
+      return minPrice.toLocaleString('id-ID');
+    }
+    return '-';
+  };
+
+  // Helper untuk subtotal (harga x qty, handle varian)
+  const getSubtotal = (item) => {
+    if (item.variant && typeof item.variant.price === 'number') {
+      return (item.variant.price * (item.quantity || 1)).toLocaleString('id-ID');
+    }
+    if (typeof item.price === 'number') {
+      return (item.price * (item.quantity || 1)).toLocaleString('id-ID');
+    }
+    if (item.variants && item.variants.length > 0) {
+      const minPrice = Math.min(...item.variants.map(v => v.price));
+      return (minPrice * (item.quantity || 1)).toLocaleString('id-ID');
+    }
+    return '-';
   };
 
   return (
@@ -133,10 +165,10 @@ const ModalInvoice = ({ show, onHide, invoiceData, onPayNow }) => {
                 <div style={{ flex: '1 1 50%', wordBreak: 'break-word' }}>{item.name}</div>
                 <div style={{ flex: '0 0 15%', textAlign: 'center' }}>{item.quantity || 1}</div>
                 <div style={{ flex: '0 0 15%', textAlign: 'right' }}>
-                  Rp {item.price.toLocaleString('id-ID')}
+                  Rp {getDisplayPrice(item)}
                 </div>
                 <div style={{ flex: '0 0 15%', textAlign: 'right' }}>
-                  Rp {(item.price * (item.quantity || 1)).toLocaleString('id-ID')}
+                  Rp {getSubtotal(item)}
                 </div>
               </div>
             ))
@@ -160,16 +192,16 @@ const ModalInvoice = ({ show, onHide, invoiceData, onPayNow }) => {
           gap: '10px',
         }}
       >
-        <Button
+        <Button2
           variant="outline-light"
           onClick={onHide}
           className="fw-semibold"
           style={{ letterSpacing: '1px', flex: 1 }}
         >
           Tutup
-        </Button>
+        </Button2>
         {onPayNow && (
-          <Button
+          <Button1
             variant="warning"
             onClick={onPayNow}
             className="fw-semibold"
@@ -182,7 +214,7 @@ const ModalInvoice = ({ show, onHide, invoiceData, onPayNow }) => {
             }}
           >
             Bayar Sekarang
-          </Button>
+          </Button1>
         )}
       </Modal.Footer>
     </Modal>

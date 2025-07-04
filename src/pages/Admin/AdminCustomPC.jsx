@@ -62,7 +62,7 @@ const AdminCustomPC = () => {
       key: String(order.id),
       orderId: String(order.id),
       date: new Date(order.createdAt).toLocaleDateString('id-ID'),
-      customer: 'Guest',
+      customer: 'Albar A',
       status: order.status === 'dalamPengiriman'
         ? 'Dalam Pengiriman'
         : order.status === 'menungguVerifikasi'
@@ -194,9 +194,9 @@ const AdminCustomPC = () => {
       width: 120,
       render: (_, record) => (
         <Space>
-          <Tooltip title="View">
+          {/* <Tooltip title="View">
             <Button icon={<EyeOutlined />} onClick={() => handleView(record)} size="small" />
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip title="Edit">
             <Button icon={<EditOutlined />} onClick={() => handleEdit(record)} size="small" />
           </Tooltip>

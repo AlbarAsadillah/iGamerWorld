@@ -41,7 +41,7 @@ const AdminViewOrder = () => {
         orderId: String(local.id),
         invoice: `INV-${local.id}`,
         date: new Date(local.createdAt).toLocaleDateString('id-ID'),
-        customer: savedAddress ? savedAddress.name : 'Guest',
+        customer: savedAddress ? savedAddress.name : 'Albar A',
         phone: savedAddress ? savedAddress.phone : '-',
         address: savedAddress ? savedAddress.address : '-',
         status: local.status === 'diproses' ? 'Diproses' : local.status,

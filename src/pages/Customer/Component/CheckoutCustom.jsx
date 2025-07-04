@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Button, Form, Card } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form, Card, Modal } from 'react-bootstrap';
 import Button1 from '../../../components/Button';
 
 const CheckoutCustom = () => {
@@ -24,11 +24,17 @@ const CheckoutCustom = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [shippingAddress, setShippingAddress] = useState(null);
   const [selectedShippingMethod, setSelectedShippingMethod] = useState('');
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [addresses, setAddresses] = useState([]);
 
   useEffect(() => {
     const addressData = localStorage.getItem('selectedAddress');
     if (addressData) {
       setShippingAddress(JSON.parse(addressData));
+    }
+    const allAddresses = localStorage.getItem('addresses');
+    if (allAddresses) {
+      setAddresses(JSON.parse(allAddresses));
     }
   }, []);
 
@@ -132,12 +138,30 @@ const CheckoutCustom = () => {
     }
   };
 
+  const handleSelectAddress = (addr) => {
+    localStorage.setItem('selectedAddress', JSON.stringify(addr));
+    setShippingAddress(addr);
+    setShowAddressModal(false);
+  };
+
   const paymentMethods = ['BCA Transfer', 'BNI Transfer', 'BRI Transfer', 'Jenius Transfer'];
   const paymentIcons = {
     'BCA Transfer': "/images/BCA.png",
     'BNI Transfer': "/images/BNI.png",
     'BRI Transfer': "/images/BRI.png",
     'Jenius Transfer': "/images/Jenius.png",
+  };
+
+  // Helper untuk menampilkan harga (handle varian & undefined)
+  const getDisplayPrice = (item) => {
+    if (item.variants && item.variants.length > 0) {
+      const minPrice = Math.min(...item.variants.map(v => v.price));
+      return minPrice.toLocaleString('id-ID');
+    }
+    if (typeof item.price === 'number') {
+      return item.price.toLocaleString('id-ID');
+    }
+    return '-';
   };
 
   return (
@@ -157,32 +181,43 @@ const CheckoutCustom = () => {
       <h2 className="mb-4 text-start">Checkout Custom</h2>
       <Row>
         <Col xs={12} md={8} className="mb-4">
-          <Card
+          {/* Alamat Pengiriman */}
+          <div
             style={{
               backgroundColor: '#333',
               borderRadius: '10px',
               padding: '20px',
               marginBottom: '20px',
-              border: '1px solid #FFD700',
               textAlign: 'left',
             }}
           >
-            <h5 style={{ color: '#FFD700', fontWeight: 'semibold' }}>Alamat Pengiriman</h5>
+            <Row className="align-items-center mb-2">
+              <Col>
+                <h5 style={{ color: '#FFD700', fontWeight: 'semibold', marginBottom: 0 }}>
+                  Alamat Pengiriman
+                </h5>
+              </Col>
+              <Col xs="auto">
+                <Button1
+                  variant={shippingAddress ? 'outline-warning' : 'warning'}
+                  size="sm"
+                  onClick={() => setShowAddressModal(true)}
+                >
+                  {shippingAddress ? 'Ganti Alamat' : 'Pilih Alamat'}
+                </Button1>
+              </Col>
+            </Row>
             {shippingAddress ? (
               <>
-                <p>{shippingAddress.name}</p>
-                <p>{shippingAddress.phone}</p>
-                <p>{shippingAddress.address}</p>
+                <p className="mb-1">{shippingAddress.name}</p>
+                <p className="mb-1">{shippingAddress.phone}</p>
+                <p className="mb-1">{shippingAddress.address}</p>
+                <p className="mb-0"><em>Catatan: {shippingAddress.note}</em></p>
               </>
             ) : (
-              <>
-                <p>Belum ada alamat. Silakan pilih di halaman alamat.</p>
-                <Button variant="warning" size="sm" onClick={() => navigate('/address')}>
-                  Pilih Alamat
-                </Button>
-              </>
+              <p className="mb-0">Belum ada alamat. Silakan pilih alamat pengiriman.</p>
             )}
-          </Card>
+          </div>
 
           <Card
             style={{
@@ -245,7 +280,7 @@ const CheckoutCustom = () => {
                 />
                 <div style={{ flex: 1, textAlign: 'left' }}>
                   <h5>{item.name}</h5>
-                  <p>Harga: Rp {item.price.toLocaleString('id-ID')}</p>
+                  <p>Harga: Rp {getDisplayPrice(item)}</p>
                   <p>Jumlah: {item.quantity || 1}</p>
                 </div>
               </div>
@@ -259,6 +294,7 @@ const CheckoutCustom = () => {
               backgroundColor: '#333',
               borderRadius: '10px',
               padding: '20px',
+              color: '#ffffff',
               textAlign: 'left',
             }}
           >
@@ -292,7 +328,7 @@ const CheckoutCustom = () => {
                   checked={selectedPaymentMethod === method}
                   onChange={handlePaymentMethodChange}
                   style={{
-                    color: '#FFFFFF',
+                    color: '#ffffff',
                     marginLeft: '0px',
                   }}
                 />
@@ -328,6 +364,39 @@ const CheckoutCustom = () => {
           </Card>
         </Col>
       </Row>
+
+      {/* Modal Pilih Alamat - Dark Mode */}
+      <Modal show={showAddressModal} onHide={() => setShowAddressModal(false)} centered>
+        <Modal.Header closeButton style={{ backgroundColor: '#222', color: '#fff' }}>
+          <Modal.Title>Pilih Alamat Pengiriman</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ backgroundColor: '#1a1a1a', color: '#fff' }}>
+          {addresses.length === 0 ? (
+            <p>Belum ada alamat. Silakan tambahkan alamat di halaman Address Book.</p>
+          ) : (
+            addresses.map((addr) => (
+              <div
+                key={addr.id}
+                style={{
+                  border: '1px solid #444',
+                  borderRadius: '10px',
+                  padding: '10px',
+                  marginBottom: '10px',
+                  cursor: 'pointer',
+                  backgroundColor: '#2c2c2c',
+                }}
+                onClick={() => handleSelectAddress(addr)}
+              >
+                <strong>{addr.name}</strong>
+                <p>{addr.phone}</p>
+                <p>{addr.address}</p>
+                <p><em>Catatan: {addr.note}</em></p>
+                {addr.isDefault && <span style={{color:'#FFD700', fontWeight:'bold'}}>Alamat Utama</span>}
+              </div>
+            ))
+          )}
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };

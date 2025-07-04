@@ -9,16 +9,20 @@ const { Title, Text } = Typography;
 
 const SuperAdminWebSettings = () => {
   // State untuk multi main banner
-  const [mainBannerFiles, setMainBannerFiles] = useState([]);
-  const [mainBannerPreviews, setMainBannerPreviews] = useState([]);
+  const [mainBannerFiles, setMainBannerFiles] = useState([
+    { uid: '-1', name: 'Banner1.png', url: '/images/Banner1.png' },
+    { uid: '-2', name: 'Banner2.png', url: '/images/Banner2.png' },
+  ]);
 
   // Footer banner tetap satu file
-  const [footerBannerFile, setFooterBannerFile] = useState(null);
-  const [footerBannerPreview, setFooterBannerPreview] = useState(null);
+  const [footerBannerFile, setFooterBannerFile] = useState({ uid: '-1', name: 'footbaner.png', url: '/images/footbaner.png' });
 
   // Media coverage multi file
-  const [mediaCoverageFiles, setMediaCoverageFiles] = useState([]);
-  const [mediaCoveragePreviews, setMediaCoveragePreviews] = useState([]);
+  const [mediaCoverageFiles, setMediaCoverageFiles] = useState([
+    { uid: '-1', name: 'media1.png', url: '/images/media/1.png' },
+    { uid: '-2', name: 'media2.png', url: '/images/media/2.png' },
+    { uid: '-3', name: 'media3.png', url: '/images/media/3.png' },
+  ]);
 
   // State untuk metode pengiriman
   const [shippingMethods, setShippingMethods] = useState([
@@ -29,14 +33,21 @@ const SuperAdminWebSettings = () => {
 
   // State untuk metode pembayaran
   const [paymentMethods, setPaymentMethods] = useState([
-    { id: 1, name: 'Transfer Bank BCA', accountNumber: '1234567890', active: true },
-    { id: 2, name: 'Transfer Bank Mandiri', accountNumber: '0987654321', active: true },
-    { id: 3, name: 'Transfer Bank BRI', accountNumber: '1122334455', active: false },
+    { id: 1, name: 'BCA Transfer', accountNumber: '1234567890', active: true, logo: '/images/BCA.png' },
+    { id: 2, name: 'BNI Transfer', accountNumber: '0987654321', active: true, logo: '/images/BNI.png' },
+    { id: 3, name: 'BRI Transfer', accountNumber: '1122334455', active: false, logo: '/images/BRI.png' },
+    { id: 4, name: 'Jenius Transfer', accountNumber: '5566778899', active: true, logo: '/images/Jenius.png' },
   ]);
+
+  const [mainBannerPreviews, setMainBannerPreviews] = useState([]);
+  const [footerBannerPreview, setFooterBannerPreview] = useState(null);
+  const [mediaCoveragePreviews, setMediaCoveragePreviews] = useState([]);
 
   // Update preview URLs untuk main banner
   useEffect(() => {
-    const urls = mainBannerFiles.map(file => URL.createObjectURL(file));
+    const urls = mainBannerFiles
+      .filter(file => file instanceof File || file instanceof Blob)
+      .map(file => URL.createObjectURL(file));
     setMainBannerPreviews(urls);
     return () => {
       urls.forEach(url => URL.revokeObjectURL(url));
@@ -45,10 +56,12 @@ const SuperAdminWebSettings = () => {
 
   // Update preview URL untuk footer banner
   useEffect(() => {
-    if (footerBannerFile) {
+    if (footerBannerFile && (footerBannerFile instanceof File || footerBannerFile instanceof Blob)) {
       const url = URL.createObjectURL(footerBannerFile);
       setFooterBannerPreview(url);
       return () => URL.revokeObjectURL(url);
+    } else if (footerBannerFile && footerBannerFile.url) {
+      setFooterBannerPreview(footerBannerFile.url);
     } else {
       setFooterBannerPreview(null);
     }
@@ -56,7 +69,9 @@ const SuperAdminWebSettings = () => {
 
   // Update preview URLs untuk media coverage
   useEffect(() => {
-    const urls = mediaCoverageFiles.map(file => URL.createObjectURL(file));
+    const urls = mediaCoverageFiles
+      .filter(file => file instanceof File || file instanceof Blob)
+      .map(file => URL.createObjectURL(file));
     setMediaCoveragePreviews(urls);
     return () => {
       urls.forEach(url => URL.revokeObjectURL(url));
@@ -76,6 +91,11 @@ const SuperAdminWebSettings = () => {
       setPaymentMethods(JSON.parse(savedPaymentMethods));
     }
   }, []);
+
+  // Sync paymentMethods ke localStorage setiap kali berubah
+  useEffect(() => {
+    localStorage.setItem('paymentMethods', JSON.stringify(paymentMethods));
+  }, [paymentMethods]);
 
   // Handlers upload untuk main banner (multi file)
   const handleMainBannerUpload = (file) => {
@@ -292,6 +312,25 @@ const SuperAdminWebSettings = () => {
                     {paymentMethods.map((method) => (
                       <Card key={method.id} size="small" style={{ backgroundColor: '#fafafa' }}>
                         <Row gutter={16} align="middle">
+                          <Col span={4}>
+                            {!method.logo ? (
+                              <Upload
+                                accept="image/*"
+                                showUploadList={false}
+                                beforeUpload={file => {
+                                  updatePaymentMethod(method.id, 'logo', file);
+                                  return false;
+                                }}
+                              >
+                                <Button icon={<UploadOutlined />}>Logo</Button>
+                              </Upload>
+                            ) : (
+                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <img src={typeof method.logo === 'string' ? method.logo : (method.logo instanceof File || method.logo instanceof Blob ? URL.createObjectURL(method.logo) : '')} alt="logo" style={{ width: 32, height: 32, objectFit: 'contain', marginTop: 4 }} />
+                                <Button size="small" danger style={{ marginTop: 4 }} onClick={() => updatePaymentMethod(method.id, 'logo', null)}>Hapus</Button>
+                              </div>
+                            )}
+                          </Col>
                           <Col span={6}>
                             <Input
                               placeholder="Nama bank"
@@ -299,7 +338,7 @@ const SuperAdminWebSettings = () => {
                               onChange={(e) => updatePaymentMethod(method.id, 'name', e.target.value)}
                             />
                           </Col>
-                          <Col span={10}>
+                          <Col span={7}>
                             <Input
                               placeholder="No. Rekening"
                               value={method.accountNumber}
@@ -314,7 +353,7 @@ const SuperAdminWebSettings = () => {
                               unCheckedChildren="Nonaktif"
                             />
                           </Col>
-                          <Col span={5}>
+                          <Col span={4}>
                             <Button
                               danger
                               icon={<DeleteOutlined />}

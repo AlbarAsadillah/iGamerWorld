@@ -42,7 +42,12 @@ const Payment = () => {
     console.log('Using dummy data for testing:', { finalItems, finalTotal, finalShipping });
   }
 
-  const subtotal = finalItems.reduce((total, item) => total + (item.price || 0) * (item.quantity || 0), 0);
+  const subtotal = finalItems.reduce((total, item) => {
+    const price = item.selectedVariant && item.selectedVariant.price
+      ? item.selectedVariant.price
+      : item.price || 0;
+    return total + price * (item.quantity || 0);
+  }, 0);
   const virtualAccount = '00812345001';
 
   // Handler untuk file upload
@@ -244,8 +249,8 @@ const Payment = () => {
                 onClick={() => setShowCancelModal(true)}
                 style={{
                   flex: 1,
-                  backgroundColor: '#dc3545',
-                  borderColor: '#dc3545',
+                  // backgroundColor: '#dc3545',
+                  borderColor: '#FDD700',
                   width: '100%'
                 }}
               />
@@ -255,8 +260,8 @@ const Payment = () => {
                 style={{
                   flex: 1,
                   backgroundColor: 'transparent',
-                  borderColor: '#007bff',
-                  color: '#007bff',
+                  borderColor: '#000000',
+                  // color: '#007bff',
                   width: '100%'
                 }}
               />
@@ -298,7 +303,6 @@ const Payment = () => {
               <h5
                 style={{
                   fontSize: 'var(--he4)',
-                  marginBottom: 15,
                   textAlign: 'left',
                   fontWeight: 'semibold',
                 }}
@@ -372,6 +376,7 @@ const Payment = () => {
                     style={{
                       borderRadius: '6px',
                       padding: '10px',
+                      marginBottom: '15px'
                     }}
                   />
                   {paymentProof && (
@@ -395,6 +400,7 @@ const Payment = () => {
                 <Button1
                   label="Upload Bukti Bayar"
                   onClick={handleConfirmPayment}
+                  style={{width:'100%'}}
                 />
               </Form>
             </Card>

@@ -68,7 +68,7 @@ const SuperAdminOrder = () => {
       key: String(order.id),
       orderId: String(order.id),
       date: new Date(order.createdAt).toLocaleDateString('id-ID'),
-      customer: 'Guest',
+      customer: 'Albar A',
       status:
         order.status === 'diproses'
           ? 'Diproses'

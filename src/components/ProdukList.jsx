@@ -25,6 +25,7 @@ const ProdukList = () => {
                 minHeight: '100vh', // Tinggi minimum layar
                 backgroundColor: '#171717', // Warna latar belakang
                 color: 'white', // Warna teks default
+                marginTop:'-15px'
             }}
         >
             <h2 style={{ textAlign: 'left' }}>PRODUK</h2>
@@ -93,7 +94,23 @@ const ProdukList = () => {
                         id={product.id}
                         image={product.image}
                         name={product.name}
-                        price={`Rp${product.price.toLocaleString('id-ID')}`}
+                        price={
+                          product.variants && Array.isArray(product.variants) && product.variants.length > 0
+                            ? (() => {
+                                const prices = product.variants
+                                  .map(v => (v && typeof v.price === 'number' && isFinite(v.price) ? v.price : null))
+                                  .filter(p => p !== null);
+                                if (prices.length > 0) {
+                                  const minPrice = Math.min(...prices);
+                                  return isFinite(minPrice) && minPrice !== Infinity ? `Rp${minPrice.toLocaleString('id-ID')}` : '-';
+                                } else {
+                                  return '-';
+                                }
+                              })()
+                            : (typeof product.price === 'number' && isFinite(product.price))
+                              ? `Rp${product.price.toLocaleString('id-ID')}`
+                              : '-'
+                        }
                         textColor="#FFFFFF" // Mengatur warna teks menjadi putih
                     />
                 ))}
@@ -105,6 +122,7 @@ const ProdukList = () => {
                     <Button1
                     style={{
                         width: '200px',
+                        marginBottom: '35px'
                     }}
                     label="Lihat lainnya"
                         onClick={() => setVisibleCount((prevCount) => prevCount + 8)} // Tambah 8 produk lagi

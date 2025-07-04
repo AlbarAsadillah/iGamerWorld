@@ -230,7 +230,7 @@ const PaymentCustom = () => {
         const existingCustomPc = JSON.parse(localStorage.getItem('customPcHistory')) || [];
         localStorage.setItem('customPcHistory', JSON.stringify([newTransaction, ...existingCustomPc]));
 
-        console.log('✅ New transaction created with menunggu-verifikasi status:', newTransaction);
+        console.log('New transaction created with menunggu-verifikasi status:', newTransaction);
       }
 
       // Trigger event untuk refresh history
@@ -242,7 +242,7 @@ const PaymentCustom = () => {
       // Navigasi ke history tab menunggu verifikasi
       navigate('/history?tab=menungguVerifikasi');
     } catch (error) {
-      console.error('❌ Error updating transaction:', error);
+      console.error('Error updating transaction:', error);
       alert('Terjadi kesalahan saat mengupload bukti pembayaran. Silakan coba lagi.');
     }
   };
@@ -292,12 +292,12 @@ const PaymentCustom = () => {
               <Button2
                 label="Batalkan Pesanan"
                 onClick={() => setShowCancelModal(true)}
-                style={{ flex: 1, backgroundColor: '#dc3545', borderColor: '#dc3545' }}
+                style={{ flex: 1, borderColor: '#FDD700' }}
               />
-              <Button2
+              <Button1
                 label="Lihat Riwayat"
                 onClick={() => navigate('/history')}
-                style={{ flex: 1, backgroundColor: 'transparent', borderColor: '#007bff', color: '#007bff' }}
+                style={{ flex: 1, backgroundColor: 'transparent', borderColor: '#000000', }}
               />
             </div>
 
@@ -329,15 +329,14 @@ const PaymentCustom = () => {
                 borderRadius: 6,
                 padding: 20,
                 color: '#fff',
-                maxWidth: '500px',
-                margin: 'auto',
+                maxWidth: '500px', // Limit width to make it look more like the image
+                margin: 'auto', // Center the card
                 textAlign: 'start',
               }}
             >
               <h5
                 style={{
                   fontSize: 'var(--he4)',
-                  marginBottom: 15,
                   textAlign: 'left',
                   fontWeight: 'semibold',
                 }}
@@ -346,8 +345,9 @@ const PaymentCustom = () => {
               </h5>
 
               <Form>
+                {/* Row for Nama Bank and Atas Nama */}
                 <Row>
-                  <Col md={6}>
+                  <Col xs={12} sm={6} className="mb-3">
                     <Form.Group controlId="formBank">
                       <Form.Label style={{fontSize: 'var(--he5)', fontWeight:"semibold" }}>Nama Bank</Form.Label>
                       <Form.Control
@@ -368,7 +368,7 @@ const PaymentCustom = () => {
                     </Form.Group>
                   </Col>
 
-                  <Col md={6}>
+                  <Col xs={12} sm={6} className="mb-3">
                     <Form.Group controlId="formName">
                       <Form.Label style={{fontSize: 'var(--he5)', fontWeight:"semibold" }}>Atas Nama</Form.Label>
                       <Form.Control
@@ -385,6 +385,7 @@ const PaymentCustom = () => {
                   </Col>
                 </Row>
 
+                {/* Nomor Rekening */}
                 <Form.Group controlId="formAccountNumber" className="mt-3">
                   <Form.Label style={{fontSize: 'var(--he5)',fontWeight:"semibold" }}>Nomor Rekening</Form.Label>
                   <Form.Control
@@ -399,6 +400,7 @@ const PaymentCustom = () => {
                   />
                 </Form.Group>
 
+                {/* Upload Bukti Bayar */}
                 <Form.Group controlId="formUpload" className="mt-3">
                   <Form.Label style={{fontSize: 'var(--he5)', fontWeight:"semibold" }}>Upload Bukti Bayar</Form.Label>
                   <Form.Control
@@ -408,6 +410,7 @@ const PaymentCustom = () => {
                     style={{
                       borderRadius: '6px',
                       padding: '10px',
+                      marginBottom: '15px'
                     }}
                   />
                   {paymentProof && (
@@ -427,9 +430,11 @@ const PaymentCustom = () => {
                   )}
                 </Form.Group>
 
+                {/* Button with custom styling */}
                 <Button1
                   label="Upload Bukti Bayar"
                   onClick={handleConfirmPayment}
+                  style={{width:'100%'}}
                 />
               </Form>
             </Card>

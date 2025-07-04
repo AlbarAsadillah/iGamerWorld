@@ -1,0 +1,34 @@
+.product-carousel .main-image-container img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 350px;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .product-carousel {
+    flex-direction: column !important;
+    gap: 10px !important;
+    max-width: 100vw;
+  }
+  .product-carousel .main-image-container {
+    width: 100%;
+    min-width: 0;
+  }
+  .product-carousel .thumbnail-container {
+    flex-direction: row !important;
+    justify-content: center;
+    gap: 8px !important;
+  }
+  .product-carousel .thumbnail-container img {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  .product-carousel .main-image-container img {
+    max-height: 220px;
+  }
+}

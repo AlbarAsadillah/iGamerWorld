@@ -12,7 +12,7 @@ const Summary = () => {
   const [isAssembled, setIsAssembled] = useState(false);
 
   const totalPrice = Object.values(selectedItems).reduce(
-    (sum, item) => sum + (item.price || 0),
+    (sum, item) => sum + ((item.selectedVariant && item.selectedVariant.price) ? item.selectedVariant.price : (item.price || 0)),
     0
   );
 
@@ -30,7 +30,24 @@ const Summary = () => {
   };
 
   const handleBackToCustom = () => {
-    navigate('/components/cpu');
+    navigate('/components/cpu', {
+      state: { currentStep: 7, selectedItems }
+    });
+  };
+
+  // Helper untuk menampilkan harga (handle varian & undefined)
+  const getDisplayPrice = (product) => {
+    if (product.selectedVariant && product.selectedVariant.price) {
+      return product.selectedVariant.price.toLocaleString('id-ID');
+    }
+    if (product.variants && product.variants.length > 0) {
+      const minPrice = Math.min(...product.variants.map(v => v.price));
+      return minPrice.toLocaleString('id-ID');
+    }
+    if (typeof product.price === 'number') {
+      return product.price.toLocaleString('id-ID');
+    }
+    return '-';
   };
 
   return (
@@ -89,17 +106,17 @@ const Summary = () => {
                 <Button2
                 label="Kembali ke Custom"
                   onClick={handleBackToCustom}
+                  style={{width:'100%'}}
                 >
-                  Kembali ke Custom
+                  Kembali
                 </Button2>
-                <Button
-                  variant="warning"
+                <Button1
+                size='sm'
                   onClick={handleProceedCheckout}
-                  className="btn-sm"
-                  style={{ padding: '8px 16px', fontSize: '0.875rem' }}
+                  style={{width:'100%'}}
                 >
-                  Lanjut ke Pembayaran
-                </Button>
+                  Lanjut
+                </Button1>
               </div>
             </Form>
           </Card>
@@ -163,7 +180,7 @@ const Summary = () => {
                               {product.name}
                             </Card.Subtitle>
                             <Card.Text style={{ fontSize: '0.75rem', marginBottom: 0 }}>
-                              Harga: Rp {product.price.toLocaleString('id-ID')}
+                              Harga: Rp {getDisplayPrice(product)}
                             </Card.Text>
                           </Card.Body>
                         </Col>

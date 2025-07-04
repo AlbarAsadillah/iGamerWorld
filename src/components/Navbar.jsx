@@ -170,7 +170,13 @@ const NavigationBar = ({ setSearchQuery }) => {
               </Nav.Link>
               <Nav.Link
                 as={NavLink}
-                to="/custom"
+                to={user ? "/custom" : undefined}
+                onClick={e => {
+                  if (!user) {
+                    e.preventDefault();
+                    navigate('/login');
+                  }
+                }}
                 className={({ isActive }) =>
                   isActive ? 'text-white fw-bold text-decoration-underline' : 'text-white'
                 }
@@ -281,10 +287,10 @@ const NavigationBar = ({ setSearchQuery }) => {
                         key: '2',
                         label: <NavLink to="/address-book">Address Book</NavLink>
                       },
-                      // {
-                      //   key: '3',
-                      //   label: <NavLink to="/complaint">Pengaduan</NavLink>
-                      // },
+                      {
+                        key: '3',
+                        label: <NavLink to="/pengaduan">Pengaduan</NavLink>
+                      },
                       {
                         key: '4',
                         label: <span onClick={handleLogoutClick} style={{ cursor: 'pointer' }}>Logout</span>
@@ -293,7 +299,7 @@ const NavigationBar = ({ setSearchQuery }) => {
                   }}
                   trigger={['click']}
                 >
-                  <a className="text-white ms-auto" onClick={(e) => e.preventDefault()}>
+                  <a className="text-white ms-auto" onClick={(e) => e.preventDefault()} style={{ cursor: 'pointer' }}>
                     <Space>
                       {user.profilePhoto ? (
                         <img
@@ -310,7 +316,7 @@ const NavigationBar = ({ setSearchQuery }) => {
                       ) : (
                         <AccountCircleIcon style={{ color: 'white', fontSize: '30px' }} />
                       )}
-                      <span className="ms-2" style={{ color: 'white' }}>
+                      <span className="ms-2" style={{ color: 'white', cursor: 'pointer' }}>
                         {user.username}
                       </span>
                     </Space>

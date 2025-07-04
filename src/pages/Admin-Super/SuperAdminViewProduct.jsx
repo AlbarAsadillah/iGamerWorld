@@ -105,6 +105,25 @@ const SuperAdminViewProduct = () => {
                   <Descriptions.Item label="Description" span={3}>
                     {product.description}
                   </Descriptions.Item>
+                  {product.variants && product.variants.length > 0 && (
+                    <Descriptions.Item label="Variants" span={3}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        {product.variants.map((variant) => (
+                          <div key={variant.id} style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#f0f0f0', borderRadius: 12, padding: '4px 12px', border: '1px solid #d9d9d9' }}>
+                            <span style={{ fontWeight: 600 }}>{variant.name}</span>
+                            <span>Harga: <b>Rp {variant.price?.toLocaleString('id-ID') ?? '-'}</b></span>
+                            <span>Stok: <b>{variant.stock ?? '-'}</b></span>
+                            {variant.image && (
+                              <img src={typeof variant.image === 'string' ? variant.image : URL.createObjectURL(variant.image)} alt={variant.name} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 6, marginLeft: 8 }} />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <div style={{ marginTop: '6px', fontSize: '11px', color: '#666', fontStyle: 'italic' }}>
+                        {product.variants.length} variant{product.variants.length > 1 ? 's' : ''} available
+                      </div>
+                    </Descriptions.Item>
+                  )}
                 </Descriptions>
               </Col>
             </Row>

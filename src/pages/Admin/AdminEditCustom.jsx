@@ -125,7 +125,7 @@ const AdminEditCustom = () => {
         orderId: foundOrder.id,
         invoice: `INV-${foundOrder.id}`,
         date: new Date(foundOrder.createdAt || foundOrder.orderDate).toLocaleDateString('id-ID'),
-        customer: foundOrder.customerName || foundOrder.customer || 'Guest',
+        customer: foundOrder.customerName || foundOrder.customer || 'Albar A',
         phone: foundOrder.customerPhone || foundOrder.phone || '-',
         address: foundOrder.customerAddress || foundOrder.address || '-',
         status: mapStatusToCamelCase(foundOrder.status),
@@ -139,6 +139,7 @@ const AdminEditCustom = () => {
           name: item.name,
           category: item.category || '-',
           price: item.price || 0,
+          variant: item.variant || null,
           image: item.image || '/images/products/default.png',
           description: item.description || '',
         })),
@@ -149,6 +150,21 @@ const AdminEditCustom = () => {
   }, [orderId]);
 
   if (!order) return <div style={{ padding: 32 }}>Order not found</div>;
+
+  // Helper untuk menampilkan harga satuan (handle varian & undefined)
+  const getDisplayPrice = (item) => {
+    if (item.variant && typeof item.variant.price === 'number') {
+      return item.variant.price;
+    }
+    if (typeof item.price === 'number') {
+      return item.price;
+    }
+    if (item.variants && item.variants.length > 0) {
+      const minPrice = Math.min(...item.variants.map(v => v.price));
+      return minPrice;
+    }
+    return 0;
+  };
 
   const columns = [
     {
@@ -179,7 +195,7 @@ const AdminEditCustom = () => {
       dataIndex: 'price',
       key: 'price',
       align: 'right',
-      render: (price) => `Rp ${(price || 0).toLocaleString('id-ID')}`,
+      render: (_, record) => `Rp ${getDisplayPrice(record).toLocaleString('id-ID')}`,
     },
     {
       title: 'Qty',
@@ -193,7 +209,7 @@ const AdminEditCustom = () => {
       key: 'subtotal',
       align: 'right',
       render: (_, record) => {
-        const price = record.price || 0;
+        const price = getDisplayPrice(record);
         const qty = record.qty || 1;
         return `Rp ${(price * qty).toLocaleString('id-ID')}`;
       },
@@ -288,12 +304,8 @@ const AdminEditCustom = () => {
     if (fileList.length > 0) {
       const file = fileList[0];
       if (file.status === 'done' || file.originFileObj) {
-        // Convert file to base64 for storage
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setShippingProof(e.target.result);
-        };
-        reader.readAsDataURL(file.originFileObj || file);
+        // Simpan hanya nama file, bukan base64
+        setShippingProof(file.name);
       }
     } else {
       setShippingProof(null);
@@ -322,7 +334,7 @@ const AdminEditCustom = () => {
           ...o,
           status: 'dalamPengiriman',
           resi: resi,
-          shippingProof: shippingProof,
+          shippingProof: shippingProof, // hanya nama file
         };
       }
       return o;
@@ -335,7 +347,7 @@ const AdminEditCustom = () => {
           ...o,
           status: 'dalamPengiriman',
           resi: resi,
-          shippingProof: shippingProof,
+          shippingProof: shippingProof, // hanya nama file
         };
       }
       return o;
@@ -519,6 +531,10 @@ const AdminEditCustom = () => {
                 <Col xs={24} md={6}>
                   <div>Biaya Pengiriman</div>
                   <Input value={order.shippingCost.toLocaleString('id-ID')} disabled style={{ marginTop: 4 }} />
+                </Col>
+                <Col xs={24} md={6}>
+                  <div>Biaya Perakitan</div>
+                  <Input value={(order.assemblyFee ? order.assemblyFee : 150000).toLocaleString('id-ID')} disabled style={{ marginTop: 4 }} />
                 </Col>
                 <Col xs={24} md={6}>
                   <div>Pengiriman</div>

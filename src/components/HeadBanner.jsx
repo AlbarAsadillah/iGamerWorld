@@ -37,11 +37,6 @@ const HeadBanner = () => {
 
   return (
     <div style={style}>
-      <div style={cardStyle}>
-        <p style={textStyle}>
-          Gear Up, Power On
-        </p>
-      </div>
     </div>
   );
 };

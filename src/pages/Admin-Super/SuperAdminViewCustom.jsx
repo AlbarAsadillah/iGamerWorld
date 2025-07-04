@@ -85,7 +85,7 @@ const SuperAdminViewCustom = () => {
                 orderId: foundOrder.id,
                 invoice: `INV-${foundOrder.id}`,
                 date: new Date(foundOrder.createdAt || foundOrder.orderDate).toLocaleDateString('id-ID'),
-                customer: foundOrder.customerName || foundOrder.customer || 'Guest',
+                customer: foundOrder.customerName || foundOrder.customer || 'Albar A',
                 phone: foundOrder.customerPhone || foundOrder.phone || '-',
                 address: foundOrder.customerAddress || foundOrder.address || '-',
                 status: foundOrder.status
