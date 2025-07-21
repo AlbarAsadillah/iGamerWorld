@@ -34,6 +34,9 @@ const Account = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
 
+  // Tambahkan state untuk deteksi mobile
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
@@ -53,6 +56,11 @@ const Account = () => {
     if (selectedAddr) {
       setDefaultAddress(JSON.parse(selectedAddr));
     }
+
+    // Listener resize untuk update isMobile
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Profile handlers
@@ -233,27 +241,30 @@ const Account = () => {
     <div style={{
       // backgroundColor: '#1a1a1a',
       minHeight: '100vh',
-      padding: '40px 20px',
-      fontFamily: 'Poppins, sans-serif'
+      padding: isMobile ? '16px 4px' : '40px 20px',
+      fontFamily: 'Poppins, sans-serif',
+      background: isMobile ? '#111' : undefined
     }}>
       <div style={{
-        maxWidth: '1200px',
+        maxWidth: isMobile ? '100%' : '1200px',
         margin: '0 auto',
         display: 'flex',
-        gap: '40px',
-        alignItems: 'flex-start'
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: isMobile ? '16px' : '40px',
+        alignItems: isMobile ? 'stretch' : 'flex-start',
       }}>
         {/* Kolom Kiri - Profile Photo */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '20px',
+          gap: isMobile ? '10px' : '20px',
           backgroundColor:'#121212',
-          padding: '25px',
+          padding: isMobile ? '12px' : '25px',
           borderRadius: '10px',
-          flex: '0 0 300px',
-          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)'
+          flex: isMobile ? 'unset' : '0 0 300px',
+          boxShadow: isMobile ? '0 2px 6px rgba(0,0,0,0.15)' : '0 4px 10px rgba(0, 0, 0, 0.3)',
+          marginBottom: isMobile ? '10px' : 0
         }}>
           {/* Hidden file input */}
           <input
@@ -268,8 +279,8 @@ const Account = () => {
           <div
             onClick={() => fileInputRef.current?.click()}
             style={{
-              width: '150px',
-              height: '150px',
+              width: isMobile ? '90px' : '150px',
+              height: isMobile ? '90px' : '150px',
               borderRadius: '50%',
               backgroundColor: '#FFD700',
               display: 'flex',
@@ -278,10 +289,8 @@ const Account = () => {
               overflow: 'hidden',
               cursor: 'pointer',
               transition: 'transform 0.2s ease',
-              position: 'relative'
+              position: 'relative',
             }}
-            onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
-            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
           >
             {profilePhoto ? (
               <img
@@ -294,10 +303,9 @@ const Account = () => {
                 }}
               />
             ) : (
-              <FaUser style={{ fontSize: '60px', color: '#000' }} />
+              <FaUser style={{ fontSize: isMobile ? '36px' : '60px', color: '#000' }} />
             )}
           </div>
-
           {/* Username */}
           <div style={{ textAlign: 'center' }}>
             {showUsernameEdit ? (
@@ -311,11 +319,11 @@ const Account = () => {
                     border: '1px solid #FFD700',
                     borderRadius: '4px',
                     color: '#fff',
-                    padding: '8px 12px',
-                    fontSize: '16px',
+                    padding: isMobile ? '6px 8px' : '8px 12px',
+                    fontSize: isMobile ? '14px' : '16px',
                     fontWeight: 'bold',
                     textAlign: 'center',
-                    width: '200px',
+                    width: isMobile ? '120px' : '200px',
                   }}
                   autoFocus
                   onKeyDown={(e) => {
@@ -323,12 +331,12 @@ const Account = () => {
                     if (e.key === 'Escape') handleCancelUsernameEdit();
                   }}
                 />
-                <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                   <span
                     onClick={handleSaveUsername}
                     style={{
                       color: '#FFD700',
-                      fontSize: '14px',
+                      fontSize: isMobile ? '12px' : '14px',
                       cursor: 'pointer',
                       textDecoration: 'underline',
                       fontWeight: '500'
@@ -340,7 +348,7 @@ const Account = () => {
                     onClick={handleCancelUsernameEdit}
                     style={{
                       color: '#FFD700',
-                      fontSize: '14px',
+                      fontSize: isMobile ? '12px' : '14px',
                       cursor: 'pointer',
                       textDecoration: 'underline',
                       fontWeight: '400'
@@ -356,7 +364,7 @@ const Account = () => {
                   color: '#fff',
                   fontWeight: 'bold',
                   margin: '0 0 8px 0',
-                  fontSize: '20px',
+                  fontSize: isMobile ? '16px' : '20px',
                 }}>
                   {userData.username}
                 </h3>
@@ -364,7 +372,7 @@ const Account = () => {
                   onClick={handleEditUsername}
                   style={{
                     color: '#FFD700',
-                    fontSize: '14px',
+                    fontSize: isMobile ? '12px' : '14px',
                     cursor: 'pointer',
                     textDecoration: 'underline',
                     fontWeight: '400'
@@ -382,70 +390,60 @@ const Account = () => {
           flex: 1,
           backgroundColor: '#121212',
           borderRadius: '15px',
-          padding: '30px'
+          padding: isMobile ? '14px' : '30px',
         }}>
           {/* Header dengan tombol */}
           <div style={{
             display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '30px'
+            flexDirection: isMobile ? 'column' : 'row',
+            justifyContent: isMobile ? 'flex-start' : 'space-between',
+            alignItems: isMobile ? 'stretch' : 'center',
+            marginBottom: isMobile ? '16px' : '30px',
+            gap: isMobile ? '10px' : 0
           }}>
             <h2 style={{
               color: '#fff',
-              fontSize: '24px',
+              fontSize: isMobile ? '18px' : '24px',
               fontWeight: '600',
               margin: '0'
             }}>
               Detail Akun
             </h2>
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <div style={{ display: 'flex', gap: isMobile ? '8px' : '12px', flexDirection: isMobile ? 'column' : 'row' }}>
               <Button2
-              label="Ubah Password"
+                label="Ubah Password"
                 onClick={handleEditPassword}
                 style={{
                   backgroundColor: 'transparent',
                   border: '2px solid #FFD700',
                   color: '#FFD700',
-                  padding: '8px 16px',
+                  padding: isMobile ? '6px 0' : '8px 16px',
                   borderRadius: '6px',
-                  fontSize: '14px',
+                  fontSize: isMobile ? '12px' : '14px',
                   fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'Poppins, sans-serif',
+                  width: isMobile ? '100%' : undefined,
                   transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#FFD700';
-                  e.target.style.color = '#000';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'transparent';
-                  e.target.style.color = '#FFD700';
                 }}
               >
                 Edit Password
               </Button2>
               <Button1
-              label="Edit profil"
+                label="Edit profil"
                 onClick={handleEditProfile}
                 style={{
                   backgroundColor: '#FFD700',
                   border: '2px solid #FFD700',
                   color: '#000',
-                  padding: '8px 16px',
+                  padding: isMobile ? '6px 0' : '8px 16px',
                   borderRadius: '6px',
-                  fontSize: '14px',
+                  fontSize: isMobile ? '12px' : '14px',
                   fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'Poppins, sans-serif',
+                  width: isMobile ? '100%' : undefined,
                   transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#E6C200';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = '#FFD700';
                 }}
               >
                 Edit Profile
@@ -454,25 +452,25 @@ const Account = () => {
           </div>
 
           {/* Detail Fields */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '10px' : '20px' }}>
             {/* Nama Lengkap */}
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '15px 0',
+              padding: isMobile ? '8px 0' : '15px 0',
               borderBottom: '1px solid #444'
             }}>
               <span style={{
                 color: '#ccc',
-                fontSize: '16px',
+                fontSize: isMobile ? '13px' : '16px',
                 fontWeight: '500'
               }}>
                 Nama Lengkap:
               </span>
               <span style={{
                 color: '#fff',
-                fontSize: '16px',
+                fontSize: isMobile ? '13px' : '16px',
                 fontWeight: '400'
               }}>
                 {userData.username}
@@ -484,19 +482,19 @@ const Account = () => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '15px 0',
+              padding: isMobile ? '8px 0' : '15px 0',
               borderBottom: '1px solid #444'
             }}>
               <span style={{
                 color: '#ccc',
-                fontSize: '16px',
+                fontSize: isMobile ? '13px' : '16px',
                 fontWeight: '500'
               }}>
                 Email:
               </span>
               <span style={{
                 color: '#fff',
-                fontSize: '16px',
+                fontSize: isMobile ? '13px' : '16px',
                 fontWeight: '400'
               }}>
                 {userData.email}
@@ -508,19 +506,19 @@ const Account = () => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '15px 0',
+              padding: isMobile ? '8px 0' : '15px 0',
               borderBottom: '1px solid #444'
             }}>
               <span style={{
                 color: '#ccc',
-                fontSize: '16px',
+                fontSize: isMobile ? '13px' : '16px',
                 fontWeight: '500'
               }}>
                 Nomor Telepon:
               </span>
               <span style={{
                 color: '#fff',
-                fontSize: '16px',
+                fontSize: isMobile ? '13px' : '16px',
                 fontWeight: '400'
               }}>
                 {userData.phone || '087852056808'}
@@ -532,19 +530,19 @@ const Account = () => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '15px 0',
+              padding: isMobile ? '8px 0' : '15px 0',
               borderBottom: '1px solid #444'
             }}>
               <span style={{
                 color: '#ccc',
-                fontSize: '16px',
+                fontSize: isMobile ? '13px' : '16px',
                 fontWeight: '500'
               }}>
                 Tanggal Bergabung:
               </span>
               <span style={{
                 color: '#fff',
-                fontSize: '16px',
+                fontSize: isMobile ? '13px' : '16px',
                 fontWeight: '400'
               }}>
                 {userData.joinDate || '28/05/2025'}
@@ -553,22 +551,23 @@ const Account = () => {
           </div>
 
           {/* Alamat Utama Section */}
-          <div style={{ marginTop: '40px' }}>
+          <div style={{ marginTop: isMobile ? '18px' : '40px' }}>
             <h4 style={{
               color: '#FFD700',
-              fontSize: '18px',
+              fontSize: isMobile ? '15px' : '18px',
               fontWeight: '600',
-              marginBottom: '20px',
+              marginBottom: isMobile ? '10px' : '20px',
               textAlign: 'left'
             }}>
               Alamat Utama
             </h4>
             <div style={{
               backgroundColor: '#383838',
-              padding: '20px',
+              padding: isMobile ? '10px' : '20px',
               borderRadius: '8px',
               color: '#fff',
-              textAlign: 'left'
+              textAlign: 'left',
+              fontSize: isMobile ? '13px' : '15px',
             }}>
               <div style={{ marginBottom: '8px' }}>
                 <strong>{userData.username}</strong>
@@ -598,16 +597,17 @@ const Account = () => {
             background: 'linear-gradient(135deg, #1a1a1a 0%, #000000 100%)',
             borderRadius: '6px',
             color: '#fff',
-            padding: '20px',
+            padding: isMobile ? '12px' : '20px',
             width: '100%',
-            maxWidth: 500,
+            maxWidth: isMobile ? 320 : 500,
             boxSizing: 'border-box',
+            fontSize: isMobile ? '13px' : undefined
           }}
         >
-          <h5 style={{ color: '#FFD700', marginBottom: 20 }}>Edit Profil</h5>
+          <h5 style={{ color: '#FFD700', marginBottom: isMobile ? 10 : 20, fontSize: isMobile ? '15px' : undefined }}>Edit Profil</h5>
           <Form>
             <Form.Group controlId="formUsername" className="mb-3">
-              <Form.Label>Nama Lengkap</Form.Label>
+              <Form.Label style={{ fontSize: isMobile ? '13px' : undefined }}>Nama Lengkap</Form.Label>
               <Form.Control
                 type="text"
                 name="username"
@@ -619,13 +619,14 @@ const Account = () => {
                   borderColor: '#444',
                   backgroundColor: '#222',
                   color: '#fff',
+                  fontSize: isMobile ? '13px' : undefined
                 }}
                 autoFocus
               />
             </Form.Group>
 
             <Form.Group controlId="formEmail" className="mb-3">
-              <Form.Label>Email</Form.Label>
+              <Form.Label style={{ fontSize: isMobile ? '13px' : undefined }}>Email</Form.Label>
               <Form.Control
                 type="email"
                 name="email"
@@ -637,12 +638,13 @@ const Account = () => {
                   borderColor: '#444',
                   backgroundColor: '#222',
                   color: '#fff',
+                  fontSize: isMobile ? '13px' : undefined
                 }}
               />
             </Form.Group>
 
             <Form.Group controlId="formPhone" className="mb-3">
-              <Form.Label>Nomor Telepon</Form.Label>
+              <Form.Label style={{ fontSize: isMobile ? '13px' : undefined }}>Nomor Telepon</Form.Label>
               <Form.Control
                 type="text"
                 name="phone"
@@ -654,6 +656,7 @@ const Account = () => {
                   borderColor: '#444',
                   backgroundColor: '#222',
                   color: '#fff',
+                  fontSize: isMobile ? '13px' : undefined
                 }}
               />
             </Form.Group>
@@ -661,38 +664,38 @@ const Account = () => {
             <div
               style={{
                 display: 'flex',
+                flexDirection: isMobile ? 'column' : 'row',
                 justifyContent: 'center',
-                gap: 20,
+                gap: isMobile ? 8 : 20,
                 marginTop: 20,
               }}
             >
               <Button
-              variant='outline-warning'
+                variant='outline-warning'
                 onClick={handleCloseModal}
                 style={{
                   color: '#FFD700',
-                  fontSize: '14px',
+                  fontSize: isMobile ? '13px' : '14px',
                   cursor: 'pointer',
                   textDecoration: 'underline',
-                  fontWeight: '400'
+                  fontWeight: '400',
+                  width: isMobile ? '100%' : undefined,
+                  marginBottom: isMobile ? 6 : 0
                 }}
-                onMouseEnter={(e) => e.target.style.opacity = '0.8'}
-                onMouseLeave={(e) => e.target.style.opacity = '1'}
               >
                 Batal
               </Button>
 
               <Button
-              variant='warning'
+                variant='warning'
                 onClick={handleSaveProfile}
                 style={{
-                  fontSize: '14px',
+                  fontSize: isMobile ? '13px' : '14px',
                   cursor: 'pointer',
                   textDecoration: 'underline',
-                  fontWeight: '500'
+                  fontWeight: '500',
+                  width: isMobile ? '100%' : undefined
                 }}
-                onMouseEnter={(e) => e.target.style.opacity = '0.8'}
-                onMouseLeave={(e) => e.target.style.opacity = '1'}
               >
                 Simpan
               </Button>
@@ -700,8 +703,6 @@ const Account = () => {
           </Form>
         </div>
       </Modal>
-
-
 
       {/* Password Edit Modal */}
       <Modal
@@ -716,18 +717,19 @@ const Account = () => {
             background: 'linear-gradient(135deg, #1a1a1a 0%, #000000 100%)',
             borderRadius: '6px',
             color: '#fff',
-            padding: '20px',
+            padding: isMobile ? '12px' : '20px',
             width: '100%',
-            maxWidth: 500,
+            maxWidth: isMobile ? 320 : 500,
             boxSizing: 'border-box',
+            fontSize: isMobile ? '13px' : undefined
           }}
         >
-          <h5 style={{ color: '#FFD700', marginBottom: 20 }}>Ubah Password</h5>
+          <h5 style={{ color: '#FFD700', marginBottom: isMobile ? 10 : 20, fontSize: isMobile ? '15px' : undefined }}>Ubah Password</h5>
 
           <Form>
             {/* Current Password */}
             <Form.Group controlId="formCurrentPassword" className="mb-3">
-              <Form.Label>Password Saat Ini</Form.Label>
+              <Form.Label style={{ fontSize: isMobile ? '13px' : undefined }}>Password Saat Ini</Form.Label>
               <InputGroup>
                 <Form.Control
                   type={showCurrentPassword ? 'text' : 'password'}
@@ -740,6 +742,7 @@ const Account = () => {
                     borderColor: '#444',
                     backgroundColor: '#222',
                     color: '#fff',
+                    fontSize: isMobile ? '13px' : undefined
                   }}
                 />
                 <Button
@@ -759,7 +762,7 @@ const Account = () => {
 
             {/* New Password */}
             <Form.Group controlId="formNewPassword" className="mb-3">
-              <Form.Label>Password Baru</Form.Label>
+              <Form.Label style={{ fontSize: isMobile ? '13px' : undefined }}>Password Baru</Form.Label>
               <InputGroup>
                 <Form.Control
                   type={showNewPassword ? 'text' : 'password'}
@@ -772,6 +775,7 @@ const Account = () => {
                     borderColor: '#444',
                     backgroundColor: '#222',
                     color: '#fff',
+                    fontSize: isMobile ? '13px' : undefined
                   }}
                 />
                 <Button
@@ -791,7 +795,7 @@ const Account = () => {
 
             {/* Confirm Password */}
             <Form.Group controlId="formConfirmPassword" className="mb-3">
-              <Form.Label>Konfirmasi Password Baru</Form.Label>
+              <Form.Label style={{ fontSize: isMobile ? '13px' : undefined }}>Konfirmasi Password Baru</Form.Label>
               <InputGroup>
                 <Form.Control
                   type={showConfirmPassword ? 'text' : 'password'}
@@ -804,6 +808,7 @@ const Account = () => {
                     borderColor: '#444',
                     backgroundColor: '#222',
                     color: '#fff',
+                    fontSize: isMobile ? '13px' : undefined
                   }}
                 />
                 <Button
@@ -825,7 +830,7 @@ const Account = () => {
             {passwordError && (
               <div style={{
                 color: '#dc3545',
-                fontSize: '14px',
+                fontSize: isMobile ? '12px' : '14px',
                 marginBottom: '15px',
                 textAlign: 'center'
               }}>
@@ -836,38 +841,38 @@ const Account = () => {
             <div
               style={{
                 display: 'flex',
+                flexDirection: isMobile ? 'column' : 'row',
                 justifyContent: 'center',
-                gap: 20,
+                gap: isMobile ? 8 : 20,
                 marginTop: 20,
               }}
             >
               <Button
-              variant='outline-warning'
+                variant='outline-warning'
                 onClick={handleClosePasswordModal}
                 style={{
                   color: '#FFD700',
-                  fontSize: '14px',
+                  fontSize: isMobile ? '13px' : '14px',
                   cursor: 'pointer',
                   textDecoration: 'underline',
-                  fontWeight: '400'
+                  fontWeight: '400',
+                  width: isMobile ? '100%' : undefined,
+                  marginBottom: isMobile ? 6 : 0
                 }}
-                onMouseEnter={(e) => e.target.style.opacity = '0.8'}
-                onMouseLeave={(e) => e.target.style.opacity = '1'}
               >
                 Batal
               </Button>
 
               <Button
-              variant='warning'
+                variant='warning'
                 onClick={handleSavePassword}
                 style={{
-                  fontSize: '14px',
+                  fontSize: isMobile ? '13px' : '14px',
                   cursor: 'pointer',
                   textDecoration: 'underline',
-                  fontWeight: '500'
+                  fontWeight: '500',
+                  width: isMobile ? '100%' : undefined
                 }}
-                onMouseEnter={(e) => e.target.style.opacity = '0.8'}
-                onMouseLeave={(e) => e.target.style.opacity = '1'}
               >
                 Simpan
               </Button>

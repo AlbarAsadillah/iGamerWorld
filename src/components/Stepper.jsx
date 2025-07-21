@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const pcSteps = [
   'CPU',
@@ -12,10 +12,80 @@ const pcSteps = [
 ];
 
 const Stepper = ({ currentStep, onChange }) => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 576);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div
+        style={{
+          background: 'linear-gradient(to right, #222222, #000000)',
+          borderRadius: 16,
+          padding: '10px 6px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflowX: 'auto',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.5)',
+          marginBottom: 18,
+          gap: 8,
+        }}
+      >
+        {pcSteps.map((step, index) => {
+          const isActive = index === currentStep;
+          const isCompleted = index < currentStep;
+          const canClick = isCompleted || isActive;
+          const stepColor = isActive ? '#FFD700' : isCompleted ? '#FFD700' : '#ccc';
+          return (
+            <div
+              key={index}
+              onClick={() => { if (canClick) onChange(index); }}
+              style={{
+                minWidth: 54,
+                textAlign: 'center',
+                cursor: canClick ? 'pointer' : 'default',
+                color: stepColor,
+                fontWeight: isActive ? '700' : '500',
+                position: 'relative',
+                fontSize: 12,
+                zIndex: 1,
+                margin: '0 2px',
+              }}
+              aria-disabled={!canClick}
+            >
+              <div
+                style={{
+                  margin: '0 auto 4px',
+                  width: 24,
+                  height: 24,
+                  borderRadius: '50%',
+                  backgroundColor: stepColor,
+                  color: isCompleted ? '#fff' : '#000',
+                  lineHeight: '24px',
+                  fontWeight: 'bold',
+                  fontSize: 13,
+                  userSelect: 'none',
+                }}
+              >
+                {isCompleted ? '✓' : index + 1}
+              </div>
+              <div style={{ userSelect: 'none', color: stepColor, fontSize: 11 }}>{step}</div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
-        background: 'linear-gradient(to right, #222222, #000000)', // gradasi hitam lembut
+        background: 'linear-gradient(to right, #222222, #000000)',
         borderRadius: 20,
         padding: '20px 24px',
         display: 'flex',
@@ -28,28 +98,13 @@ const Stepper = ({ currentStep, onChange }) => {
       {pcSteps.map((step, index) => {
         const isActive = index === currentStep;
         const isCompleted = index < currentStep;
-
         const canClick = isCompleted || isActive;
-
-        // Warna lingkaran dan teks:
-        // - Aktif: kuning (#FFD700)
-        // - Selesai: hitam (#000000)
-        // - Belum selesai: abu-abu terang (#ccc)
-        const stepColor = isActive
-          ? '#FFD700' 
-          : isCompleted 
-          ? '#FFD700' 
-          : '#ccc';
-
-        // Warna garis penghubung kuning cerah jika selesai, abu-abu jika belum
+        const stepColor = isActive ? '#FFD700' : isCompleted ? '#FFD700' : '#ccc';
         const lineColor = isCompleted ? '#FFD700' : '#FFECB3';
-
         return (
           <div
             key={index}
-            onClick={() => {
-              if (canClick) onChange(index);
-            }}
+            onClick={() => { if (canClick) onChange(index); }}
             style={{
               flex: 1,
               textAlign: 'center',
@@ -66,7 +121,6 @@ const Stepper = ({ currentStep, onChange }) => {
             }}
             aria-disabled={!canClick}
           >
-            {/* Garis kiri, kecuali step pertama */}
             {index > 0 && (
               <div
                 style={{
@@ -81,8 +135,6 @@ const Stepper = ({ currentStep, onChange }) => {
                 }}
               />
             )}
-
-            {/* Garis kanan, kecuali step terakhir */}
             {index < pcSteps.length - 1 && (
               <div
                 style={{
@@ -97,8 +149,6 @@ const Stepper = ({ currentStep, onChange }) => {
                 }}
               />
             )}
-
-            {/* Bulatan step */}
             <div
               style={{
                 margin: '0 auto 10px',
@@ -106,7 +156,7 @@ const Stepper = ({ currentStep, onChange }) => {
                 height: 32,
                 borderRadius: '50%',
                 backgroundColor: stepColor,
-                color: isCompleted ? '#fff' : '#000', // tanda centang tetap putih di lingkaran hitam
+                color: isCompleted ? '#fff' : '#000',
                 lineHeight: '32px',
                 fontWeight: 'bold',
                 fontSize: 16,
@@ -117,8 +167,6 @@ const Stepper = ({ currentStep, onChange }) => {
             >
               {isCompleted ? '✓' : index + 1}
             </div>
-
-            {/* Label */}
             <div style={{ userSelect: 'none', color: stepColor }}>{step}</div>
           </div>
         );

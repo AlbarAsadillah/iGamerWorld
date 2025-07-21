@@ -33,6 +33,14 @@ const ComponentsCPU = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 5;
   const [selectedVariant, setSelectedVariant] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 576);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     // Jika user kembali dari summary, set step ke currentStep dari state
@@ -111,56 +119,44 @@ const ComponentsCPU = () => {
         minHeight: '100vh',
         backgroundColor: '#121212',
         color: '#fff',
-        padding: 20,
-        width: '1300px',
-        marginBottom: '35px',
-        marginTop: '35px',
-        borderRadius: '10px',
-
+        padding: isMobile ? 8 : 20,
+        width: isMobile ? '100vw' : '1300px',
+        marginBottom: isMobile ? 0 : '35px',
+        marginTop: isMobile ? 0 : '35px',
+        borderRadius: isMobile ? 0 : '10px',
       }}
     >
-      <Stepper
-        currentStep={currentStep}
-        onChange={setCurrentStep}
-        disableNext={!selectedProduct}
-      />
-
-      {/* Tombol Back dan Next di atas list produk */}
-      <div
-        className="d-flex"
-        style={{ marginBottom: 16 }}
-      >
+      {!isMobile && (
+        <Stepper
+          currentStep={currentStep}
+          onChange={setCurrentStep}
+          disableNext={!selectedProduct}
+        />
+      )}
+      <div className="d-flex" style={{ marginBottom: 16 }}>
         <Button2
-        label={currentStep === 0 ? 'BACK' : 'PREVIOUS'}
+          label={currentStep === 0 ? 'BACK' : 'PREVIOUS'}
           onClick={prevStep}
           variant="secondary"
-          style={{
-            minWidth: 120,
-          }}
-        >
-        </Button2>
-
+          style={{ minWidth: 120 }}
+        />
         <Button1
-        label={currentStep === lastStepIndex ? 'DONE' : 'NEXT'}
+          label={currentStep === lastStepIndex ? 'DONE' : 'NEXT'}
           onClick={nextStep}
-          disabled={
-            !selectedProduct ||
-            (selectedProduct?.variants?.length > 0 && !selectedVariant)
-          }
+          disabled={!selectedProduct || (selectedProduct?.variants?.length > 0 && !selectedVariant)}
           style={{
             borderColor: '#FFD700',
             color: '#000',
-            padding: '8px 20px',
+            padding: isMobile ? '8px 8px' : '8px 20px',
             minWidth: 120,
             marginLeft: 'auto',
             alignContent: 'flex-end',
+            fontSize: isMobile ? 13 : 16,
           }}
-        >
-        </Button1>
+        />
       </div>
-
       <Row style={{ marginTop: 24 }}>
-        <Col md={7} style={{ marginBottom: 20, maxHeight: '75vh', overflowY: 'auto', paddingRight: 10 }}>
+        <Col md={7} style={{ marginBottom: 20, maxHeight: isMobile ? 'unset' : '75vh', overflowY: isMobile ? 'unset' : 'auto', paddingRight: isMobile ? 0 : 10 }}>
           {/* Search Bar ala Navbar */}
           <div style={{ marginBottom: 16 }}>
             {/* Custom CSS agar search sama dengan navbar */}
@@ -349,15 +345,7 @@ const ComponentsCPU = () => {
             </div>
           )}
         </Col>
-
-        <Col
-          md={5}
-          style={{
-            borderLeft: '1px solid #444',
-            padding: 0,
-            minHeight: '80vh',
-          }}
-        >
+        <Col md={5} style={{ borderLeft: isMobile ? 'none' : '1px solid #444', padding: 0, minHeight: isMobile ? 'auto' : '80vh', marginTop: isMobile ? 24 : 0 }}>
           {selectedProduct ? (
             <div
               style={{

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Modal } from 'react-bootstrap';
 import Button1 from '../../components/Button';
+import Button2 from '../../components/Button2'; 
 
 const Pengaduan = () => {
   const [formData, setFormData] = useState({
@@ -164,7 +165,7 @@ const Pengaduan = () => {
                 {/* Nama Lengkap */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label style={{ color: '#FFD700', fontWeight: '500', textAlign: 'left', display: 'block' }}>
+                    <Form.Label style={{ color: '#fff', fontWeight: '500', textAlign: 'left', display: 'block' }}>
                       Nama Lengkap *
                     </Form.Label>
                     <Form.Control
@@ -174,10 +175,10 @@ const Pengaduan = () => {
                       onChange={handleInputChange}
                       placeholder="Masukkan nama lengkap Anda"
                       style={{
-                        backgroundColor: '#444',
-                        border: errors.name ? '1px solid #dc3545' : '1px solid #666',
+                        backgroundColor: '#fff',
+                        border: errors.name ? '1px solid #dc3545' : '1px solid #bbb',
                         borderRadius: '6px',
-                        color: '#fff',
+                        color: '#222',
                         padding: '12px',
                       }}
                     />
@@ -192,7 +193,7 @@ const Pengaduan = () => {
                 {/* Email */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label style={{ color: '#FFD700', fontWeight: '500', textAlign: 'left', display: 'block' }}>
+                    <Form.Label style={{ color: '#fff', fontWeight: '500', textAlign: 'left', display: 'block' }}>
                       Email *
                     </Form.Label>
                     <Form.Control
@@ -202,10 +203,10 @@ const Pengaduan = () => {
                       onChange={handleInputChange}
                       placeholder="Masukkan email Anda"
                       style={{
-                        backgroundColor: '#444',
-                        border: errors.email ? '1px solid #dc3545' : '1px solid #666',
+                        backgroundColor: '#fff',
+                        border: errors.email ? '1px solid #dc3545' : '1px solid #bbb',
                         borderRadius: '6px',
-                        color: '#fff',
+                        color: '#222',
                         padding: '12px',
                       }}
                     />
@@ -222,7 +223,7 @@ const Pengaduan = () => {
                 {/* Nomor Telepon */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label style={{ color: '#FFD700', fontWeight: '500', textAlign: 'left', display: 'block' }}>
+                    <Form.Label style={{ color: '#fff', fontWeight: '500', textAlign: 'left', display: 'block' }}>
                       Nomor Telepon *
                     </Form.Label>
                     <Form.Control
@@ -232,10 +233,10 @@ const Pengaduan = () => {
                       onChange={handleInputChange}
                       placeholder="Masukkan nomor telepon"
                       style={{
-                        backgroundColor: '#444',
-                        border: errors.phone ? '1px solid #dc3545' : '1px solid #666',
+                        backgroundColor: '#fff',
+                        border: errors.phone ? '1px solid #dc3545' : '1px solid #bbb',
                         borderRadius: '6px',
-                        color: '#fff',
+                        color: '#222',
                         padding: '12px',
                       }}
                     />
@@ -250,7 +251,7 @@ const Pengaduan = () => {
                 {/* Kategori */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label style={{ color: '#FFD700', fontWeight: '500', textAlign: 'left', display: 'block' }}>
+                    <Form.Label style={{ color: '#fff', fontWeight: '500', textAlign: 'left', display: 'block' }}>
                       Kategori Pengaduan *
                     </Form.Label>
                     <Form.Select
@@ -258,15 +259,15 @@ const Pengaduan = () => {
                       value={formData.category}
                       onChange={handleInputChange}
                       style={{
-                        backgroundColor: '#444',
-                        border: errors.category ? '1px solid #dc3545' : '1px solid #666',
+                        backgroundColor: '#fff',
+                        border: errors.category ? '1px solid #dc3545' : '1px solid #bbb',
                         borderRadius: '6px',
-                        color: '#fff',
+                        color: '#222',
                         padding: '12px',
                       }}
                     >
                       {categories.map((cat) => (
-                        <option key={cat.value} value={cat.value} style={{ backgroundColor: '#444' }}>
+                        <option key={cat.value} value={cat.value} style={{ backgroundColor: '#fff', color: '#222' }}>
                           {cat.label}
                         </option>
                       ))}
@@ -284,7 +285,7 @@ const Pengaduan = () => {
                 {/* Nomor Pesanan */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label style={{ color: '#FFD700', fontWeight: '500', textAlign: 'left', display: 'block' }}>
+                    <Form.Label style={{ color: '#fff', fontWeight: '500', textAlign: 'left', display: 'block' }}>
                       Nomor Pesanan (Opsional)
                     </Form.Label>
                     <Form.Control
@@ -294,10 +295,10 @@ const Pengaduan = () => {
                       onChange={handleInputChange}
                       placeholder="Masukkan nomor pesanan jika ada"
                       style={{
-                        backgroundColor: '#444',
-                        border: '1px solid #666',
+                        backgroundColor: '#fff',
+                        border: '1px solid #bbb',
                         borderRadius: '6px',
-                        color: '#fff',
+                        color: '#222',
                         padding: '12px',
                       }}
                     />
@@ -307,7 +308,7 @@ const Pengaduan = () => {
                 {/* Prioritas */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label style={{ color: '#FFD700', fontWeight: '500', textAlign: 'left', display: 'block' }}>
+                    <Form.Label style={{ color: '#fff', fontWeight: '500', textAlign: 'left', display: 'block' }}>
                       Tingkat Prioritas
                     </Form.Label>
                     <Form.Select
@@ -315,15 +316,15 @@ const Pengaduan = () => {
                       value={formData.priority}
                       onChange={handleInputChange}
                       style={{
-                        backgroundColor: '#444',
-                        border: '1px solid #666',
+                        backgroundColor: '#fff',
+                        border: '1px solid #bbb',
                         borderRadius: '6px',
-                        color: '#fff',
+                        color: '#222',
                         padding: '12px',
                       }}
                     >
                       {priorities.map((priority) => (
-                        <option key={priority.value} value={priority.value} style={{ backgroundColor: '#444' }}>
+                        <option key={priority.value} value={priority.value} style={{ backgroundColor: '#fff', color: '#222' }}>
                           {priority.label}
                         </option>
                       ))}
@@ -334,7 +335,7 @@ const Pengaduan = () => {
 
               {/* Subjek */}
               <Form.Group className="mb-3">
-                <Form.Label style={{ color: '#FFD700', fontWeight: '500', textAlign: 'left', display: 'block' }}>
+                <Form.Label style={{ color: '#fff', fontWeight: '500', textAlign: 'left', display: 'block' }}>
                   Subjek Pengaduan *
                 </Form.Label>
                 <Form.Control
@@ -344,10 +345,10 @@ const Pengaduan = () => {
                   onChange={handleInputChange}
                   placeholder="Ringkasan singkat masalah Anda"
                   style={{
-                    backgroundColor: '#444',
-                    border: errors.subject ? '1px solid #dc3545' : '1px solid #666',
+                    backgroundColor: '#fff',
+                    border: errors.subject ? '1px solid #dc3545' : '1px solid #bbb',
                     borderRadius: '6px',
-                    color: '#fff',
+                    color: '#222',
                     padding: '12px',
                   }}
                 />
@@ -360,7 +361,7 @@ const Pengaduan = () => {
 
               {/* Deskripsi */}
               <Form.Group className="mb-4">
-                <Form.Label style={{ color: '#FFD700', fontWeight: '500', textAlign: 'left', display: 'block' }}>
+                <Form.Label style={{ color: '#fff', fontWeight: '500', textAlign: 'left', display: 'block' }}>
                   Deskripsi Pengaduan *
                 </Form.Label>
                 <Form.Control
@@ -371,10 +372,10 @@ const Pengaduan = () => {
                   onChange={handleInputChange}
                   placeholder="Jelaskan masalah Anda secara detail (minimal 20 karakter)"
                   style={{
-                    backgroundColor: '#444',
-                    border: errors.description ? '1px solid #dc3545' : '1px solid #666',
+                    backgroundColor: '#fff',
+                    border: errors.description ? '1px solid #dc3545' : '1px solid #bbb',
                     borderRadius: '6px',
-                    color: '#fff',
+                    color: '#222',
                     padding: '12px',
                     resize: 'vertical',
                   }}
@@ -437,7 +438,6 @@ const Pengaduan = () => {
               marginBottom: '15px',
               color: '#28a745'
             }}>
-              ✅
             </div>
             
             <h5 style={{ 
@@ -454,10 +454,10 @@ const Pengaduan = () => {
               lineHeight: '1.5',
               marginBottom: '15px'
             }}>
-              Tim customer service kami akan merespons pengaduan Anda dalam waktu 1x24 jam melalui email yang telah Anda berikan.
+              Tim customer service kami akan merespons pengaduan anda dalam waktu 1x24 jam melalui kontak yang telah anda berikan.
             </p>
 
-            <div style={{
+            {/* <div style={{
               backgroundColor: '#444',
               borderRadius: '6px',
               padding: '10px',
@@ -471,15 +471,8 @@ const Pengaduan = () => {
               }}>
                 ID Pengaduan: ADU{Date.now().toString().slice(-8)}
               </p>
-            </div>
+            </div> */}
 
-            <p style={{ 
-              color: '#ccc', 
-              fontSize: '12px',
-              margin: 0
-            }}>
-              Simpan ID pengaduan ini untuk referensi Anda.
-            </p>
           </div>
         </Modal.Body>
         
@@ -487,7 +480,7 @@ const Pengaduan = () => {
           backgroundColor: '#333333', 
           borderTop: '1px solid #444'
         }}>
-          <span
+          <Button2
             onClick={handleCloseModal}
             style={{
               color: '#FFD700',
@@ -500,7 +493,7 @@ const Pengaduan = () => {
             onMouseLeave={(e) => e.target.style.opacity = '1'}
           >
             Tutup
-          </span>
+          </Button2>
         </Modal.Footer>
       </Modal>
     </Container>

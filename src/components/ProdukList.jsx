@@ -1,34 +1,40 @@
-import React, { useState } from 'react';
-import { Nav } from 'react-bootstrap'; // Removed Button import from react-bootstrap
-import ProductCard from './ProductCard'; // Pastikan path sesuai dengan lokasi ProductCard
-import { dummyProducts } from '../data/dummyProducts'; // Pastikan path sesuai dengan lokasi data dummyProducts
-import Button1 from './Button';  // Komponen Tombol yang sudah Anda buat
+import React, { useState, useEffect } from 'react';
+import { Nav } from 'react-bootstrap';
+import ProductCard from './ProductCard';
+import { dummyProducts } from '../data/dummyProducts';
+import Button1 from './Button';
 
 const ProdukList = () => {
-    const [activeTab, setActiveTab] = useState('all'); // State untuk tab aktif
-    const [visibleCount, setVisibleCount] = useState(8); // State untuk jumlah produk yang ditampilkan
+    const [activeTab, setActiveTab] = useState('all');
+    const [visibleCount, setVisibleCount] = useState(8);
+    const [isMobile, setIsMobile] = useState(false);
 
-    // Filter produk berdasarkan tab aktif
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 576);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const filteredProducts = dummyProducts.filter((product) => {
         if (activeTab === 'ready-stock') return product.status === 'ready-stock';
         if (activeTab === 'out-of-stock') return product.status === 'out-of-stock';
-        return true; // Default: 'all'
+        return true;
     });
 
-    // Produk yang akan ditampilkan berdasarkan jumlah yang terlihat
     const visibleProducts = filteredProducts.slice(0, visibleCount);
 
     return (
         <div
             style={{
-                padding: '0 72px 0 72px',
-                minHeight: '100vh', // Tinggi minimum layar
-                backgroundColor: '#171717', // Warna latar belakang
-                color: 'white', // Warna teks default
-                marginTop:'-15px'
+                padding: isMobile ? '0 8px' : '0 72px',
+                minHeight: '100vh',
+                backgroundColor: '#171717',
+                color: 'white',
+                marginTop: '-15px',
             }}
         >
-            <h2 style={{ textAlign: 'left' }}>PRODUK</h2>
+            <h2 style={{ textAlign: 'left', fontSize: isMobile ? '1.2rem' : '2rem' }}>PRODUK</h2>
             {/* Tabs */}
             <Nav variant="tabs" className="justify-content-left mb-4">
                 <Nav.Item>
@@ -80,12 +86,12 @@ const ProdukList = () => {
 
             {/* Produk */}
             <div
-                className="d-grid"
+                className="d-grid produklist-grid-responsive"
                 style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(4, 1fr)', // 4 kolom
-                    gap: '16px',
-                    marginBottom: '30px', // Tambahan jarak bawah supaya tombol tidak mepet
+                    gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
+                    gap: isMobile ? '10px' : '16px',
+                    marginBottom: '30px',
                 }}
             >
                 {visibleProducts.map((product) => (
@@ -121,8 +127,10 @@ const ProdukList = () => {
                 <div style={{ textAlign: 'center' }}>
                     <Button1
                     style={{
-                        width: '200px',
-                        marginBottom: '35px'
+                        width: isMobile ? '100%' : '200px',
+                        marginBottom: '35px',
+                        fontSize: isMobile ? '1rem' : '1.1rem',
+                        padding: isMobile ? '12px 0' : undefined
                     }}
                     label="Lihat lainnya"
                         onClick={() => setVisibleCount((prevCount) => prevCount + 8)} // Tambah 8 produk lagi

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const categories = [
@@ -114,6 +114,39 @@ const CategoryCard = ({ category, style, customContent }) => {
 };
 
 const CategorySection = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 576);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div style={{
+        background: '#181818',
+        padding: '16px 0',
+        width: '100vw',
+        overflowX: 'auto',
+      }}>
+        <div style={{ display: 'flex', gap: 12, padding: '0 8px' }}>
+          {categories.map((category, idx) => (
+            <div
+              key={category.title}
+              style={{ minWidth: 180, maxWidth: 200, flex: '0 0 auto' }}
+            >
+              <CategoryCard
+                category={category}
+                style={{ width: 180, height: 180, flexDirection: 'column', padding: 10 }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   const styleContainer = {
     ...styles.container,
     height: fullHeight,
@@ -159,19 +192,6 @@ const CategorySection = () => {
             <p style={{ margin: '8px 0', fontSize: 14 }}>
               Nikmati paket bundling PC lengkap dengan harga spesial.
             </p>
-            {/* <button
-              style={{
-                backgroundColor: '#FFD700',
-                border: 'none',
-                padding: '8px 16px',
-                borderRadius: 6,
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                color: '#000',
-              }}
-            >
-              Pelajari Lebih Lanjut
-            </button> */}
           </>
         }
       />

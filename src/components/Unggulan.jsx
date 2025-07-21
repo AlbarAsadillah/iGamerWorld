@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 
 const Unggulan = () => {
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 576);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     const products = [
         {
             id: 11,
@@ -30,9 +37,9 @@ const Unggulan = () => {
     ];
 
     return (
-        <section style={styles.section}>
-            <h2 style={styles.heading}>PRODUK UNGGULAN</h2>
-            <div style={styles.grid}>
+        <section style={isMobile ? styles.sectionMobile : styles.section}>
+            <h2 style={isMobile ? styles.headingMobile : styles.heading}>PRODUK UNGGULAN</h2>
+            <div style={isMobile ? styles.gridMobile : styles.grid}>
                 {products.map((product) => (
                     <ProductCard
                         key={product.id}
@@ -58,6 +65,15 @@ const styles = {
         width: '100vw', // Lebar penuh sesuai layar
         margin: '0', // Menghilangkan margin default
     },
+    sectionMobile: {
+        backgroundImage: 'url("/images/bg-featured.jpg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        padding: '24px 8px',
+        width: '100vw',
+        margin: '0',
+    },
     heading: {
         fontSize: '2rem',
         fontWeight: 'bold',
@@ -65,10 +81,22 @@ const styles = {
         color: '#000',
         textAlign: 'left',
     },
+    headingMobile: {
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+        marginBottom: '1rem',
+        color: '#000',
+        textAlign: 'left',
+    },
     grid: {
         display: 'grid',
         gridTemplateColumns: 'repeat(4, 1fr)', // 4 kolom
         gap: '16px', // Jarak antar item
+    },
+    gridMobile: {
+        display: 'grid',
+        gridTemplateColumns: '1fr', // 1 kolom
+        gap: '10px', // Jarak antar item
     },
 };
 

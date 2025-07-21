@@ -29,6 +29,8 @@ const History = () => {
     dibatalkan: [],
   });
 
+  const [isMobile, setIsMobile] = useState(false);
+
   // Dummy Data (seperti data kamu sebelumnya, atau bisa load dari localStorage)
   useEffect(() => {
     // Simulasi load dari localStorage dan dummy data gabungan
@@ -61,6 +63,13 @@ const History = () => {
   useEffect(() => {
     localStorage.setItem('lastActiveTab', activeTab);
   }, [activeTab]);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 576);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const formatTabName = (tab) =>
     tab
@@ -186,21 +195,22 @@ const History = () => {
         minHeight: '100vh',
         backgroundColor: '#212121',
         color: '#fff',
-        borderRadius: '10px',
-        marginTop: '20px',
-        marginBottom: '20px',
-        padding: '70px',
+        borderRadius: isMobile ? '0' : '10px',
+        marginTop: isMobile ? '0' : '20px',
+        marginBottom: isMobile ? '0' : '20px',
+        padding: isMobile ? '16px 4px' : '70px',
+        width: isMobile ? '100vw' : undefined,
       }}
     >
-      <h2 className="mb-4 text-start">Riwayat Pesanan</h2>
+      <h2 className="mb-4 text-start" style={{ fontSize: isMobile ? '1.2rem' : '2rem' }}>Riwayat Pesanan</h2>
 
       {/* Menu Pilih All / Produk / Custom PC */}
       <div
         style={{
           display: 'flex',
-          justifyContent: 'flex-start',
-          gap: 12,
-          marginBottom: 40,
+          justifyContent: isMobile ? 'center' : 'flex-start',
+          gap: 8,
+          marginBottom: isMobile ? 16 : 40,
         }}
       >
         {menus.map((menu) => {
@@ -210,14 +220,14 @@ const History = () => {
               key={menu.id}
               onClick={() => setActiveMenu(menu.id)}
               style={{
-                padding: '8px 20px',
+                padding: isMobile ? '6px 10px' : '8px 20px',
                 borderRadius: 50,
                 border: isActive ? '2px solid #FFD700' : '2px solid #555',
                 backgroundColor: isActive ? '#FFD700' : 'transparent',
                 color: isActive ? '#000' : '#fff',
                 cursor: 'pointer',
                 fontWeight: isActive ? '700' : '500',
-                fontSize: '14px',
+                fontSize: isMobile ? '12px' : '14px',
                 textTransform: 'uppercase',
                 transition: 'all 0.3s ease',
               }}
@@ -252,6 +262,8 @@ const History = () => {
                 textTransform: 'capitalize',
                 backgroundColor: activeTab === tab ? '#FFD700' : 'transparent',
                 borderRadius: '10px 10px 0 0',
+                fontSize: isMobile ? '12px' : '14px',
+                padding: isMobile ? '6px 8px' : undefined,
               }}
             >
               {formatTabName(tab)}
@@ -265,12 +277,12 @@ const History = () => {
         style={{
           backgroundColor: '#121212',
           borderRadius: '10px',
-          padding: '20px',
+          padding: isMobile ? '10px 4px' : '20px',
           minHeight: '300px',
         }}
       >
         {currentData[activeTab]?.length === 0 ? (
-          <p style={{ color: '#fff', textAlign: 'center' }}>
+          <p style={{ color: '#fff', textAlign: 'center', fontSize: isMobile ? 13 : 16 }}>
             Belum ada pesanan pada tab ini.
           </p>
         ) : (
@@ -282,7 +294,7 @@ const History = () => {
                     borderRadius: '10px',
                     backgroundColor: '#212121',
                     color: '#fff',
-                    padding: '15px 20px',
+                    padding: isMobile ? '10px 8px' : '15px 20px',
                     cursor: 'pointer',
                   }}
                   onClick={() => navigate(`/order-detail`, { state: { order } })}
@@ -290,19 +302,20 @@ const History = () => {
                   <div
                     style={{
                       marginBottom: '10px',
-                      fontSize: '14px',
+                      fontSize: isMobile ? '12px' : '14px',
                       color: '#ccc',
                       display: 'flex',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      gap: '30px',
+                      flexDirection: isMobile ? 'column' : 'row',
+                      justifyContent: isMobile ? 'flex-start' : 'flex-start',
+                      alignItems: isMobile ? 'flex-start' : 'center',
+                      gap: isMobile ? '6px' : '30px',
                     }}
                   >
                     <div>{new Date(order.createdAt).toLocaleDateString('id-ID')}</div>
 
                     <div
                       style={{
-                        padding: '4px 12px',
+                        padding: isMobile ? '2px 8px' : '4px 12px',
                         borderRadius: '12px',
                         fontWeight: 'bold',
                         backgroundColor:
@@ -313,12 +326,13 @@ const History = () => {
                             : '#FFD700',
                         color: '#212121',
                         whiteSpace: 'nowrap',
+                        fontSize: isMobile ? 11 : 14,
                       }}
                     >
                       {getStatusLabel(order.status)}
                     </div>
 
-                    <div style={{ whiteSpace: 'nowrap' }}>Order ID: {order.id}</div>
+                    <div style={{ whiteSpace: 'nowrap', fontSize: isMobile ? 11 : 14 }}>Order ID: {order.id}</div>
                   </div>
 
                   <hr style={{ borderColor: '#555', marginBottom: '10px' }} />
@@ -326,9 +340,11 @@ const History = () => {
                   <div
                     style={{
                       display: 'flex',
+                      flexDirection: isMobile ? 'column' : 'row',
                       justifyContent: 'space-between',
-                      alignItems: 'center',
+                      alignItems: isMobile ? 'flex-start' : 'center',
                       marginTop: '10px',
+                      gap: isMobile ? 8 : 0,
                     }}
                   >
                     <div
@@ -336,13 +352,14 @@ const History = () => {
                         display: 'flex',
                         alignItems: 'center',
                         textAlign: 'left',
+                        marginBottom: isMobile ? 6 : 0,
                       }}
                     >
                       <div
                         style={{
-                          fontSize: '36px',
+                          fontSize: isMobile ? '28px' : '36px',
                           color: '#FFD700',
-                          marginRight: '15px',
+                          marginRight: isMobile ? '10px' : '15px',
                         }}
                       >
                         <FiShoppingBag />
@@ -351,7 +368,7 @@ const History = () => {
                         <div
                           style={{
                             fontWeight: 'bold',
-                            fontSize: '16px',
+                            fontSize: isMobile ? '13px' : '16px',
                             marginBottom: '4px',
                           }}
                         >
@@ -361,7 +378,7 @@ const History = () => {
                             ? order.items[0].name
                             : 'Produk Tidak Diketahui'}
                         </div>
-                        <div style={{ fontSize: '14px', color: '#ccc' }}>
+                        <div style={{ fontSize: isMobile ? '11px' : '14px', color: '#ccc' }}>
                           {order.items && order.items.length > 0
                             ? `${order.items.length} barang`
                             : 'Tidak ada produk'}
@@ -369,7 +386,7 @@ const History = () => {
                       </div>
                     </div>
 
-                    <div style={{ fontWeight: 'bold', fontSize: '16px' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: isMobile ? '13px' : '16px' }}>
                       Rp {order.total?.toLocaleString('id-ID')}
                     </div>
                   </div>
@@ -379,13 +396,13 @@ const History = () => {
                       marginTop: '15px',
                       textAlign: 'left',
                       display: 'flex',
-                      gap: '15px',
+                      gap: isMobile ? '8px' : '15px',
                       alignItems: 'center',
                     }}
                   >
                     <Button
                       variant="link"
-                      style={{ color: '#FFD700', fontWeight: 'medium', padding: 0 }}
+                      style={{ color: '#FFD700', fontWeight: 'medium', padding: 0, fontSize: isMobile ? 12 : 14 }}
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate('/order-detail', { state: { order } });
@@ -402,8 +419,8 @@ const History = () => {
                           borderColor: '#28a745',
                           color: '#28a745',
                           fontWeight: '600',
-                          fontSize: '12px',
-                          padding: '6px 12px',
+                          fontSize: isMobile ? '10px' : '12px',
+                          padding: isMobile ? '4px 8px' : '6px 12px',
                           borderRadius: '6px',
                           transition: 'all 0.3s ease',
                         }}
