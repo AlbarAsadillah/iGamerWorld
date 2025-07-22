@@ -137,7 +137,7 @@ const ComponentsCPU = () => {
         <Button2
           label={currentStep === 0 ? 'BACK' : 'PREVIOUS'}
           onClick={prevStep}
-          variant="secondary"
+          // variant="secondary"
           style={{ minWidth: 120 }}
         />
         <Button1
@@ -146,7 +146,7 @@ const ComponentsCPU = () => {
           disabled={!selectedProduct || (selectedProduct?.variants?.length > 0 && !selectedVariant)}
           style={{
             borderColor: '#FFD700',
-            color: '#000',
+            // color: '#000',
             padding: isMobile ? '8px 8px' : '8px 20px',
             minWidth: 120,
             marginLeft: 'auto',

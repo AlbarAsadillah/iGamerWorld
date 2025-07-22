@@ -239,7 +239,7 @@ const Cart = () => {
               <div style={{ backgroundColor: '#333', borderRadius: '10px', padding: isMobile ? '12px' : '20px', textAlign: 'left', fontSize: isMobile ? '13px' : '15px' }}>
                 <h5 style={{ marginBottom: isMobile ? '10px' : '20px', fontSize: isMobile ? '15px' : '18px' }}>Ringkasan Pesanan</h5>
                 <p style={{ fontSize: isMobile ? '13px' : '15px' }}>Total harga: Rp {totalPrice.toLocaleString('id-ID')}</p>
-                <Button1 variant="warning" label="Pesan Sekarang" style={{ width: '100%', fontSize: isMobile ? '13px' : '16px', padding: isMobile ? '7px 0' : undefined }} onClick={handleCheckout}>
+                <Button1 label="Pesan Sekarang" style={{ width: '100%', fontSize: isMobile ? '13px' : '16px', padding: isMobile ? '7px 0' : '6px'  }} onClick={handleCheckout}>
                   Pesan Sekarang
                 </Button1>
               </div>

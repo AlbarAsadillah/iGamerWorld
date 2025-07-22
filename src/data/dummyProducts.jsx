@@ -572,47 +572,6 @@ export const dummyProducts = [
 - Kompatibel Intel/AMD`,
     price: 2100000,
   },
-  // Gigabyte - RAM
-  {
-    id: 27,
-    name: 'Gigabyte AORUS DDR5 32GB (2x16GB) 6000MHz',
-    image: '/images/products/gigabyte-aorus-ram.png',
-    images: ['/images/products/gigabyte-aorus-ram.png'],
-    status: 'ready-stock',
-    category: 'Komponen',
-    subcategory: 'RAM',
-    brand: 'Gigabyte',
-    stockStatus: 'Ready Stock',
-    stock: 6,
-    description: `DDR5, 32GB (2x16GB), 6000MHz, CL40, RGB
-- Tipe: DDR5
-- Kapasitas: 32GB (2x16GB)
-- Kecepatan: 6000MHz
-- Latency: CL40
-- RGB Fusion
-- Kompatibel Intel/AMD`,
-    price: 3500000,
-  },
-  // AMD - RAM
-  {
-    id: 28,
-    name: 'AMD Radeon R7 DDR4 16GB (2x8GB) 3200MHz',
-    image: '/images/products/amd-radeon-ram.png',
-    images: ['/images/products/amd-radeon-ram.png'],
-    status: 'ready-stock',
-    category: 'Komponen',
-    subcategory: 'RAM',
-    brand: 'AMD',
-    stockStatus: 'Ready Stock',
-    stock: 12,
-    description: `DDR4, 16GB (2x8GB), 3200MHz, CL16
-- Tipe: DDR4
-- Kapasitas: 16GB (2x8GB)
-- Kecepatan: 3200MHz
-- Latency: CL16
-- Kompatibel Intel/AMD`,
-    price: 1100000,
-  },
   // ASUS - Casing
   {
     id: 29,
@@ -744,50 +703,6 @@ export const dummyProducts = [
 - Proteksi: OVP, OPP, SCP, OCP, OTP
 - Kabel: Flat`,
     price: 1350000,
-  },
-  // Gigabyte - Power Supply
-  {
-    id: 35,
-    name: 'Gigabyte P650B 650W Bronze',
-    image: '/images/products/gigabyte-p650b.png',
-    images: ['/images/products/gigabyte-p650b.png'],
-    status: 'ready-stock',
-    category: 'Komponen',
-    subcategory: 'Power Supply',
-    brand: 'Gigabyte',
-    stockStatus: 'Ready Stock',
-    stock: 6,
-    description: `ATX, 80+ Bronze, Non Modular, 650W
-- Form Factor: ATX
-- Power: 650W
-- Efficiency: 80+ Bronze
-- Modular: Non Modular
-- Fan: 120mm Hydraulic
-- Proteksi: OVP, OPP, SCP, UVP, OCP
-- Kabel: Flat`,
-    price: 950000,
-  },
-  // Fantech - Power Supply
-  {
-    id: 36,
-    name: 'Fantech Power 600W RGB',
-    image: '/images/products/fantech-psu.png',
-    images: ['/images/products/fantech-psu.png'],
-    status: 'ready-stock',
-    category: 'Komponen',
-    subcategory: 'Power Supply',
-    brand: 'Fantech',
-    stockStatus: 'Ready Stock',
-    stock: 9,
-    description: `ATX, RGB Fan, 600W
-- Form Factor: ATX
-- Power: 600W
-- Efficiency: Standar
-- Modular: Non Modular
-- Fan: 120mm RGB
-- Proteksi: OVP, OPP, SCP
-- Kabel: Flat`,
-    price: 650000,
   },
   // ASUS - Cooler
   {

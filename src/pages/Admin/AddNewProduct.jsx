@@ -180,9 +180,14 @@ const AddNewProduct = () => {
                 </Select>
               </Form.Item>
               {showPriceInput && (
-                <Form.Item label="Price" name="price" rules={[{ required: true, message: 'Please input price!' }]}>
-                  <InputNumber min={0} style={{ width: '100%' }} placeholder="Price" formatter={value => `Rp ${value}`} parser={value => value.replace(/Rp\s?|(,*)/g, '')} />
-                </Form.Item>
+                <>
+                  <Form.Item label="Price" name="price" rules={[{ required: true, message: 'Please input price!' }]}>
+                    <InputNumber min={0} style={{ width: '100%' }} placeholder="Price" formatter={value => `Rp ${value}`} parser={value => value.replace(/Rp\s?|(,*)/g, '')} />
+                  </Form.Item>
+                  <Form.Item label="Stock" name="stock" rules={[{ required: true, message: 'Please input stock!' }]}>
+                    <InputNumber min={0} style={{ width: '100%' }} placeholder="Stock" />
+                  </Form.Item>
+                </>
               )}
               <Form.Item label="Compatible to" name="compatible">
                 <Select placeholder="Socket">
